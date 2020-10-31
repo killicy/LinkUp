@@ -1,28 +1,34 @@
 const express = require('express');
 const router = express.Router();
-const Register = require('../../models/Register.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const key = require('../../config/keys');
 const auth = require('../../middleware/auth');
+const Login = require('../../models/Login.js');
 
 // route: POST api/auth
-// authenticate user
-router.post('/', auth, (req, res) => {
+// login user
+// takes Username, Password
+// public, does not require token
+router.post('/', (req, res) => {
     const {Username, Password} = req.body;
 
     if(!Username || !Password){
         return res.status(400).json({ msg: 'Please enter all fields'});
     }
 
-    Register.findOne({ Username })
+    //find username in DB
+    Login.findOne({ Username })
         .then(user => {
             if(!user) return res.status(400).json({ msg: 'User does not exist'});
 
+            //compare plain text password with hashed password
             bcrypt.compare(Password, user.Password)
                 .then(isMatch => {
                     if(!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
 
+                    // create token, expires in 60min
+                    // display user info on log in
                     jwt.sign(
 
                         { id: user.id },
@@ -35,8 +41,8 @@ router.post('/', auth, (req, res) => {
                                 token,
                                 user: {
                                     id: user.id,
-                                    name: user.Username,
-                                    email: user.Email
+                                    Username: user.Username,
+                                    Email: user.Email
                                 }
                             })
                         }
@@ -51,9 +57,10 @@ router.post('/', auth, (req, res) => {
 // GET api/auth/user
 // header takes x-auth-token and token value
 // returns user assigned to token
+// private, requires token
 
 router.get('/user', auth, (req, res) => {
-    Register.findById(req.user.id)
+    Login.findById(req.user.id)
         .select('-Password')
         .then(user => res.json(user));
 });
@@ -61,3 +68,4 @@ router.get('/user', auth, (req, res) => {
 
     
 module.exports = router;
+

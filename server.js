@@ -28,7 +28,7 @@ mongoose
   .catch(err => console.log(err));
 
 // Use Routes
-app.use('/api/auth', require('./routes/api/auth'))
+app.use('/api/login', require('./routes/api/login'))
 app.use('/api/register', require('./routes/api/register'));
 app.use('/static', express.static(__dirname + '/static'));
 

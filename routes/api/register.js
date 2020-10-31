@@ -7,6 +7,7 @@ const key = require('../../config/keys');
 
 // route: POST api/register
 // registers a new user, username=unique
+// public, does not require token
 router.post('/', (req, res) => {
     const { Username, Email, Password } = req.body;
 
@@ -34,6 +35,8 @@ router.post('/', (req, res) => {
                     newUser.save()
                         .then(user => {
 
+                            // create token
+                            //display new user info
                             jwt.sign(
 
                                 { id: user.id },
@@ -45,8 +48,8 @@ router.post('/', (req, res) => {
                                         token,
                                         user: {
                                             id: user.id,
-                                            name: user.Username,
-                                            email: user.Email
+                                            Username: user.Username,
+                                            Email: user.Email
                                         }
                                     })
                                 }
@@ -59,3 +62,4 @@ router.post('/', (req, res) => {
 
 
 module.exports = router;
+
