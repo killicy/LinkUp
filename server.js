@@ -1,3 +1,6 @@
+// for jwt
+// npm i jsonwebtoken bcryptjs
+
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -5,7 +8,6 @@ const https = require('https');
 const fs = require('fs');
 
 const keys = require('./config/keys');
-const apiRoutes = require('./routes/api');
 const cors = require('cors');
 
 const app = express();
@@ -26,7 +28,8 @@ mongoose
   .catch(err => console.log(err));
 
 // Use Routes
-app.use('/api', apiRoutes);
+app.use('/api/auth', require('./routes/api/auth'))
+app.use('/api/register', require('./routes/api/register'));
 app.use('/static', express.static(__dirname + '/static'));
 
 // Serve static assets if in production
