@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const key = require('../../config/keys');
 const auth = require('../../middleware/auth');
-const Login = require('../../models/Login.js');
+const User = require('../../models/User.js');
 
 // route: POST api/auth
 // login user
@@ -18,7 +18,7 @@ router.post('/', (req, res) => {
     }
 
     //find username in DB
-    Login.findOne({ Username })
+    User.findOne({ Username })
         .then(user => {
             if(!user) return res.status(400).json({ msg: 'User does not exist'});
 
@@ -31,7 +31,12 @@ router.post('/', (req, res) => {
                     // display user info on log in
                     jwt.sign(
 
-                        { id: user.id },
+                        { 
+                            id: user.id,
+                            Email: user.Email,
+                            Username: user.Username
+                        
+                        },
                         key.secretOrKey,
                         { expiresIn: 3600 },
                         (err, token) => {
@@ -60,7 +65,7 @@ router.post('/', (req, res) => {
 // private, requires token
 
 router.get('/user', auth, (req, res) => {
-    Login.findById(req.user.id)
+    User.findById(req.user.id)
         .select('-Password')
         .then(user => res.json(user));
 });

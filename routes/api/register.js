@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Register = require('../../models/Register.js');
+const User = require('../../models/User.js');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const key = require('../../config/keys');
@@ -16,12 +16,12 @@ router.post('/', (req, res) => {
     }
 
     // check to see if user exists
-    Register.findOne({ Username })
+    User.findOne({ Username })
         .then(user => {
             if (user) return res.status(400).json({ msg: 'User already exists' });
 
             // create user
-            const newUser = new Register({
+            const newUser = new User({
                 Username,
                 Email,
                 Password,
@@ -36,10 +36,15 @@ router.post('/', (req, res) => {
                         .then(user => {
 
                             // create token
-                            //display new user info
+                            // display new user info
                             jwt.sign(
 
-                                { id: user.id },
+                                { 
+                                    id: user.id,
+                                    Email: user.Email,
+                                    Username: user.Username
+                                
+                                },
                                 key.secretOrKey,
                                 { expiresIn: 3600 },
                                 (err, token) => {
