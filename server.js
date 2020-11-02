@@ -23,7 +23,7 @@ const dbConnection = keys.mongoURI;
 
 // Connect to Mongo
 mongoose
-  .connect(dbConnection, { useNewUrlParser: true, useCreateIndex: true }) // Adding new mongo url parser
+  .connect(dbConnection, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }) // Adding new mongo url parser
   .then(() => console.log('MongoDB Connected...'))
   .catch(err => console.log(err));
 
