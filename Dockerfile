@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:10 as node
+FROM mhart/alpine-node:10
 
 # Create app directory
 WORKDIR /server
@@ -18,7 +18,7 @@ COPY . /server/
 EXPOSE 5000
 CMD [ "npm", "run", "server" ]
 
-FROM mhart/alpine-node:10 as node
+FROM mhart/alpine-node:10
 
 # Create app directory
 WORKDIR /client
@@ -36,4 +36,3 @@ RUN yarn install
 COPY . /client/
 
 EXPOSE 3000
-CMD ["npm", "start"]
