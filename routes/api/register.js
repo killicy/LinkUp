@@ -31,35 +31,21 @@ router.post('/', (req, res) => {
             bcrypt.genSalt(10, (err, salt) => {
                 bcrypt.hash(newUser.Password, salt, (err, hash) => {
                     if (err) throw err;
+
                     newUser.Password = hash;
                     newUser.save()
                         .then(user => {
 
-                            // create token
-                            // display new user info
-                            jwt.sign(
+                            res.json({
 
-                                { 
+                                user: {
                                     id: user.id,
-                                    Email: user.Email,
-                                    Username: user.Username
-                                
-                                },
-                                key.secretOrKey,
-                                { expiresIn: 3600 },
-                                (err, token) => {
-                                    if (err) throw err;
-                                    res.json({
-                                        token,
-                                        user: {
-                                            id: user.id,
-                                            Username: user.Username,
-                                            Email: user.Email
-                                        }
-                                    })
+                                    Username: user.Username,
+                                    Email: user.Email
                                 }
-                            )
-                        })
+                            })
+                        }
+                    )
                 })
             })
         })
