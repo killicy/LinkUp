@@ -1,3 +1,5 @@
+const createToken = require('../../middleware/createToken');
+
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
@@ -6,19 +8,20 @@ const key = require('../../config/keys');
 const auth = require('../../middleware/auth');
 const User = require('../../models/User.js');
 
+
 // route: POST api/auth
 // login user
 // takes Username, Password
 // public, does not require token
 router.post('/', (req, res) => {
-    const {Username, Password} = req.body;
+    const {Email, Password} = req.body;
 
-    if(!Username || !Password){
+    if(!Email || !Password){
         return res.status(400).json({ msg: 'Please enter all fields'});
     }
 
     //find username in DB
-    User.findOne({ Username })
+    User.findOne({ Email })
         .then(user => {
             if(!user) return res.status(400).json({ msg: 'User does not exist'});
 
@@ -28,31 +31,14 @@ router.post('/', (req, res) => {
                     if(!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
 
                     // create token, expires in 60min
-                    // display user info on log in
-                    jwt.sign(
-
-                        { 
-                            id: user.id,
-                            Email: user.Email,
-                            Username: user.Username
+                    const token = createToken.createToken(user);
                         
-                        },
-                        key.secretOrKey,
-                        { expiresIn: 3600 },
-                        (err, token) => {
-                            if(err) throw err;
-                            res.json({
-                                msg: "Logged in",
-                                token,
-                                user: {
-                                    id: user.id,
-                                    Username: user.Username,
-                                    Email: user.Email
-                                }
-                            })
-                        }
+                    res.json({ 
+                        msg: "Logged in" ,
+                        token
+                    })
 
-                    )
+                    return token;
 
                 })
         })
@@ -73,4 +59,5 @@ router.get('/user', auth, (req, res) => {
 
     
 module.exports = router;
+
 
