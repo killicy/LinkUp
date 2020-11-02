@@ -4,7 +4,6 @@ services:
         container_name: client
         build: ./client
         restart: always
-        command: npm run start
         ports:
             - "3000:3000"
         volumes:
