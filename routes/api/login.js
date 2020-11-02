@@ -37,6 +37,7 @@ router.post('/', (req, res) => {
                             Username: user.Username
                         
                         },
+                        
                         key.secretOrKey,
                         { expiresIn: 3600 },
                         (err, token) => {
