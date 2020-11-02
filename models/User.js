@@ -22,8 +22,9 @@ const userSchema = new Schema({
     Register_Date: {
         type: Date,
         default: Date.now
-    }
+    },
 
+    Friends: [{userID: String, username: String}]
 
 });
 
