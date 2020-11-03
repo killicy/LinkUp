@@ -6,6 +6,7 @@ const eventSchema = new Schema({
     Title: {
         type: String,
         required: true,
+        unique: true
     },
 
     Description: {
@@ -18,7 +19,8 @@ const eventSchema = new Schema({
     },
 
     // store username and userID for less queries
-    Participants: [{userID: String, username: String}],
+    Participants: [{ type: String }],
+    //Participants: [{userID: String, username: String}],
        
     Date_Added: {
         type: Date,

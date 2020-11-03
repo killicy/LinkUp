@@ -28,8 +28,10 @@ mongoose
   .catch(err => console.log(err));
 
 // Use Routes
-app.use('/api/login', require('./routes/api/login'))
+app.use('/api/login', require('./routes/api/login'));
 app.use('/api/register', require('./routes/api/register'));
+app.use('/api/createEvent', require('./routes/api/createEvent'));
+app.use('/api/searchEvent', require('./routes/api/searchEvent'));
 app.use('/static', express.static(__dirname + '/static'));
 
 // Serve static assets if in production
