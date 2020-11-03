@@ -19,7 +19,7 @@ router.post('/', (req, res) => {
         return res.status(400).json({ msg: 'Please enter all fields'});
     }
 
-    //find username in DB
+    // find username in DB
     User.findOne({ Email })
         .then(user => {
             if(!user) return res.status(400).json({ msg: 'User does not exist'});
@@ -32,12 +32,14 @@ router.post('/', (req, res) => {
                     // create token, expires in 60min
                     const token = createToken.createToken(user);
                         
-                    res.json({ 
+                   return res.json({ 
                         msg: "Logged in" ,
+                        Username: user.Username,
+                        Email: user.Email,
+                        Friends: user.Friends,
+                        // add link to profile pic
                         token
                     })
-
-                    return token;
 
                 })
         })

@@ -9,9 +9,9 @@ const Event = require('../../models/Event.js');
 // requires Title, Description, Author, Participants, Date_Start, Date_End
 // private, does require token
 router.post('/', auth, (req, res) => {
-    const {Title, Description, Author, Participants, Date_Start, Date_End, comments} = req.body;
+    const {Title, Description, Author, Date_Start, Date_End} = req.body;
     
-    if(!Title || !Description || !Author || !Participants || !Date_End || !Date_Start)
+    if(!Title || !Description || !Author || !Date_End || !Date_Start)
         return res.status(400).json({ msg: 'Please enter all fields' });
     
     Event.findOne({ Title })
@@ -21,11 +21,11 @@ router.post('/', auth, (req, res) => {
             const newEvent = new Event({
                 Title,
                 Description, 
-                Author, 
-                Participants, 
+                Author: req.user.Username,
+                Participants: [{userId: req.user.id, username: req.user.username}],  
                 Date_Start, 
-                Date_End, 
-                comments
+                Date_End,
+                comments: [] 
             });
 
             newEvent.save()
@@ -33,8 +33,6 @@ router.post('/', auth, (req, res) => {
                     res.json(newEvent);
                 })
         }) 
-
-
 
 });
 
