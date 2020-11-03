@@ -21,11 +21,11 @@ router.post('/', auth, (req, res) => {
             const newEvent = new Event({
                 Title,
                 Description, 
-                Author, 
-                Participants, 
+                Author: req.user.Username,
+                Participants: [{userId: req.user.id, username: req.user.username}],  
                 Date_Start, 
-                Date_End, 
-                comments
+                Date_End,
+                comments: [] 
             });
 
             newEvent.save()
@@ -33,8 +33,6 @@ router.post('/', auth, (req, res) => {
                     res.json(newEvent);
                 })
         }) 
-
-
 
 });
 
