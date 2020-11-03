@@ -22,7 +22,7 @@ router.post('/', auth, (req, res) => {
                 Title,
                 Description, 
                 Author: req.user.Username,
-                Participants: [{userId: req.user.id, username: req.user.username}],  
+                Participants: [{userId: req.user.id, username: req.user.Username}],  
                 Date_Start, 
                 Date_End,
                 comments: [] 
