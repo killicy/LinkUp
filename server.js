@@ -23,15 +23,13 @@ const dbConnection = keys.mongoURI;
 
 // Connect to Mongo
 mongoose
-  .connect(dbConnection, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }) // Adding new mongo url parser
+  .connect(dbConnection, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false  }) // Adding new mongo url parser
   .then(() => console.log('MongoDB Connected...'))
   .catch(err => console.log(err));
 
 // Use Routes
-app.use('/api/login', require('./routes/api/login'));
-app.use('/api/register', require('./routes/api/register'));
-app.use('/api/createEvent', require('./routes/api/createEvent'));
-app.use('/api/searchEvent', require('./routes/api/searchEvent'));
+app.use('/api/user', require('./routes/api/user'));
+app.use('/api/event', require('./routes/api/event'));
 app.use('/static', express.static(__dirname + '/static'));
 
 // Serve static assets if in production

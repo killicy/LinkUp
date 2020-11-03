@@ -11,7 +11,7 @@ const createToken = (user) => {
         },
 
         key.secretOrKey,
-        { expiresIn: 3600 },
+        { expiresIn: "1h" },
         
     );
     return token;
