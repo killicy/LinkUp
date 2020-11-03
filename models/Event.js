@@ -5,7 +5,7 @@ const eventSchema = new Schema({
 
     Title: {
         type: String,
-        required: true,
+        required: true
     },
 
     Description: {

@@ -25,8 +25,11 @@ const userSchema = new Schema({
         default: Date.now
     },
 
-    Friends: [{userID: String, username: String}]
-
+    Friends: [{userID: String, username: String}],
+    
+    Profile_pic: {
+        type: String
+    }
 });
 
 const User = mongoose.model('User', userSchema, 'users');
