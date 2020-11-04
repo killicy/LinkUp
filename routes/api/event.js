@@ -60,4 +60,16 @@ router.post('/search', auth, (req, res) => {
 
 });
 
+// route Delete api/event/delete
+// deletes event
+// not private
+
+router.delete('/delete', (req, res) => {
+    const {Title} = req.body;
+    Event.findOneAndDelete({Title})
+    //Event.findOneAndDelete({Title: { '$regex': req.body.search, '$options': 'i' }})
+        .then(event => event.remove().then( () => res.json( {msg: 'Event successfully deleted'})))
+        .catch(err => res.status(404).json({msg: 'Event does not exist'}));
+});
+
 module.exports = router;
