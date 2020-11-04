@@ -11,7 +11,7 @@ const Event = require('../../models/Event.js');
 router.post('/create', auth, (req, res) => {
     const {Title, Description, Author, Date_Start, Date_End} = req.body;
     
-    if(!Title || !Description || !Author || !Date_End || !Date_Start)
+    if(!Title || !Description || !Date_End || !Date_Start)
         return res.status(400).json({ msg: 'Please enter all fields' });
     
     Event.findOne({ Title })
