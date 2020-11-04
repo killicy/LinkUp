@@ -25,7 +25,7 @@ const userSchema = new Schema({
         default: Date.now
     },
 
-    Friends: [{userID: String, username: String}],
+    Friends: [{userID: String, Username: String}],
     
     Profile_pic: {
         type: String

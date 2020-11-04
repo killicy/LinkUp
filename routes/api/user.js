@@ -8,6 +8,49 @@ const auth = require('../../middleware/auth');
 const User = require('../../models/User.js');
 
 
+// route: POST api/user/register
+// registers a new user, username=unique
+// public, does not require token
+router.post('/register', (req, res) => {
+    const { Username, Email, Password } = req.body;
+
+    if (!Username || !Email || !Password) {
+        return res.status(400).json({ msg: 'Please enter all fields' });
+    }
+
+    // check to see if user exists
+    User.findOne({ Email })
+        .then(user => {
+            if (user) return res.status(400).json({msg: 'Email already exists!' });
+
+            // create user
+            const newUser = new User({
+                Username,
+                Email,
+                Password,
+            });
+
+            // Create salt and hash
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newUser.Password, salt, (err, hash) => {
+                    if (err) throw err;
+
+                    newUser.Password = hash;
+                    newUser.save()
+                        .then(user => {
+                            res.json({
+                                msg: 'Registered!' 
+                            })
+                        }
+                    )
+                })
+            })
+        })
+});
+
+
+
+
 // route: POST api/user/login
 // login user
 // takes email, Password
@@ -80,6 +123,7 @@ router.post('/addFriend', auth, async (req, res) => {
         // save to database
         const user = await User.findOne({_id: req.user.id})
         user.Friends = friends
+        console.log(user.Friends);
         await user.save()
         return res.status(201).json({friends});
         
@@ -89,48 +133,25 @@ router.post('/addFriend', auth, async (req, res) => {
 
 });
 
+
+
+// post api/user/addFriend
+// regex search on logged in users friends list
+// private, requires token
+router.post('/searchFriend', auth, async (req, res) => {
+
+    const user = await User.findOne({_id: req.user.id})
     
+    var condition = new RegExp(req.body.search);
+    
+    var result = user.Friends.filter(function (el) {
+        return condition.test(el.Username);
+    })
+    
+    res.json(result);
 
+})
 
-// route: POST api/user/register
-// registers a new user, username=unique
-// public, does not require token
-router.post('/register', (req, res) => {
-    const { Username, Email, Password } = req.body;
-
-    if (!Username || !Email || !Password) {
-        return res.status(400).json({ msg: 'Please enter all fields' });
-    }
-
-    // check to see if user exists
-    User.findOne({ Email })
-        .then(user => {
-            if (user) return res.status(400).json({msg: 'Email already exists!' });
-
-            // create user
-            const newUser = new User({
-                Username,
-                Email,
-                Password,
-            });
-
-            // Create salt and hash
-            bcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(newUser.Password, salt, (err, hash) => {
-                    if (err) throw err;
-
-                    newUser.Password = hash;
-                    newUser.save()
-                        .then(user => {
-                            res.json({
-                                msg: 'Registered!' 
-                            })
-                        }
-                    )
-                })
-            })
-        })
-});
 
 
 module.exports = router;
