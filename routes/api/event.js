@@ -60,7 +60,7 @@ router.post('/search', auth, (req, res) => {
 
 });
 
-// route Delete api/event/delete
+// route: Delete api/event/delete
 // deletes event
 // not private
 
