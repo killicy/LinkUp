@@ -86,19 +86,16 @@ router.post('/update/:Title', auth, (req, res) => {
     //const {Title} = req.body;
     Event.findOneAndUpdate( {Title: req.params.Title},
     //Event.findOneAndUpdate( {Title: 'test123'}, req.body, (err) => {
-        req.body, (err) => {
+        req.body, {new: true}, (err, doc) => {
             if(err){
                 console.log(err)
                 res.status(404).json({msg: 'Event does not exist or title already exists'})
             }
             else{
-                console.log("Event updated")
+                console.log(doc)
                 res.json( {msg: 'Event successfully updated'})
             }
     });
-
-        //.then(event => event.remove().then( () => res.json( {msg: 'Event successfully update'})))
-        //.catch(err => res.status(404).json({msg: 'Event does not exist'}));
 });
 
 
