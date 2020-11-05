@@ -1,4 +1,4 @@
 module.exports = {
-	mongoURI: 'mongodb://mongo:27017/mongo-docker',
+	mongoURI: 'mongodb+srv://user1:mongo@cluster0.gwkpx.mongodb.net/LinkUp?retryWrites=true&w=majority',
 	secretOrKey: 'secret'
 }

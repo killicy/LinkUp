@@ -62,9 +62,9 @@ router.post('/search', auth, (req, res) => {
 
 // route: Delete api/event/delete
 // deletes event
-// not private also probably should be
+// private, requires token
 
-router.delete('/delete', (req, res) => {
+router.delete('/delete', auth, (req, res) => {
     const {Title} = req.body;
     Event.findOneAndDelete({Title})
     //Event.findOneAndDelete({Title}, (err, Event) => {
@@ -80,9 +80,9 @@ router.delete('/delete', (req, res) => {
 
 // route: post api/event/update
 // updates event
-// not private probably should be
+// private, requires token
 
-router.post('/update/:Title', (req, res) => {
+router.post('/update/:Title', auth, (req, res) => {
     //const {Title} = req.body;
     Event.findOneAndUpdate( {Title: req.params.Title},
     //Event.findOneAndUpdate( {Title: 'test123'}, req.body, (err) => {
