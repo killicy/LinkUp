@@ -62,14 +62,44 @@ router.post('/search', auth, (req, res) => {
 
 // route: Delete api/event/delete
 // deletes event
-// not private
+// not private also probably should be
 
 router.delete('/delete', (req, res) => {
     const {Title} = req.body;
     Event.findOneAndDelete({Title})
-    //Event.findOneAndDelete({Title: { '$regex': req.body.search, '$options': 'i' }})
+    //Event.findOneAndDelete({Title}, (err, Event) => {
+
+       // if(err)
+         //   res.status(404).json( {msg: 'Event does not exist'});
+        //else
+          //  res.json({msg: 'Event deleted'});
+       // });
         .then(event => event.remove().then( () => res.json( {msg: 'Event successfully deleted'})))
         .catch(err => res.status(404).json({msg: 'Event does not exist'}));
 });
+
+// route: post api/event/update
+// updates event
+// not private probably should be
+
+router.post('/update/:Title', (req, res) => {
+    //const {Title} = req.body;
+    Event.findOneAndUpdate( {Title: req.params.Title},
+    //Event.findOneAndUpdate( {Title: 'test123'}, req.body, (err) => {
+        req.body, (err) => {
+            if(err){
+                console.log(err)
+                res.status(404).json({msg: 'Event does not exist or title already exists'})
+            }
+            else{
+                console.log("Event updated")
+                res.json( {msg: 'Event successfully updated'})
+            }
+    });
+
+        //.then(event => event.remove().then( () => res.json( {msg: 'Event successfully update'})))
+        //.catch(err => res.status(404).json({msg: 'Event does not exist'}));
+});
+
 
 module.exports = router;
