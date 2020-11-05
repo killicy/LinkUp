@@ -1,32 +1,38 @@
-import logo from './logo.svg';
 import React from 'react'
-import ReactDOM from 'react-dom'
+//import ReactDOM from 'react-dom'
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button';
+import Login from './login.js';
+//import logo from './routes/api/logo.svg'
 
+class App extends React.Component{
+  constructor() {
+    super();
+    this.state = {
+      date: 'hello world'
+    };
+  }
+  componentDidMount() {
+    let res = fetch('https://localhost/routes/api/login', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        Username: 'jjj@gmail.com',
+        Password: ''
+      })
+    }).then(response => response.json()).then(data => this.setState({ date: data.msg }));
+  }
 
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <Button variant="secondary">Login</Button>{' '}
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  render() {
+    return (
+      <div className="App">
+        <Login />
+        {this.state.date}
+      </div>
+    );
+  }
 }
 
 export default App;

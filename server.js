@@ -23,13 +23,13 @@ const dbConnection = keys.mongoURI;
 
 // Connect to Mongo
 mongoose
-  .connect(dbConnection, { useNewUrlParser: true, useCreateIndex: true }) // Adding new mongo url parser
+  .connect(dbConnection, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false  }) // Adding new mongo url parser
   .then(() => console.log('MongoDB Connected...'))
   .catch(err => console.log(err));
 
 // Use Routes
-app.use('/api/login', require('./routes/api/login'))
-app.use('/api/register', require('./routes/api/register'));
+app.use('/api/user', require('./routes/api/user'));
+app.use('/api/event', require('./routes/api/event'));
 app.use('/static', express.static(__dirname + '/static'));
 
 // Serve static assets if in production
@@ -42,7 +42,8 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-const port = process.env.PORT || 5000;
+const port = 5000;
+const host = '0.0.0.0';
 
 // app.listen(port, () => console.log(`Server started on port ${port}`));
 const httpsOptions = {
@@ -51,8 +52,8 @@ const httpsOptions = {
 };
 
 const server = https.createServer(httpsOptions, app)
-  .listen(port, () => {
-      console.log('https server running at ' + port)
+  .listen(port, host, () => {
+      console.log('https server running at the damn port of ' + port)
   });
   
 // openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout cert.key -out cert.pem -config req.cnf -sha256

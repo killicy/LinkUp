@@ -23,9 +23,13 @@ const userSchema = new Schema({
     Register_Date: {
         type: Date,
         default: Date.now
+    },
+
+    Friends: [{userID: String, Username: String}],
+    
+    Profile_pic: {
+        type: String
     }
-
-
 });
 
 const User = mongoose.model('User', userSchema, 'users');
