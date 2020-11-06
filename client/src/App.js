@@ -2,31 +2,6 @@ import React from 'react';
 import { observer } from 'mobx-react';
 //import ReactDOM from 'react-dom'
 import './App.css';
-<<<<<<< Updated upstream
-import Login from './login.js';
-//import logo from './routes/api/logo.svg'
-
-class App extends React.Component{
-  constructor() {
-    super();
-    this.state = {
-      date: 'hello world'
-    };
-  }
-  componentDidMount() {
-    let res = fetch('https://localhost/routes/api/login', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        Username: 'jjj@gmail.com',
-        Password: ''
-      })
-    }).then(response => response.json()).then(data => this.setState({ date: data.msg }));
-  }
-=======
 import UserStore from './stores/UserStore';
 import LoginForm from './LoginForm';
 import SubmitButton from './SubmitButton';
@@ -89,7 +64,6 @@ async doLogout() {
          console.log(e)
      }
  }
->>>>>>> Stashed changes
 
   render() {
       if(UserStore.loading) {
