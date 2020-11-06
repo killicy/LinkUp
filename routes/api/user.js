@@ -135,6 +135,7 @@ router.post('/addFriend', auth, async (req, res) => {
 
 
 
+
 // post api/user/addFriend
 // regex search on logged in users friends list
 // private, requires token
@@ -152,6 +153,33 @@ router.post('/searchFriend', auth, async (req, res) => {
 
 })
 
+// route: Delete api/user/delete
+// deletes user by username
+// private, requires token
+
+router.delete('/delete', auth, (req, res) => {
+    const {Username} = req.body;
+    User.findOneAndDelete({Username})
+        .then(user => user.remove().then( () => res.json( {msg: 'User successfully deleted'})))
+        .catch(err => res.status(404).json({msg: 'User does not exist'}));
+});
+
+// route: post api/user/update/Username
+// updates user info
+// private, requires token
+router.post('/update/:Username', auth, (req, res) => {
+    User.findOneAndUpdate( {Username: req.params.Username},
+        req.body, {new: true}, (err, user) => {
+            if(err){
+                console.log(err)
+                res.status(404).json({msg: 'User does not exist or username/email is already taken'})
+            }
+            else{
+                console.log(user)
+                res.json( {msg: 'User successfully updated'})
+            }
+    });
+});
 
 
 module.exports = router;

@@ -21,8 +21,6 @@ services:
         command: npm run server
         ports:
             - "5000:5000"
-        environment:
-            - HOST=0.0.0.0
         volumes:
             - ./:/server
             - /server/node_modules

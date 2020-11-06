@@ -62,14 +62,41 @@ router.post('/search', auth, (req, res) => {
 
 // route: Delete api/event/delete
 // deletes event
-// not private
+// private, requires token
 
-router.delete('/delete', (req, res) => {
+router.delete('/delete', auth, (req, res) => {
     const {Title} = req.body;
     Event.findOneAndDelete({Title})
-    //Event.findOneAndDelete({Title: { '$regex': req.body.search, '$options': 'i' }})
+    //Event.findOneAndDelete({Title}, (err, Event) => {
+
+       // if(err)
+         //   res.status(404).json( {msg: 'Event does not exist'});
+        //else
+          //  res.json({msg: 'Event deleted'});
+       // });
         .then(event => event.remove().then( () => res.json( {msg: 'Event successfully deleted'})))
         .catch(err => res.status(404).json({msg: 'Event does not exist'}));
 });
+
+// route: post api/event/update
+// updates event
+// private, requires token
+
+router.post('/update/:Title', auth, (req, res) => {
+    //const {Title} = req.body;
+    Event.findOneAndUpdate( {Title: req.params.Title},
+    //Event.findOneAndUpdate( {Title: 'test123'}, req.body, (err) => {
+        req.body, {new: true}, (err, doc) => {
+            if(err){
+                console.log(err)
+                res.status(404).json({msg: 'Event does not exist or title already exists'})
+            }
+            else{
+                console.log(doc)
+                res.json( {msg: 'Event successfully updated'})
+            }
+    });
+});
+
 
 module.exports = router;
