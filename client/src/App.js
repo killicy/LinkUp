@@ -7,7 +7,7 @@ import LoginForm from './LoginForm';
 import SubmitButton from './SubmitButton';
 
 class App extends React.Component {
-  
+
   async componentDidMount() {
     try {
 
@@ -77,7 +77,7 @@ async doLogout() {
       }
 
       else {
-        
+
         if (UserStore.isLoggedIn) {
           return (
             <div className="app">
@@ -98,6 +98,7 @@ async doLogout() {
         return (
           <div className="app">
               <div className='container'>
+                  <p>help<p>
                   <LoginForm />
               </div>
           </div>
