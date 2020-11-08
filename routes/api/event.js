@@ -78,8 +78,8 @@ router.delete('/delete', auth, (req, res) => {
         .catch(err => res.status(404).json({msg: 'Event does not exist'}));
 });
 
-// route: post api/event/update
-// updates event
+// route: post api/event/update/EventTitle
+// updates event paramters
 // private, requires token
 
 router.post('/update/:Title', auth, (req, res) => {
@@ -97,6 +97,7 @@ router.post('/update/:Title', auth, (req, res) => {
             }
     });
 });
+
 
 
 module.exports = router;
