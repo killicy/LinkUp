@@ -17,7 +17,7 @@ const eventSchema = new Schema({
     // Description : String 
 
     Author: {
-        type: String,
+        type: String
     },
 
     // store username and userID for less queries
