@@ -6,12 +6,22 @@ const userSchema = new Schema({
     Email: {
         type: String,
         required: true,
-        unique: true
-        
+        unique: true 
     },
 
     Username: {
         type: String,
+        required: true,
+        unique: true
+    },
+
+    fName: {
+        type: String,
+        required: true,
+    },
+
+    lName: {
+        type: String, 
         required: true
     },
 
@@ -25,7 +35,7 @@ const userSchema = new Schema({
         default: Date.now
     },
 
-    Friends: [{userID: String, Username: String}],
+    Friends: [{userID: String, fName: String, lName: String}],
     
     Profile_pic: {
         type: String
