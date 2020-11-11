@@ -12,9 +12,9 @@ const User = require('../../models/User.js');
 // registers a new user, username=unique
 // public, does not require token
 router.post('/register', (req, res) => {
-    const { Username, Email, Password } = req.body;
+    const { Username, Email, Password, fName, lName } = req.body;
 
-    if (!Username || !Email || !Password) {
+    if (!Email || !Password || !fName || !lName) {
         return res.status(400).json({ msg: 'Please enter all fields' });
     }
 
@@ -25,9 +25,10 @@ router.post('/register', (req, res) => {
 
             // create user
             const newUser = new User({
-                Username,
                 Email,
                 Password,
+                fName,
+                lName
             });
 
             // Create salt and hash
@@ -77,11 +78,12 @@ router.post('/login', (req, res) => {
                         
                    return res.json({ 
                         msg: "Logged in" ,
-                        Username: user.Username,
+                        fName: user.fName,
+                        lName: user.lName,
                         Email: user.Email,
                         Friends: user.Friends,
                         // add link to profile pic
-                        token
+                        token: token
                     })
 
                 })
@@ -115,7 +117,7 @@ router.post('/addFriend', auth, async (req, res) => {
         const friends = req.body.Friends;
 
         // get friend info from body
-        const newFriend = {Username: req.body.Username, userID: req.body.userID}
+        const newFriend = {fName: req.body.fName, lName: req.body.lName, userID: req.body.userID}
     
         // add
         friends.push(newFriend);
@@ -142,11 +144,29 @@ router.post('/addFriend', auth, async (req, res) => {
 router.post('/searchFriend', auth, async (req, res) => {
 
     const user = await User.findOne({_id: req.user.id})
+//     console.log(user.Friends);
+//     const friends = user.Friends;
+
+//     console.log(friends.find({fName: req.body.search}));
     
+//    const found =  await User.find({_id: req.user.id,
+//         'Friends.fName': req.body.search });
+// //     //     "$or": [
+// //     //         { fName: { '$regex': req.body.search, '$options': 'i' } },
+// //     //         { lName: { '$regex': req.body.search, '$options': 'i' } }
+// //     //     ]
+// //     // }})
+    
+// //     console.log(found);
+//     return res.status(200).json( found );
+     
+  
+  
+  //magix
     var condition = new RegExp(req.body.search);
     
     var result = user.Friends.filter(function (el) {
-        return condition.test(el.Username);
+        return condition.test(el.fName || el.lName);
     })
     
     res.json(result);
