@@ -7,7 +7,7 @@ import Cookies from 'universal-cookie';
 
 
 
-class MainPage extends React.Component {
+class LinkUp extends React.Component {
   render() {
   if (this.state.redirect) {
     return <Redirect to={this.state.redirect} />
@@ -16,7 +16,6 @@ class MainPage extends React.Component {
     <Router>
       <div className="MainPage">
         <div className='container'>
-          Welcome {UserStore.username}
           <SubmitButton
               text={'Log Out'}
               disabled={false}
@@ -29,4 +28,4 @@ class MainPage extends React.Component {
   }
 }
 
-export default MainPage;
+export default LinkUp;
