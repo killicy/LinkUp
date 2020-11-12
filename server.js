@@ -11,27 +11,18 @@ const keys = require('./config/keys');
 const cors = require('cors');
 
 const app = express();
-
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true
+}
 // Bodyparser Middleware
 app.use(express.json());
 
 // Cross Origin Requests
-app.use(cors());
+app.use(cors(corsOptions));
 
 // headers
-app.use((req, res, next) => 
-{
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader(
-      'Access-Control-Allow-Headers',
-      'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-    );
-    res.setHeader(
-      'Access-Control-Allow-Methods',
-      'GET, POST, PATCH, DELETE, OPTIONS'
-    );
-    next();
-});
+
 
 // DB Config
 const dbConnection = keys.mongoURI;
@@ -69,5 +60,5 @@ const server = https.createServer(httpsOptions, app)
   .listen(port, () => {
       console.log('https server running at ' + port)
   });
-  
+
 // openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout cert.key -out cert.pem -config req.cnf -sha256

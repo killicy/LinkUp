@@ -1,0 +1,32 @@
+import React from 'react';
+import { observer } from 'mobx-react';
+//import ReactDOM from 'react-dom'
+import './App.css';
+import UserStore from './stores/UserStore';
+import Cookies from 'universal-cookie';
+
+
+
+class MainPage extends React.Component {
+  render() {
+  if (this.state.redirect) {
+    return <Redirect to={this.state.redirect} />
+}
+    return (
+    <Router>
+      <div className="MainPage">
+        <div className='container'>
+          Welcome {UserStore.username}
+          <SubmitButton
+              text={'Log Out'}
+              disabled={false}
+              onClick={ () => this.doLogout() }
+          />
+        </div>
+      </div>
+    </Router>
+    );
+  }
+}
+
+export default MainPage;

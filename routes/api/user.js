@@ -6,11 +6,15 @@ const jwt = require('jsonwebtoken');
 const key = require('../../config/keys');
 const auth = require('../../middleware/auth');
 const User = require('../../models/User.js');
-
-
+var cookieParser = require('cookie-parser')
+router.use(cookieParser())
 // route: POST api/user/register
 // registers a new user, username=unique
 // public, does not require token
+const sendEmail = require('../../middleware/email');
+const msgs = require('../../middleware/confirmationMsgs');
+const templates = require('../../middleware/emailTemplate');
+
 router.post('/register', (req, res) => {
     const { Username, Email, Password } = req.body;
 
@@ -39,12 +43,21 @@ router.post('/register', (req, res) => {
                     newUser.save()
                         .then(user => {
                             res.json({
-                                msg: 'Registered!' 
+                                msg: 'Registered!',
+                                success: true,
+                                username: user.Username
                             })
                         }
                     )
                 })
             })
+            // New code to send email upon creation of account
+            try{
+              sendEmail(newUser.Email, templates.confirm(newUser.Username))
+            }
+            catch(err){
+              console.log(err)
+            }
         })
 });
 
@@ -57,11 +70,9 @@ router.post('/register', (req, res) => {
 // public, does not require token
 router.post('/login', (req, res) => {
     const {Email, Password} = req.body;
-
     if(!Email || !Password){
         return res.status(400).json({ msg: 'Please enter all fields'});
     }
-
     // find username in DB
     User.findOne({ Email })
         .then(user => {
@@ -72,16 +83,20 @@ router.post('/login', (req, res) => {
                 .then(isMatch => {
                     if(!isMatch) return res.status(400).json({ msg: 'Invalid credentials' });
 
-                    // create token, expires in 60min
+                    // create token, expires in 60min, set it to a cookie
                     const token = createToken.createToken(user);
-                        
-                   return res.json({ 
+                    res.cookie('access_token', token,{
+                      maxAge: 3600000,
+                      httpOnly: true,
+                      secure: true
+                    })
+                   return res.json({
                         msg: "Logged in" ,
                         Username: user.Username,
                         Email: user.Email,
                         Friends: user.Friends,
+                        success: true
                         // add link to profile pic
-                        token
                     })
 
                 })
@@ -104,9 +119,30 @@ router.get('/auth', auth,  (req, res) => {
 
 
 
+router.get('/isLoggedIn', auth, (req, res) => {
+  // Create new token and cookie if the user is still logged in
+  const token = createToken.createToken(req.user);
+  res.cookie('access_token', token,{
+    maxAge: 3600000,
+    httpOnly: true,
+    secure: true
+  })
+  res.json({success: true, msg: req.user.Username});
+});
+
+
+router.get('/logOut', auth, (req, res) => {
+  // Delete cookie if the user logs out
+  res.cookie('access_token', false,{
+    maxAge: 3600000,
+    httpOnly: true
+  })
+  res.json({success: false});
+});
+
 
 // post api/user/addFriend
-// adding a friend to the list 
+// adding a friend to the list
 // private, requires token
 router.post('/addFriend', auth, async (req, res) => {
 
@@ -116,17 +152,17 @@ router.post('/addFriend', auth, async (req, res) => {
 
         // get friend info from body
         const newFriend = {Username: req.body.Username, userID: req.body.userID}
-    
+
         // add
         friends.push(newFriend);
-    
+
         // save to database
         const user = await User.findOne({_id: req.user.id})
         user.Friends = friends
         console.log(user.Friends);
         await user.save()
         return res.status(201).json({friends});
-        
+
     } catch (error) {
         console.error(error);
     }
@@ -142,13 +178,13 @@ router.post('/addFriend', auth, async (req, res) => {
 router.post('/searchFriend', auth, async (req, res) => {
 
     const user = await User.findOne({_id: req.user.id})
-    
+
     var condition = new RegExp(req.body.search);
-    
+
     var result = user.Friends.filter(function (el) {
         return condition.test(el.Username);
     })
-    
+
     res.json(result);
 
 })

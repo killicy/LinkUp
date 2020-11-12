@@ -4,12 +4,14 @@ import SubmitButton from './SubmitButton';
 import UserStore from './stores/UserStore';
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
+class RegisterForm extends React.Component {
 
-class LoginForm extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             username: '',
+            password: '',
+            email: '',
             message: '',
             buttonDisabled: false,
             success: false
@@ -20,7 +22,7 @@ class LoginForm extends React.Component {
         val = val.trim();
 
         // Username and Password is 12 characters max
-        if (val.length > 12) {
+        if (val.length > 50) {
             return;
         }
         this.setState({
@@ -31,51 +33,56 @@ class LoginForm extends React.Component {
     resetForm() {
         this.setState({
             username: '',
+            email: '',
             password: '',
-            buttonDisabled: false
+            buttonDisabled: false,
+            success: false
         })
     }
 
-    doSignUp(){
-      UserStore.register = true;
-    }
-
-    async doLogin() {
+    async doRegister() {
 
       this.setState({
           buttonDisabled: true
       })
 
-      await fetch('https://localhost:5000/api/user/login', {
+      await fetch('https://localhost:5000/api/user/register', {
         method: 'POST',
-        credentials: 'include',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin':'https://localhost:5000',
         },
         body: JSON.stringify({
-          Email: this.state.username,
+          Username: this.state.username,
+          Email: this.state.email,
           Password: this.state.password
-        })}).then(response => response.json()).then(data => this.setState({username: data.Username, message: data.msg, success: data.success}));
+        })}).then(response => response.json()).then(data => this.setState({ username: data.username, message: data.msg, success: data.success}));
 
       if(this.state.success){
-        UserStore.login = true;
-        UserStore.username = this.state.username
+
       }
       else {
         this.resetForm();
       }
+
+
+
     }
     render() {
         return(
-            <div className="loginForm">
-              Log in
+            <div className="registerForm">
+              Register
+              <InputField
+                type = 'text'
+                placeholder = 'Username'
+                value = {this.state.username ? this.state.username : ''}
+                onChange = {(val) => this.setInputValue('username', val)}
+              />
               <InputField
                 type = 'text'
                 placeholder = 'Email'
-                value = {this.state.username ? this.state.username : ''}
-                onChange = {(val) => this.setInputValue('username', val)}
+                value = {this.state.email ? this.state.email : ''}
+                onChange = {(val) => this.setInputValue('email', val)}
               />
               <InputField
                 type = 'password'
@@ -84,19 +91,14 @@ class LoginForm extends React.Component {
                 onChange = {(val) => this.setInputValue('password', val)}
               />
               <SubmitButton
-                text = 'Login'
-                disabled = {this.state.buttonDisabled}
-                onClick = {() => this.doLogin()}
-              />
-              <SubmitButton
                 text = 'Register'
                 disabled = {this.state.buttonDisabled}
-                onClick = {() => this.doSignUp()}
+                onClick = {() => this.doRegister()}
               />
-              {this.state.token}
+              {this.state.message}
             </div>
         );
     }
 }
 
-export default LoginForm;
+export default RegisterForm;
