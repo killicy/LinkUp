@@ -9,7 +9,7 @@ const User = require('../../models/User.js');
 
 
 // route: POST api/user/register
-// registers a new user, username=unique
+// registers a new user, email=unique
 // public, does not require token
 router.post('/register', (req, res) => {
     const { Email, Password, fName, lName } = req.body;

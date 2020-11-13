@@ -9,7 +9,7 @@ const Event = require('../../models/Event.js');
 // requires Title, Description, Author, Participants, Date_Start, Date_End
 // private, does require token
 router.post('/create', auth, (req, res) => {
-    const {Title, Description, Author, Date_Start, Date_End} = req.body;
+    const {Title, Description, Date_Start, Date_End} = req.body;
     
     if(!Title || !Description || !Date_End || !Date_Start)
         return res.status(400).json({ msg: 'Please enter all fields' });
