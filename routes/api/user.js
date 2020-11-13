@@ -157,25 +157,25 @@ router.post('/searchFriend', auth, async (req, res) => {
 })
 
 // route: Delete api/user/delete
-// deletes user by username
+// deletes user by Email
 // private, requires token
 
 router.delete('/delete', auth, (req, res) => {
-    const {Username} = req.body;
-    User.findOneAndDelete({Username})
+    const {Email} = req.body;
+    User.findOneAndDelete({Email})
         .then(user => user.remove().then( () => res.json( {msg: 'User successfully deleted'})))
         .catch(err => res.status(404).json({msg: 'User does not exist'}));
 });
 
-// route: post api/user/update/Username
+// route: post api/user/update/Email
 // updates user info
 // private, requires token
-router.post('/update/:Username', auth, (req, res) => {
-    User.findOneAndUpdate( {Username: req.params.Username},
+router.post('/update/:Email', auth, (req, res) => {
+    User.findOneAndUpdate( {Email: req.params.Email},
         req.body, {new: true}, (err, user) => {
             if(err){
                 console.log(err)
-                res.status(404).json({msg: 'User does not exist or username/email is already taken'})
+                res.status(404).json({msg: 'User does not exist or email is already taken'})
             }
             else{
                 console.log(user)
