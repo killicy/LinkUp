@@ -17,12 +17,13 @@ const eventSchema = new Schema({
     // Description : String 
 
     Author: {
-        type: String
+        fName: String,
+        lName: String
     },
 
     // store username and userID for less queries
     // Participants: [{ type: String }],
-    Participants: [{userID: String, username: String}],
+    Participants: [{userID: String, fName: String, lName: String}],
        
     Date_Added: {
         type: Date,

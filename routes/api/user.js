@@ -12,7 +12,7 @@ const User = require('../../models/User.js');
 // registers a new user, username=unique
 // public, does not require token
 router.post('/register', (req, res) => {
-    const { Username, Email, Password, fName, lName } = req.body;
+    const { Email, Password, fName, lName } = req.body;
 
     if (!Email || !Password || !fName || !lName) {
         return res.status(400).json({ msg: 'Please enter all fields' });
@@ -144,25 +144,8 @@ router.post('/addFriend', auth, async (req, res) => {
 router.post('/searchFriend', auth, async (req, res) => {
 
     const user = await User.findOne({_id: req.user.id})
-//     console.log(user.Friends);
-//     const friends = user.Friends;
-
-//     console.log(friends.find({fName: req.body.search}));
-    
-//    const found =  await User.find({_id: req.user.id,
-//         'Friends.fName': req.body.search });
-// //     //     "$or": [
-// //     //         { fName: { '$regex': req.body.search, '$options': 'i' } },
-// //     //         { lName: { '$regex': req.body.search, '$options': 'i' } }
-// //     //     ]
-// //     // }})
-    
-// //     console.log(found);
-//     return res.status(200).json( found );
-     
   
-  
-  //magix
+    //magix
     var condition = new RegExp(req.body.search);
     
     var result = user.Friends.filter(function (el) {

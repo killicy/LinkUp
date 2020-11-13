@@ -22,8 +22,8 @@ router.post('/create', auth, (req, res) => {
             const newEvent = new Event({
                 Title,
                 Description, 
-                Author: req.user.Username,
-                Participants: [{userID: req.user.id, username: req.user.Username}],  
+                Author: {fName: req.user.fName, lName: req.user.lName},
+                Participants: [{userID: req.user.id, fName: req.user.fName, lName: req.user.lName}],  
                 Date_Start, 
                 Date_End,
                 comments: [] 
@@ -48,8 +48,6 @@ router.post('/search', auth, (req, res) => {
                 { Title: { '$regex': req.body.search, '$options': 'i' } },
                 { Description: { '$regex': req.body.search, '$options': 'i' } },
                 { Author: { '$regex': req.body.search, '$options': 'i' } },
-               // { Participants: { '$regex': req.body.search, '$options': 'i' } },
-                //db.inventory.find( { "instock": { $elemMatch: { qty: 5, warehouse: "A" } } } )
                 { Date_Start: { '$regex': req.body.search, '$options': 'i' } },
                 { Date_End: { '$regex': req.body.search, '$options': 'i' } }
             ]
