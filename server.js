@@ -1,5 +1,7 @@
 // for jwt
 // npm i jsonwebtoken bcryptjs
+// npm i nodemailer   
+// npm i cookie-parser
 
 const express = require('express');
 const mongoose = require('mongoose');
