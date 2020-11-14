@@ -127,7 +127,7 @@ router.get('/isLoggedIn', auth, (req, res) => {
     httpOnly: true,
     secure: true
   })
-  res.json({success: true, msg: req.user.Username});
+  res.json({success: true, msg: req.user.Email});
 });
 
 

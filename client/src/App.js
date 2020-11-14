@@ -36,7 +36,6 @@ class App extends Component {
           'Access-Control-Allow-Origin':'https://localhost:5000',
         }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success, message: data.msg}));
          if (this.state.isLoggedin) {
-           this.props.history.push('/LinkUp');
          }
          else {
          }
@@ -55,8 +54,6 @@ class App extends Component {
              'Content-Type': 'application/json',
              'Access-Control-Allow-Origin':'https://localhost:5000',
            }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success}));
-         UserStore.login = false;
-         UserStore.username = '';
        }
 
        catch(e) {
@@ -70,7 +67,7 @@ class App extends Component {
         <div>NavBar</div>
         <Switch>
           <Route exact path="/" component={LoginForm} />
-          <Route exact path="/LinkUp" component={LinkUp} />
+          <Route path="/:user" component={LinkUp} />
           <Route exact path="/Register" component={RegisterForm} />
         </Switch>
     </Router>

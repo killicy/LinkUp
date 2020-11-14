@@ -26,7 +26,7 @@ module.exports = async (to, content) => {
 
   const contacts = {
     from: "linkupregistration@yahoo.com", // sender address
-    to: "tumblingpebble@gmail.com", // list of receivers
+    to: to, // list of receivers
   }
 
 

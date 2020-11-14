@@ -81,7 +81,7 @@ class RegisterForm extends React.Component {
     })}).then(response => response.json()).then(data => this.setState({ username: data.username, message: data.msg, success: data.success}));
 
     if(this.state.success){
-      this.props.history.push('/Login');
+      this.props.history.push('/');
     }
     else {
       this.resetForm();
