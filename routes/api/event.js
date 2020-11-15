@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../../middleware/auth');
 const Event = require('../../models/Event.js');
+var cookieParser = require('cookie-parser')
+router.use(cookieParser())
 
 
 // route: POST api/createEvent
@@ -22,8 +24,8 @@ router.post('/create', auth, (req, res) => {
             const newEvent = new Event({
                 Title,
                 Description, 
-                Author: {fName: req.user.fName, lName: req.user.lName},
-                Participants: [{userID: req.user.id, fName: req.user.fName, lName: req.user.lName}],  
+                Author: {fName: req.user.fName, lName: req.user.lName, Email: req.user.Email},
+                Participants: [{userID: req.user.id, fName: req.user.fName, lName: req.user.lName, Email: req.user.Email}],  
                 Date_Start, 
                 Date_End,
                 comments: [] 
@@ -57,6 +59,20 @@ router.post('/search', auth, (req, res) => {
 
 
 });
+
+// route:  api/event/myEvents
+// gets all events that logged in user is attending
+// private, requires token
+router.get('/myEvents', auth, (req, res) => {
+
+    Event.find({ 'Participants.Email' : req.user.Email})
+    
+    .then((event) => {
+        res.json(event);
+    });
+    console.log(req.user);
+
+})
 
 // route: Delete api/event/delete
 // deletes event
