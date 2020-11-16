@@ -39,7 +39,12 @@ const userSchema = new Schema({
     
     Profile_pic: {
         type: String
+    },
+
+    isVerified: {
+        type: Boolean
     }
+    
 });
 
 const User = mongoose.model('User', userSchema, 'users');
