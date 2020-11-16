@@ -2,7 +2,6 @@ import React from 'react';
 import InputField from './InputField';
 import SubmitButton from './SubmitButton';
 import Cookies from 'universal-cookie';
-const cookies = new Cookies();
 class RegisterForm extends React.Component {
 
     constructor(props){
@@ -63,11 +62,6 @@ class RegisterForm extends React.Component {
   }
 
   async doRegister() {
-
-    this.setState({
-        buttonDisabled: true
-    })
-
   await fetch('https://localhost:5000/api/user/register', {
     method: 'POST',
     headers: {
@@ -90,7 +84,7 @@ class RegisterForm extends React.Component {
   render() {
       return(
           <div className="registerForm">
-            Register
+              Register
             <InputField
               type = 'text'
               placeholder = 'Username'
@@ -109,12 +103,13 @@ class RegisterForm extends React.Component {
               value = {this.state.password ? this.state.password : ''}
               onChange = {(val) => this.setInputValue('password', val)}
             />
-            <SubmitButton
-              text = 'Register'
-              disabled = {this.state.buttonDisabled}
-              onClick = {() => this.doRegister()}
-            />
-            {this.state.message}
+            <div className="buttons">
+              <SubmitButton
+                text = 'Register'
+                disabled = {this.state.buttonDisabled}
+                onClick = {() => this.doRegister()}
+              />
+            </div>
           </div>
       );
   }

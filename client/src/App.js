@@ -1,75 +1,78 @@
 import React, { Component } from 'react';
 //import ReactDOM from 'react-dom'
 import './App.css';
-import UserStore from './stores/UserStore';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import LinkUp from './LinkUp';
 import SubmitButton from './SubmitButton';
-import Cookies from 'universal-cookie';
+import Confirmation from './Confirmation';
+import logo from './stores/user.svg';
+
 import {
   BrowserRouter as Router,
+  BrowserRouter as router,
   Switch,
   Link,
   Redirect,
   Route,
+  useParams,
 } from "react-router-dom";
+import createBrowserHistory from "history/createBrowserHistory"
 
-const cookies = new Cookies();
+
+export const history = createBrowserHistory({
+  forceRefresh: true
+})
 
 class App extends Component {
   constructor(props){
       super(props);
       this.state = {
           message: '',
-          isLoggedin: false
+          success: false,
+          username: ''
       }
   }
-  async componentDidMount() {
+
+  async profile(){
     try {
-      await fetch('https://localhost:5000/api/user/isLoggedin', {
+      await fetch('https://localhost:5000/api/user/user', {
         method: 'GET',
         credentials: 'include',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin':'https://localhost:5000',
-        }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success, message: data.msg}));
-         if (this.state.isLoggedin) {
+        }}).then(response => response.json()).then(data => this.setState({success: data.success, message: data.msg, username: data.username}));
+         if (this.state.success) {
+           history.replace('/');
+           history.push('/' + this.state.username);
          }
          else {
+           history.replace('/');
          }
     }
     catch(e) {
+      history.replace('/');
     }
   }
-
-  async doLogout() {
-       try {
-         await fetch('https://localhost:5000/api/user/logOut', {
-           method: 'GET',
-           credentials: 'include',
-           headers: {
-             'Accept': 'application/json',
-             'Content-Type': 'application/json',
-             'Access-Control-Allow-Origin':'https://localhost:5000',
-           }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success}));
-       }
-
-       catch(e) {
-           console.log(e)
-       }
-   }
 
   render() {
     return(
       <Router>
-        <div>NavBar</div>
-        <Switch>
-          <Route exact path="/" component={LoginForm} />
-          <Route path="/:user" component={LinkUp} />
-          <Route exact path="/Register" component={RegisterForm} />
-        </Switch>
+        <div className= "app">
+          <div className="NavBar">
+            <figure onClick={e => this.profile()}>
+              <img src={logo} alt="image"/>
+            </figure>
+          </div>
+          <Switch>
+            <Route exact path="/" component={LoginForm} />
+            <Route exact path="/Register" component={RegisterForm} />
+            <Route exact path="/Confirmation/:token" component={Confirmation} />
+            <Route exact path="/:user" component={LinkUp} />
+          </Switch>
+        </div>
     </Router>
     );
   }

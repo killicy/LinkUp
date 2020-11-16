@@ -53,7 +53,12 @@ router.post('/register', (req, res) => {
             })
             // New code to send email upon creation of account
             try{
-              sendEmail(newUser.Email, templates.confirm(newUser.Username))
+              const token = createToken.createToken(newUser)
+              res.cookie('linkUpUser', newUser.Username,{
+                httpOnly: true,
+                secure: true
+              })
+              sendEmail('Tumblingpebble@gmail.com', templates.confirm(newUser.Username, token))
             }
             catch(err){
               console.log(err)
@@ -118,6 +123,27 @@ router.get('/auth', auth,  (req, res) => {
 });
 
 
+router.post('/confirmation', (req, res) => {
+  const token = req.body.token
+
+  // Check for token
+  if(!token){
+      res.status(401).json({ msg: 'This page doesn\'t exist', success: false});
+      return;
+  }
+
+  try{
+      // Verify token
+      const decoded = jwt.verify(token, key.secretOrKey);
+
+
+      res.json({msg: 'Welcome to LinkUp ' + decoded.Username +', you are now verified!!!',success: true})
+  } catch(e) {
+      res.status(400).json({ msg: 'This page doesn\'t exist', success: false});
+  }
+});
+
+
 
 router.get('/isLoggedIn', auth, (req, res) => {
   // Create new token and cookie if the user is still logged in
@@ -128,6 +154,18 @@ router.get('/isLoggedIn', auth, (req, res) => {
     secure: true
   })
   res.json({success: true, msg: req.user.Email});
+});
+
+
+router.get('/user', auth, (req, res) => {
+  // Create new token and cookie if the user is still logged in
+  const token = createToken.createToken(req.user);
+  res.cookie('access_token', token,{
+    maxAge: 3600000,
+    httpOnly: true,
+    secure: true
+  })
+  res.json({success: true, username: req.user.Username});
 });
 
 

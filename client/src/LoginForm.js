@@ -105,16 +105,18 @@ class LoginForm extends React.Component {
                 value = {this.state.password ? this.state.password : ''}
                 onChange = {(val) => this.setInputValue('password', val)}
               />
-              <SubmitButton
-                text = 'Login'
-                disabled = {this.state.buttonDisabled}
-                onClick = {() => this.doLogin()}
-              />
-              <SubmitButton
-                text = 'Register'
-                disabled = {this.state.buttonDisabled}
-                onClick = {() => this.doSignUp()}
-              />
+              <div className="buttons">
+                <SubmitButton
+                  text = 'Login'
+                  disabled = {this.state.buttonDisabled}
+                  onClick = {() => this.doLogin()}
+                />
+                <SubmitButton
+                  text = 'Register'
+                  disabled = {this.state.buttonDisabled}
+                  onClick = {() => this.doSignUp()}
+                />
+              </div>
             </div>
         );
     }
