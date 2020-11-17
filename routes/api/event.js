@@ -113,7 +113,6 @@ router.post('/update/:Title', auth, (req, res) => {
 });
 
 
-
 // route: post api/event/update/addParticipant
 // takes event title, adds logged in user to it
 // private, requires token
@@ -150,6 +149,5 @@ router.post('/removeParticipant', auth, async(req, res) => {
     res.json(event);
 
 });
-
 
 module.exports = router;

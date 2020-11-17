@@ -154,21 +154,15 @@ router.get('/logOut', auth, (req, res) => {
 router.post('/addFriend', auth, async (req, res) => {
 
     try {
-
-        const friends = req.body.Friends;
+        const user = await User.findOne({_id: req.user.id});
 
         // get friend info from body
         const newFriend = {Username: req.body.Username, userID: req.body.userID, Email: req.body.Email}
 
-        // add
-        friends.push(newFriend);
+        user.Friends.push(newFriend);
+        user.save();
 
-        // save to database
-        const user = await User.findOne({_id: req.user.id})
-        user.Friends = friends
-        console.log(user.Friends);
-        await user.save()
-        return res.status(201).json({friends});
+        return res.status(201).json(user.Friends);
 
     } catch (error) {
         console.error(error);
@@ -230,11 +224,19 @@ router.post('/update/:Email', auth, (req, res) => {
 // private, requires token
 router.get('/userInfo', auth, async(req, res) => {
 
-   const user = await User.findOne({ Email: req.user.Email });
-   const events = await Event.find({ 'Participants.Email' : req.user.Email});
+    const user = await User.findOne({ Email: req.user.Email });
+    const events = await Event.find({ 'Participants.Email' : req.user.Email});
+
+    const friends = 
+
+
 
    res.json({Events: events, friends: user.Friends});
 
 });
+
+
+
+
 
 module.exports = router;
