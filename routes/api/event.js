@@ -24,7 +24,7 @@ router.post('/create', auth, (req, res) => {
             const newEvent = new Event({
                 Title,
                 Description, 
-                Author: {fName: req.user.fName, Username: req.user.Username, Email: req.user.Email},
+                Author: {userID: req.user.id, Username: req.user.Username, Email: req.user.Email},
                 Participants: [{userID: req.user.id, Username: req.user.Username, Email: req.user.Email}],  
                 Date_Start, 
                 Date_End,
@@ -113,6 +113,43 @@ router.post('/update/:Title', auth, (req, res) => {
 });
 
 
+
+// route: post api/event/update/addParticipant
+// takes event title, adds logged in user to it
+// private, requires token
+router.post('/addParticipant', auth, async(req, res) => {
+
+    const event = await Event.findOne({ Title: req.body.Title });
+    const newParticipant = ({userID: req.user.id, Username: req.user.Username, Email: req.user.Email});
+
+    event.Participants.push(newParticipant);
+    event.save();
+
+
+    res.json(event);
+
+});
+
+// route: post api/event/update/removeParticipant
+// takes event title, deletes logged in user from it
+// private, requires token
+router.post('/removeParticipant', auth, async(req, res) => {
+
+    const event = await Event.findOne({ Title: req.body.Title });
+    const deleteParticipant = ({ userID: req.user.id, Username: req.user.Username, Email: req.user.Email});
+
+    event.Participants.pull(deleteParticipant);
+    event.save();
+
+    // Node.findById(req.params.id)
+    // .then(node => {
+    //   node.configuration.links.pull(req.params.linkId)
+    //   return node.save()
+    // .then(node => res.send(node.configuration.links))
+
+    res.json(event);
+
+});
 
 
 module.exports = router;

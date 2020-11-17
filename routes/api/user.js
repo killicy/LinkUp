@@ -225,7 +225,9 @@ router.post('/update/:Email', auth, (req, res) => {
     });
 });
 
-
+// route: post api/user/userInfo
+// displays logged in users friends and events
+// private, requires token
 router.get('/userInfo', auth, async(req, res) => {
 
    const user = await User.findOne({ Email: req.user.Email });

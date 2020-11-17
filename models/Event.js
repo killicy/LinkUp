@@ -24,7 +24,7 @@ const eventSchema = new Schema({
 
     // store username and userID for less queries
     // Participants: [{ type: String }],
-    Participants: [{userID: String, Username: String, Email: String}],
+    Participants: [{_id: false, userID: String, Username: String, Email: String}],
        
     Date_Added: {
         type: Date,
