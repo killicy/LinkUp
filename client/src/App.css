@@ -16,6 +16,7 @@
 .app {
   display: flex;
   min-height: 100vh;
+  min-width: 100vw;
   flex-direction: column;
   align-items: center;
   justify-content: top;
@@ -33,6 +34,8 @@ figure{
     margin-right: 25px;
     background: #fff;
     line-height: 1.7em;
+    max-width: 50px;
+    max-height: 50px;
 }
 
 .NavBar {
@@ -49,6 +52,46 @@ figure{
 
 .Confirmation {
   margin: auto;
+  font-size: calc(10px + 2vmin);
+  color: black;
+}
+
+
+.loginForm {
+  margin: auto;
+  font-size: calc(10px + 2vmin);
+  color: black;
+}
+
+.registerForm {
+  margin: auto;
+  font-size: calc(10px + 2vmin);
+  color: black;
+}
+
+.Container {
+  margin: 100px;
+  font-size: calc(10px + 2vmin);
+  color: black;
+}
+.postEvent {
+  margin: 100px;
+  font-size: calc(10px + 2vmin);
+  color: black;
+}
+.mainContent {
+  margin: 100px;
+  font-size: calc(10px + 2vmin);
+  color: black;
+}
+
+
+.MainPage {
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: black;
 }

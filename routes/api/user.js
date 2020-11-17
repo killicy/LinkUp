@@ -58,7 +58,7 @@ router.post('/register', (req, res) => {
                 httpOnly: true,
                 secure: true
               })
-              sendEmail('Tumblingpebble@gmail.com', templates.confirm(newUser.Username, token))
+              sendEmail(newUser.Email, templates.confirm(newUser.Username, token))
             }
             catch(err){
               console.log(err)
@@ -120,6 +120,13 @@ router.get('/auth', auth,  (req, res) => {
     User.findById(req.user.id)
         .select('-Password')
         .then(user => res.json(user));
+});
+
+router.get('/confirmationEmail', auth,  (req, res) => {
+    const token = createToken.createToken(req.user);
+    console.log(req.user.Email)
+    sendEmail(req.user.Email, templates.confirm(req.user.Username, token));
+    res.json({success: true})
 });
 
 

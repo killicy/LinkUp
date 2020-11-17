@@ -5,11 +5,11 @@ import './App.css';
 import UserStore from './stores/UserStore';
 import Cookies from 'universal-cookie';
 import SubmitButton from './SubmitButton';
-import EventMaker from './EventMaker';  
+import EventMaker from './EventMaker';
 import { Card } from "react-bootstrap";
 
 class MainContent extends React.Component {
-    
+
     render() {
         return(
           <div className= "mainContent">
@@ -18,7 +18,7 @@ class MainContent extends React.Component {
                     <Card style={{ width: "18rem" }} key={index} className="box">
                     <Card.Body>
                         <Card.Title>{event.title}</Card.Title>
-                        <Card.Text>{event.text}</Card.Text>
+                        <Card.Text>-{event.description}</Card.Text>
                     </Card.Body>
                     </Card>
                 );
