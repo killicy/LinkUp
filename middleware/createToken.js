@@ -7,8 +7,7 @@ const createToken = (user) => {
         {
             id: user.id,
             Email: user.Email,
-            fName: user.fName,
-            lName: user.lName
+            Username: user.Username
         },
 
         key.secretOrKey,

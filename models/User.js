@@ -9,20 +9,10 @@ const userSchema = new Schema({
         unique: true 
     },
 
-    // Username: {
-    //     type: String,
-    //     required: true,
-    //     unique: true
-    // },
-
-    fName: {
+    Username: {
         type: String,
         required: true,
-    },
-
-    lName: {
-        type: String, 
-        required: true
+        unique: true
     },
 
     Password: {
@@ -35,7 +25,7 @@ const userSchema = new Schema({
         default: Date.now
     },
 
-    Friends: [{userID: String, fName: String, lName: String, Email: String}],
+    Friends: [{userID: String, Username: String, Email: String}],
     
     Profile_pic: {
         type: String

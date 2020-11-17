@@ -24,8 +24,8 @@ router.post('/create', auth, (req, res) => {
             const newEvent = new Event({
                 Title,
                 Description, 
-                Author: {fName: req.user.fName, lName: req.user.lName, Email: req.user.Email},
-                Participants: [{userID: req.user.id, fName: req.user.fName, lName: req.user.lName, Email: req.user.Email}],  
+                Author: {fName: req.user.fName, Username: req.user.Username, Email: req.user.Email},
+                Participants: [{userID: req.user.id, Username: req.user.Username, Email: req.user.Email}],  
                 Date_Start, 
                 Date_End,
                 comments: [] 
@@ -65,7 +65,7 @@ router.post('/search', auth, (req, res) => {
 // private, requires token
 router.get('/myEvents', auth, (req, res) => {
 
-    Event.find({ 'Participants.Email' : req.user.Email})
+    Event.find({ 'Participants.Username' : req.user.Username})
     
     .then((event) => {
         res.json(event);

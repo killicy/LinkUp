@@ -11,6 +11,7 @@ router.use(cookieParser())
 const sendEmail = require('../../middleware/email');
 const msgs = require('../../middleware/confirmationMsgs');
 const templates = require('../../middleware/emailTemplate');
+const Event = require('../../models/Event.js');
 
 
 
@@ -18,9 +19,9 @@ const templates = require('../../middleware/emailTemplate');
 // registers a new user, email=unique
 // public, does not require token
 router.post('/register', (req, res) => {
-    const { Email, Password, fName, lName } = req.body;
+    const { Email, Password, Username } = req.body;
 
-    if(!Email || !Password || !fName || !lName) {
+    if(!Email || !Password || !Username) {
         return res.status(400).json({ msg: 'Please enter all fields' });
     }
 
@@ -28,13 +29,15 @@ router.post('/register', (req, res) => {
     User.findOne({ Email })
         .then(user => {
             if (user) return res.status(400).json({msg: 'Email already exists!' });
+    User.findOne({ Username })
+        .then(user => {
+            if (user) return res.status(400).json({msg: 'Username already exists!' });
 
             // create user
             const newUser = new User({
                 Email,
                 Password,
-                fName,
-                lName
+                Username
             });
 
             // Create salt and hash
@@ -48,8 +51,7 @@ router.post('/register', (req, res) => {
                             res.json({
                                 msg: 'Registered!',
                                 success: true,
-                                fName: user.fName,
-                                lName: user.lName
+                                Username: user.Username
                             })
                         }
                     )
@@ -63,6 +65,7 @@ router.post('/register', (req, res) => {
             //   console.log(err)
             // }
         })
+})
 });
 
 
@@ -73,12 +76,12 @@ router.post('/register', (req, res) => {
 // takes email, Password
 // public, does not require token
 router.post('/login', (req, res) => {
-    const {Email, Password} = req.body;
-    if(!Email || !Password){
+    const {Username, Password} = req.body;
+    if(!Username || !Password){
         return res.status(400).json({ msg: 'Please enter all fields'});
     }
     // find username in DB
-    User.findOne({ Email })
+    User.findOne({ Username })
         .then(user => {
             if(!user) return res.status(400).json({ msg: 'User does not exist'});
 
@@ -96,8 +99,7 @@ router.post('/login', (req, res) => {
                     })
                    return res.json({
                         msg: "Logged in" ,
-                        fName: user.fName,
-                        lName: user.lName,
+                        Username: user.Username,
                         Email: user.Email,
                         Friends: user.Friends,
                         success: true
@@ -132,7 +134,7 @@ router.get('/isLoggedIn', auth, (req, res) => {
     httpOnly: true,
     secure: true
   })
-  res.json({success: true, msg: req.user.Email});
+  res.json({success: true, msg: req.user.Username});
 });
 
 
@@ -156,7 +158,7 @@ router.post('/addFriend', auth, async (req, res) => {
         const friends = req.body.Friends;
 
         // get friend info from body
-        const newFriend = {fName: req.body.fName, lName: req.body.lName, userID: req.body.userID}
+        const newFriend = {Username: req.body.Username, userID: req.body.userID, Email: req.body.Email}
 
         // add
         friends.push(newFriend);
@@ -187,12 +189,13 @@ router.post('/searchFriend', auth, async (req, res) => {
     var condition = new RegExp(req.body.search);
 
     var result = user.Friends.filter(function (el) {
-        return condition.test(el.fName || el.lName);
+        return condition.test(el.Username);
+        //return condition.test(el.fName || el.lName);
     })
 
     res.json(result);
 
-})
+});
 
 // route: Delete api/user/delete
 // deletes user by Email
@@ -222,5 +225,14 @@ router.post('/update/:Email', auth, (req, res) => {
     });
 });
 
+
+router.get('/userInfo', auth, async(req, res) => {
+
+   const user = await User.findOne({ Email: req.user.Email });
+   const events = await Event.find({ 'Participants.Email' : req.user.Email});
+
+   res.json({Events: events, friends: user.Friends});
+
+});
 
 module.exports = router;
