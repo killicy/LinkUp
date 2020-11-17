@@ -227,7 +227,15 @@ router.get('/userInfo', auth, async(req, res) => {
     const user = await User.findOne({ Email: req.user.Email });
     const events = await Event.find({ 'Participants.Email' : req.user.Email});
 
-    const friends = 
+//     const friends = user.Friends;
+//    // console.log(friends);
+
+//     friends.forEach(friend => {
+//         const friendEvents = Event.find({ 'Participants.Email' : friend.Email});
+//         console.log(friend.Email);
+//         res.json({Friend: friend.Username, Events: friend.friendEvents});
+        
+//     });
 
 
 
