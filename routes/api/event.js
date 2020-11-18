@@ -5,36 +5,37 @@ const Event = require('../../models/Event.js');
 var cookieParser = require('cookie-parser')
 router.use(cookieParser())
 
+
 // route: POST api/createEvent
 // creates event
 // requires Title, Description, Author, Participants, Date_Start, Date_End
 // private, does require token
 router.post('/create', auth, (req, res) => {
     const {Title, Description, Date_Start, Date_End} = req.body;
-    
+
     if(!Title || !Description || !Date_End || !Date_Start)
         return res.status(400).json({ msg: 'Please enter all fields' });
-    
+
     Event.findOne({ Title })
         .then(event => {
             if (event) return res.status(400).json({ msg: 'Event already exists' });
             console.log(req.user);
-    
+
             const newEvent = new Event({
                 Title,
-                Description, 
-                Author: req.user.Username,
-                Participants: [{userID: req.user.id, username: req.user.Username}],  
-                Date_Start, 
+                Description,
+                Author: {userID: req.user.id, Username: req.user.Username, Email: req.user.Email},
+                Participants: [{userID: req.user.id, Username: req.user.Username, Email: req.user.Email}],
+                Date_Start,
                 Date_End,
-                comments: [] 
+                comments: []
             });
 
             newEvent.save()
                 .then(event => {
                     res.json(newEvent);
                 })
-        }) 
+        })
 
 });
 
@@ -49,8 +50,6 @@ router.post('/search', auth, (req, res) => {
                 { Title: { '$regex': req.body.search, '$options': 'i' } },
                 { Description: { '$regex': req.body.search, '$options': 'i' } },
                 { Author: { '$regex': req.body.search, '$options': 'i' } },
-               // { Participants: { '$regex': req.body.search, '$options': 'i' } },
-                //db.inventory.find( { "instock": { $elemMatch: { qty: 5, warehouse: "A" } } } )
                 { Date_Start: { '$regex': req.body.search, '$options': 'i' } },
                 { Date_End: { '$regex': req.body.search, '$options': 'i' } }
             ]
@@ -60,6 +59,20 @@ router.post('/search', auth, (req, res) => {
 
 
 });
+
+// route:  api/event/myEvents
+// gets all events that logged in user is attending
+// private, requires token
+router.get('/myEvents', auth, (req, res) => {
+
+    Event.find({ 'Participants.Username' : req.user.Username})
+
+    .then((event) => {
+        res.json(event);
+    });
+    console.log(req.user);
+
+})
 
 // route: Delete api/event/delete
 // deletes event
@@ -79,8 +92,8 @@ router.delete('/delete', auth, (req, res) => {
         .catch(err => res.status(404).json({msg: 'Event does not exist'}));
 });
 
-// route: post api/event/update
-// updates event
+// route: post api/event/update/EventTitle
+// updates event paramters
 // private, requires token
 
 router.post('/update/:Title', auth, (req, res) => {
@@ -99,5 +112,42 @@ router.post('/update/:Title', auth, (req, res) => {
     });
 });
 
+
+// route: post api/event/update/addParticipant
+// takes event title, adds logged in user to it
+// private, requires token
+router.post('/addParticipant', auth, async(req, res) => {
+
+    const event = await Event.findOne({ Title: req.body.Title });
+    const newParticipant = ({userID: req.user.id, Username: req.user.Username, Email: req.user.Email});
+
+    event.Participants.push(newParticipant);
+    event.save();
+
+
+    res.json(event);
+
+});
+
+// route: post api/event/update/removeParticipant
+// takes event title, deletes logged in user from it
+// private, requires token
+router.post('/removeParticipant', auth, async(req, res) => {
+
+    const event = await Event.findOne({ Title: req.body.Title });
+    const deleteParticipant = ({ userID: req.user.id, Username: req.user.Username, Email: req.user.Email});
+
+    event.Participants.pull(deleteParticipant);
+    event.save();
+
+    // Node.findById(req.params.id)
+    // .then(node => {
+    //   node.configuration.links.pull(req.params.linkId)
+    //   return node.save()
+    // .then(node => res.send(node.configuration.links))
+
+    res.json(event);
+
+});
 
 module.exports = router;

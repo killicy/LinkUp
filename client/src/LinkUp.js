@@ -1,5 +1,4 @@
 import React from 'react';
-import { observer } from 'mobx-react';
 //import ReactDOM from 'react-dom'
 import './App.css';
 import UserStore from './stores/UserStore';
@@ -10,6 +9,9 @@ import MainContent from './MainContent';
 import Friends from './Friends';
 import { Card } from "react-bootstrap";
 import Confirmation from './Confirmation';
+import NavBar from './NavBar';
+import { CloudinaryContext, Image } from "cloudinary-react";
+import { fetchPhotos, openUploadWidget } from "./CloudinaryService";
 import {
   BrowserRouter as Router,
   Switch,
@@ -27,24 +29,28 @@ class LinkUp extends React.Component {
           isLoggedin: false,
           event: [{title: 'Movie Night', description: 'Friday the 13th part 13: The Final Friday'}, {title: 'BBQ', description: 'Ribs, Burgers, Obesity'}],
           id: 'a',
-          url: this.props.match.params.user
+          url: this.props.match.params.user,
+          events: null,
+          friends: null,
+          friendEvents: null
       }
   }
-  async doLogout(){
-    try {
-       await fetch('https://localhost:5000/api/user/logOut', {
-         method: 'GET',
-         credentials: 'include',
-         headers: {
-           'Accept': 'application/json',
-           'Content-Type': 'application/json',
-           'Access-Control-Allow-Origin':'https://localhost:5000',
-         }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success}));
-         this.props.history.push('/');
-     }
-     catch(e) {
-         console.log(e)
-     }
+
+  beginUpload(tag) {
+    const uploadOptions = {
+      cloudName: "dsnnlkpj9",
+      tags: [tag, 'anImage'],
+      uploadPreset: "cqswrbcf"
+    };
+    openUploadWidget(uploadOptions, (error, photos) => {
+      if (!error) {
+        console.log(photos);
+        if(photos.event === 'success'){
+        }
+      } else {
+        console.log(error);
+      }
+    })
   }
 
   async resendConfirmation(){
@@ -85,13 +91,28 @@ class LinkUp extends React.Component {
     catch(e) {
     }
 
+    try {
+      await fetch('https://localhost:5000/api/user/userInfo', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin':'https://localhost:5000',
+        }}).then(response => response.json()).then(data => this.setState({events: data.Events, friends: data.friends, friendEvents: data.FriendEvents}));
+    }
+    catch(e) {
+    }
+
 
   }
-
   render() {
+
     return (
     <Router>
+      <NavBar history={this.props.history}/>
       <div className="MainPage">
+        <button onClick={(e) => this.beginUpload()}>Upload Image</button>
         <EventMaker />
         <Switch>
           <Route exact path={"/"+this.state.url} render={() => <MainContent data = {this.state}/>}/>
@@ -101,11 +122,6 @@ class LinkUp extends React.Component {
 
         </Switch>
         <div className='Container'>
-          <SubmitButton
-              text={'Log Out'}
-              disabled={false}
-              onClick={ () => this.doLogout() }
-          />
           <SubmitButton
               text={'Resend Confirmation'}
               disabled={false}

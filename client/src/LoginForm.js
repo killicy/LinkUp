@@ -2,15 +2,12 @@ import React from 'react';
 import InputField from './InputField';
 import SubmitButton from './SubmitButton';
 import UserStore from './stores/UserStore';
-import Cookies from 'universal-cookie';
 import {
   BrowserRouter as Router,
   Switch,
   Link,
-  useLocation,
   Redirect
 } from "react-router-dom";
-const cookies = new Cookies();
 
 class LoginForm extends React.Component {
   constructor(){
@@ -43,9 +40,7 @@ class LoginForm extends React.Component {
     }
   }
   setInputValue(property, val) {
-    val = val.trim();
-
-        // Username and Password is 12 characters max
+    console.log(val);
     if (val.length > 50) {
       return;
     }
@@ -68,6 +63,7 @@ class LoginForm extends React.Component {
     this.props.history.push('/Register');
   }
   async doLogin(){
+    console.log(this.state.password)
     await fetch('https://localhost:5000/api/user/login', {
         method: 'POST',
         credentials: 'include',
@@ -92,31 +88,30 @@ class LoginForm extends React.Component {
     render() {
         return(
             <div className="loginForm">
-              Log in
-              <InputField
-                type = 'text'
-                placeholder = 'Email'
-                value = {this.state.username ? this.state.username : ''}
-                onChange = {(val) => this.setInputValue('username', val)}
-              />
-              <InputField
-                type = 'password'
-                placeholder = 'Password'
-                value = {this.state.password ? this.state.password : ''}
-                onChange = {(val) => this.setInputValue('password', val)}
-              />
-              <div className="buttons">
-                <SubmitButton
-                  text = 'Login'
-                  disabled = {this.state.buttonDisabled}
-                  onClick = {() => this.doLogin()}
-                />
-                <SubmitButton
-                  text = 'Register'
-                  disabled = {this.state.buttonDisabled}
-                  onClick = {() => this.doSignUp()}
-                />
-              </div>
+              <form>
+                 <h3>Sign In</h3>
+                 <div className="form-group">
+                     <label>Username</label>
+                     <input type="text" className="form-control" placeholder="Enter username" onChange = {e => this.setInputValue("username", e.target.value)}/>
+                 </div>
+                 <div className="form-group">
+                     <label>Password</label>
+                     <input type="password" className="form-control" placeholder="Enter password" onChange = {e => this.setInputValue("password", e.target.value)}/>
+                 </div>
+                 <div className="form-group">
+                     <div className="custom-control custom-checkbox">
+                         <input type="checkbox" className="custom-control-input" id="customCheck1" />
+                         <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
+                     </div>
+                 </div>
+                 <button type="button" className="loginBtn btn-primary btn-block" onClick = {() => this.doLogin()}>Sign In</button>
+                 <p className="need-an-account text-right">
+                     Need an account? <a href="http://localhost:3000/Register">Register</a>
+                 </p>
+                 <p className="forgot-password text-right">
+                     Forgot <a href="#">Password?</a>
+                 </p>
+             </form>
             </div>
         );
     }

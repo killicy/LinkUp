@@ -5,27 +5,49 @@ import './App.css';
 import UserStore from './stores/UserStore';
 import Cookies from 'universal-cookie';
 
+class NavBar extends React.Component {
 
+  constructor(props){
+      super(props);
+      this.state = {
+          message: '',
+          success: false,
+          username: '',
+          isLoggedin: false
+      }
+  }
+  async profile(){
+    try {
+      await fetch('https://localhost:5000/api/user/user', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin':'https://localhost:5000',
+        }}).then(response => response.json()).then(data => this.setState({success: data.success, message: data.msg, username: data.username}));
+         if (this.state.success) {
+           history.replace('/');
+           history.push('/' + this.state.username);
+         }
+         else {
+           history.replace('/');
+         }
+    }
+    catch(e) {
+      history.replace('/');
+    }
+  }
 
-class LinkUp extends React.Component {
   render() {
-  if (this.state.redirect) {
-    return <Redirect to={this.state.redirect} />
-}
-    return (
-    <Router>
-      <div className="MainPage">
-        <div className='container'>
-          <SubmitButton
-              text={'Log Out'}
-              disabled={false}
-              onClick={ () => this.doLogout() }
-          />
-        </div>
+    return(
+      <div className="NavBar">
+        <figure onClick={e => this.profile()}>
+          <img src={logo} alt="image"/>
+        </figure>
       </div>
-    </Router>
     );
   }
 }
 
-export default LinkUp;
+export default Navbar;

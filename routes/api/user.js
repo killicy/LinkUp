@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken');
 const key = require('../../config/keys');
 const auth = require('../../middleware/auth');
 const User = require('../../models/User.js');
+const Event = require('../../models/Event.js');
+
 var cookieParser = require('cookie-parser')
 router.use(cookieParser())
 // route: POST api/user/register
@@ -165,7 +167,6 @@ router.get('/isLoggedIn', auth, (req, res) => {
 
 
 router.get('/user', auth, (req, res) => {
-  // Create new token and cookie if the user is still logged in
   const token = createToken.createToken(req.user);
   res.cookie('access_token', token,{
     maxAge: 3600000,
@@ -261,6 +262,37 @@ router.post('/update/:Username', auth, (req, res) => {
             }
     });
 });
+
+
+router.get('/userInfo', auth, async(req, res) => {
+  try{
+    const user = await User.findOne({ Email: req.user.Email });
+    const userEvents = await Event.find({ 'Participants.Email' : req.user.Email});
+    const friends = user.Friends;
+//    console.log(friends);
+    const friendEvents = [];
+
+    if(friends.length == 0)
+    {
+      return res.json({msg: 'You have no friends'});
+    }
+    await Promise.all(friends.forEach(async friend => {
+      Username = friend.Username;
+      const events = await Event.find({ 'Participants.Username' : friend.Username });
+
+      friendEvents.push({Username: events});
+    }));
+  }
+  catch(err){
+    console.log(err);
+  }
+
+  console.log("hellowrorld", friendEvents);
+  res.json({Events: userEvents, friends: user.Friends, FriendEvents: friendEvents});
+});
+
+
+
 
 
 module.exports = router;

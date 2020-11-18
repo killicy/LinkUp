@@ -6,7 +6,8 @@ import RegisterForm from './RegisterForm';
 import LinkUp from './LinkUp';
 import SubmitButton from './SubmitButton';
 import Confirmation from './Confirmation';
-import logo from './stores/user.svg';
+import NavBar from './NavBar';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {
   BrowserRouter as Router,
@@ -30,30 +31,23 @@ class App extends Component {
       this.state = {
           message: '',
           success: false,
-          username: ''
+          username: '',
+          isLoggedin: false
       }
   }
 
-  async profile(){
+  async componentDidMount() {
     try {
-      await fetch('https://localhost:5000/api/user/user', {
+      await fetch('https://localhost:5000/api/user/isLoggedin', {
         method: 'GET',
         credentials: 'include',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin':'https://localhost:5000',
-        }}).then(response => response.json()).then(data => this.setState({success: data.success, message: data.msg, username: data.username}));
-         if (this.state.success) {
-           history.replace('/');
-           history.push('/' + this.state.username);
-         }
-         else {
-           history.replace('/');
-         }
+        }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success, message: data.msg}));
     }
     catch(e) {
-      history.replace('/');
     }
   }
 
@@ -61,13 +55,8 @@ class App extends Component {
     return(
       <Router>
         <div className= "app">
-          <div className="NavBar">
-            <figure onClick={e => this.profile()}>
-              <img src={logo} alt="image"/>
-            </figure>
-          </div>
           <Switch>
-            <Route exact path="/" component={LoginForm} />
+            <Route exact path="/" component={LoginForm}/>
             <Route exact path="/Register" component={RegisterForm} />
             <Route exact path="/Confirmation/:token" component={Confirmation} />
             <Route path="/:user" component={LinkUp} />
