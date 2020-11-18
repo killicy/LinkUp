@@ -225,21 +225,49 @@ router.post('/update/:Email', auth, (req, res) => {
 router.get('/userInfo', auth, async(req, res) => {
 
     const user = await User.findOne({ Email: req.user.Email });
-    const events = await Event.find({ 'Participants.Email' : req.user.Email});
+    const userEvents = await Event.find({ 'Participants.Email' : req.user.Email});
 
-//     const friends = user.Friends;
-//    // console.log(friends);
-
-//     friends.forEach(friend => {
-//         const friendEvents = Event.find({ 'Participants.Email' : friend.Email});
-//         console.log(friend.Email);
-//         res.json({Friend: friend.Username, Events: friend.friendEvents});
+    const friends = user.Friends;
+//    console.log(friends);
+    const friendEvents = [];
+    
+    friends.forEach(async friend => {
+        try {
+            const info = {};
+            
+            info.Username = friend.Username;
+            const events = await Event.find({ 'Participants.Username' : friend.Username });
+            
+            info.events = [];
+            
+            events.forEach(event => {
+                
+                info.events.push(event)
+               // console.log(info.events)
+                //info.events.push({Author: event.Author, Description: event.Description, Title: event.Title, Participants: event.Participants})
+                //console.log(event.Participants);
+                //arrayEvents.push({Author: event.Author});
+        })
         
-//     });
+        
+        //console.log(info.events.Participants);
+          friendEvents.push(info);
+        
+        //console.log("hellowrorld", friendEvents);
+            
+        } catch (error) {
+            console.log(error);
+            //return res.json(error);
+        }
+        
+        
+        
+        
+    });
 
+    console.log("hellowrorld", friendEvents);
 
-
-   res.json({Events: events, friends: user.Friends});
+   res.json({Events: userEvents, friends: user.Friends, FriendEvents: friendEvents});
 
 });
 
