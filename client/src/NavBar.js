@@ -10,6 +10,8 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button'
 import MenuItem from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/Dropdown'
+import Modal from 'react-bootstrap/Modal'
+
 
 import { CloudinaryContext, Image, Transformation } from "cloudinary-react";
 
@@ -37,6 +39,7 @@ class NavBar extends React.Component {
           message: '',
           success: false,
           username: '',
+          show: false
       }
   }
 
@@ -95,10 +98,41 @@ class NavBar extends React.Component {
      }
   }
 
+
+  setShow(){
+    console.log("help");
+    if(this.state.show == false){
+      this.setState({
+        show: true
+      });
+    }
+    else{
+      console.log("help");
+      this.setState({
+        show: false
+      });
+    }
+  }
+
+
   render() {
     return(
       <div className="NavBar">
         <div>
+          <Modal show={this.state.show} onHide={ () => this.setShow() }>
+            <Modal.Dialog>
+              <Modal.Header closeButton>
+                <Modal.Title>Edit Account</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <p>Will be able to edit user image, name, and description here</p>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={ () => this.setShow() } >Close</Button>
+                <Button variant="primary">Save changes</Button>
+              </Modal.Footer>
+            </Modal.Dialog>
+          </Modal>
         </div>
         <div>
           <img src={logo} alt="Logo" />
@@ -117,7 +151,7 @@ class NavBar extends React.Component {
             <Dropdown.Item href="#/action-2" onClick={ () => this.profile() }>
               My Profile
             </Dropdown.Item>
-            <Dropdown.Item href="#/action-3" onClick={ () => this.profile() }>
+            <Dropdown.Item href="#/action-3" onClick={ () => this.setShow() }>
               My Account
             </Dropdown.Item>
           </Dropdown.Menu>
