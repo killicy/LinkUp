@@ -69,6 +69,9 @@ class EventMaker extends React.Component {
   render() {
     return(
       <div className= "userEvents flex-nowrap border border-dark">
+        <div className="myeventHeader">
+          <p>Events</p>
+        </div>
       </div>
     );
   }

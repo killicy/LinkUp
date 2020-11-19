@@ -4,7 +4,8 @@ import { observer } from 'mobx-react';
 import './App.css';
 import UserStore from './stores/UserStore';
 import SubmitButton from './SubmitButton';
-import logo from './stores/user.svg';
+import profile from './stores/user.svg';
+import logo from './stores/Logo.svg';
 import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button'
 import MenuItem from 'react-bootstrap/Dropdown'
@@ -97,6 +98,11 @@ class NavBar extends React.Component {
   render() {
     return(
       <div className="NavBar">
+        <div>
+        </div>
+        <div>
+          <img src={logo} alt="Logo" />
+        </div>
         <Dropdown className = "profileDropdown">
           <Dropdown.Toggle as={CustomToggle}>
           <Image cloudName= "demo" publicId="lady.jpg" className = "profilePic">
