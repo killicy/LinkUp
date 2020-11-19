@@ -82,36 +82,29 @@ class RegisterForm extends React.Component {
     }
   }
   render() {
-      return(
-          <div className="registerForm">
-              Register
-            <InputField
-              type = 'text'
-              placeholder = 'Username'
-              value = {this.state.username ? this.state.username : ''}
-              onChange = {(val) => this.setInputValue('username', val)}
-            />
-            <InputField
-              type = 'text'
-              placeholder = 'Email'
-              value = {this.state.email ? this.state.email : ''}
-              onChange = {(val) => this.setInputValue('email', val)}
-            />
-            <InputField
-              type = 'password'
-              placeholder = 'Password'
-              value = {this.state.password ? this.state.password : ''}
-              onChange = {(val) => this.setInputValue('password', val)}
-            />
-            <div className="buttons">
-              <SubmitButton
-                text = 'Register'
-                disabled = {this.state.buttonDisabled}
-                onClick = {() => this.doRegister()}
-              />
-            </div>
-          </div>
-      );
+    return(
+      <div className="registerForm">
+        <form>
+           <h3>Sign Up</h3>
+           <div className="form-group">
+               <label>Username</label>
+               <input type="text" className="form-control" placeholder="Enter username" onChange = {e => this.setInputValue("username", e.target.value)}/>
+           </div>
+           <div className="form-group">
+               <label>Email</label>
+               <input type="email" className="form-control" placeholder="Enter Email" onChange = {e => this.setInputValue("email", e.target.value)}/>
+           </div>
+           <div className="form-group">
+               <label>Password</label>
+               <input type="password" className="form-control" placeholder="Enter password" onChange = {e => this.setInputValue("password", e.target.value)}/>
+           </div>
+           <button type="button" className="loginBtn btn-primary btn-block" onClick = {() => this.doRegister()}>Sign Up</button>
+           <p className="need-an-account text-right">
+               Took a wrong turn? <a href="http://localhost:3000">Go Back</a>
+           </p>
+       </form>
+      </div>
+    );
   }
 }
 

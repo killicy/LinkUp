@@ -13,17 +13,17 @@ class MainContent extends React.Component {
     render() {
         return(
           <div className= "mainContent">
-              <div className="grid">{this.props.data.event.map((event, index) => {
+              <div className="grid">{this.props.data.friendEvents.map((event, index) => {
                 return (
-                    <Card style={{ width: "18rem" }} key={index} className="box">
+                    <Card style={{ width: "18rem" }} key={index} className="box border border-dark mb-1">
                     <Card.Body>
                         <Card.Title>{event.title}</Card.Title>
                         <Card.Text>-{event.description}</Card.Text>
                     </Card.Body>
                     </Card>
                 );
-                })}</div>
-
+                })}
+              </div>
           </div>
         );
       }

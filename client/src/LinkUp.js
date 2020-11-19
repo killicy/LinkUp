@@ -10,6 +10,7 @@ import Friends from './Friends';
 import { Card } from "react-bootstrap";
 import Confirmation from './Confirmation';
 import NavBar from './NavBar';
+import Profile from './Profile';
 import { CloudinaryContext, Image } from "cloudinary-react";
 import { fetchPhotos, openUploadWidget } from "./CloudinaryService";
 import {
@@ -30,13 +31,14 @@ class LinkUp extends React.Component {
           event: [{title: 'Movie Night', description: 'Friday the 13th part 13: The Final Friday'}, {title: 'BBQ', description: 'Ribs, Burgers, Obesity'}],
           id: 'a',
           url: this.props.match.params.user,
-          events: null,
-          friends: null,
-          friendEvents: null
+          events: [],
+          friends: [],
+          friendEvents: []
       }
   }
 
   beginUpload(tag) {
+    // <button onClick={(e) => this.beginUpload()}>Upload Image</button>
     const uploadOptions = {
       cloudName: "dsnnlkpj9",
       tags: [tag, 'anImage'],
@@ -90,7 +92,6 @@ class LinkUp extends React.Component {
     }
     catch(e) {
     }
-
     try {
       await fetch('https://localhost:5000/api/user/userInfo', {
         method: 'GET',
@@ -103,8 +104,6 @@ class LinkUp extends React.Component {
     }
     catch(e) {
     }
-
-
   }
   render() {
 
@@ -112,23 +111,16 @@ class LinkUp extends React.Component {
     <Router>
       <NavBar history={this.props.history}/>
       <div className="MainPage">
-        <button onClick={(e) => this.beginUpload()}>Upload Image</button>
-        <EventMaker />
+        <EventMaker data={this.state} />
         <Switch>
           <Route exact path={"/"+this.state.url} render={() => <MainContent data = {this.state}/>}/>
           <Route exact path={"/"+this.state.url+"/:token"} render={() => <MainContent data = {this.state}/>}/>
           <Route exact path="" render={() => <Confirmation data = {this.state}/>}/>
-
-
         </Switch>
-        <div className='Container'>
-          <SubmitButton
-              text={'Resend Confirmation'}
-              disabled={false}
-              onClick={ () => this.resendConfirmation() }
-          />
+        <div className="leftContainer">
+          <Profile/>
+          <Friends data={this.state}/>
         </div>
-        <Friends/>
       </div>
     </Router>
     );

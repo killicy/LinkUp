@@ -1,3 +1,4 @@
+
 const createToken = require('../../middleware/createToken');
 const express = require('express');
 const router = express.Router();
@@ -6,21 +7,17 @@ const jwt = require('jsonwebtoken');
 const key = require('../../config/keys');
 const auth = require('../../middleware/auth');
 const User = require('../../models/User.js');
-const Event = require('../../models/Event.js');
-
 var cookieParser = require('cookie-parser')
 router.use(cookieParser())
-// route: POST api/user/register
-// registers a new user, username=unique
-// public, does not require token
 const sendEmail = require('../../middleware/email');
 const msgs = require('../../middleware/confirmationMsgs');
 const templates = require('../../middleware/emailTemplate');
+const Event = require('../../models/Event.js');
 
 router.post('/register', (req, res) => {
-    const { Username, Email, Password } = req.body;
+    const { Email, Password, Username } = req.body;
 
-    if (!Username || !Email || !Password) {
+    if(!Email || !Password || !Username) {
         return res.status(400).json({ msg: 'Please enter all fields' });
     }
 
@@ -28,12 +25,15 @@ router.post('/register', (req, res) => {
     User.findOne({ Email })
         .then(user => {
             if (user) return res.status(400).json({msg: 'Email already exists!' });
+    User.findOne({ Username })
+        .then(user => {
+            if (user) return res.status(400).json({msg: 'Username already exists!' });
 
             // create user
             const newUser = new User({
-                Username,
                 Email,
                 Password,
+                Username
             });
 
             // Create salt and hash
@@ -47,13 +47,12 @@ router.post('/register', (req, res) => {
                             res.json({
                                 msg: 'Registered!',
                                 success: true,
-                                username: user.Username
+                                Username: user.Username
                             })
                         }
                     )
                 })
             })
-            // New code to send email upon creation of account
             try{
               const token = createToken.createToken(newUser)
               res.cookie('linkUpUser', newUser.Username,{
@@ -66,22 +65,21 @@ router.post('/register', (req, res) => {
               console.log(err)
             }
         })
+})
 });
-
-
-
 
 // route: POST api/user/login
 // login user
 // takes email, Password
 // public, does not require token
+
 router.post('/login', (req, res) => {
-    const {Email, Password} = req.body;
-    if(!Email || !Password){
+    const {Username, Password} = req.body;
+    if(!Username || !Password){
         return res.status(400).json({ msg: 'Please enter all fields'});
     }
     // find username in DB
-    User.findOne({ Email })
+    User.findOne({ Username })
         .then(user => {
             if(!user) return res.status(400).json({ msg: 'User does not exist'});
 
@@ -110,9 +108,6 @@ router.post('/login', (req, res) => {
         })
 
 });
-
-
-
 // GET api/user/auth
 // header takes x-auth-token and token value
 // returns user assigned to token
@@ -186,28 +181,21 @@ router.get('/logOut', auth, (req, res) => {
   res.json({success: false});
 });
 
-
 // post api/user/addFriend
 // adding a friend to the list
 // private, requires token
 router.post('/addFriend', auth, async (req, res) => {
 
     try {
-
-        const friends = req.body.Friends;
+        const user = await User.findOne({_id: req.user.id});
 
         // get friend info from body
-        const newFriend = {Username: req.body.Username, userID: req.body.userID}
+        const newFriend = {Username: req.body.Username, userID: req.body.userID, Email: req.body.Email}
 
-        // add
-        friends.push(newFriend);
+        user.Friends.push(newFriend);
+        user.save();
 
-        // save to database
-        const user = await User.findOne({_id: req.user.id})
-        user.Friends = friends
-        console.log(user.Friends);
-        await user.save()
-        return res.status(201).json({friends});
+        return res.status(201).json(user.Friends);
 
     } catch (error) {
         console.error(error);
@@ -215,11 +203,8 @@ router.post('/addFriend', auth, async (req, res) => {
 
 });
 
-
-
-
 // post api/user/addFriend
-// regex search on logged in users friends list
+// adding a friend to the list
 // private, requires token
 router.post('/searchFriend', auth, async (req, res) => {
 
@@ -229,22 +214,22 @@ router.post('/searchFriend', auth, async (req, res) => {
 
     var result = user.Friends.filter(function (el) {
         return condition.test(el.Username);
+        //return condition.test(el.fName || el.lName);
     })
-
     res.json(result);
-
-})
+});
 
 // route: Delete api/user/delete
-// deletes user by username
+// deletes user by Email
 // private, requires token
 
 router.delete('/delete', auth, (req, res) => {
-    const {Username} = req.body;
-    User.findOneAndDelete({Username})
+    const {Email} = req.body;
+    User.findOneAndDelete({Email})
         .then(user => user.remove().then( () => res.json( {msg: 'User successfully deleted'})))
         .catch(err => res.status(404).json({msg: 'User does not exist'}));
 });
+
 
 // route: post api/user/update/Username
 // updates user info
@@ -263,6 +248,22 @@ router.post('/update/:Username', auth, (req, res) => {
     });
 });
 
+// route: post api/user/update/Email
+// updates user info
+// private, requires token
+router.post('/update/:Email', auth, (req, res) => {
+    User.findOneAndUpdate( {Email: req.params.Email},
+        req.body, {new: true}, (err, user) => {
+            if(err){
+                console.log(err)
+                res.status(404).json({msg: 'User does not exist or email is already taken'})
+            }
+            else{
+                console.log(user)
+                res.json( {msg: 'User successfully updated'})
+            }
+    });
+});
 
 router.get('/userInfo', auth, async(req, res) => {
   try{
@@ -274,7 +275,7 @@ router.get('/userInfo', auth, async(req, res) => {
 
     if(friends.length == 0)
     {
-      return res.json({msg: 'You have no friends'});
+      return res.json({msg: 'You have no friends', Events: userEvents, friends: user.Friends, FriendEvents: friendEvents});
     }
     await Promise.all(friends.forEach(async friend => {
       Username = friend.Username;

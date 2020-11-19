@@ -111,6 +111,9 @@ class NavBar extends React.Component {
             <Dropdown.Item href="#/action-2" onClick={ () => this.profile() }>
               My Profile
             </Dropdown.Item>
+            <Dropdown.Item href="#/action-3" onClick={ () => this.profile() }>
+              My Account
+            </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
 
