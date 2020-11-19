@@ -11,6 +11,8 @@ import Button from 'react-bootstrap/Button'
 import MenuItem from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/Dropdown'
 import Modal from 'react-bootstrap/Modal'
+import { Card } from "react-bootstrap";
+
 
 
 import { CloudinaryContext, Image, Transformation } from "cloudinary-react";
@@ -125,7 +127,19 @@ class NavBar extends React.Component {
                 <Modal.Title>Edit Account</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <p>Will be able to edit user image, name, and description here</p>
+                <div className="Profile border border-dark">
+                  <div className="space"></div>
+                  <Card className="profileStuff mb-4 border-0">
+                    <Image cloudName= "demo" publicId="lady.jpg" className = "profilePic">
+                      <Transformation width="400" height="400" gravity="face" radius="max" crop="crop" />
+                      <Transformation width="200" crop="scale" />
+                    </Image>
+                    <Card.Body>
+                      <Card.Title><div className="name">Jen Eric Ladee</div></Card.Title>
+                      <Card.Text><p>About Me: I spend my free time posing for stock images. I enjoy events where I can eat food such as salads and yogurt while laughing with my head thrown back.</p></Card.Text>
+                    </Card.Body>
+                  </Card>
+                </div>
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={ () => this.setShow() } >Close</Button>
@@ -145,13 +159,13 @@ class NavBar extends React.Component {
           </Image>
           </Dropdown.Toggle>
           <Dropdown.Menu className = "navBarDropdown">
-            <Dropdown.Item href="#/action-1" onClick={ () => this.doLogout() }>
+            <Dropdown.Item onClick={ () => this.doLogout() }>
               Log Out
             </Dropdown.Item>
-            <Dropdown.Item href="#/action-2" onClick={ () => this.profile() }>
+            <Dropdown.Item onClick={ () => this.profile() }>
               My Profile
             </Dropdown.Item>
-            <Dropdown.Item href="#/action-3" onClick={ () => this.setShow() }>
+            <Dropdown.Item onClick={ () => this.setShow() }>
               My Account
             </Dropdown.Item>
           </Dropdown.Menu>

@@ -34,12 +34,21 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  max-height: 100%;
 }
 
 .Profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   height: 35vh;
   min-width: 239.3px;
+  max-width: 239.9px;
+  background-color: #525252;
   margin-bottom: 10px;
+  max-height: 100%;
+  min-height: 300px;
+  overflow: hidden;
 }
 
 .Friends {
@@ -111,6 +120,37 @@ p{
     border-radius: 100px;
     max-width: 100px;
     max-height: 100px;
+}
+
+.name{
+  text-align: center;
+}
+
+.profileStuff{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: none;
+  max-height: 100%;
+  min-height: 90%;
+  background-color: #525252;
+  overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.space{
+  background-color: #0098b1;
+  min-height: 10%;
+}
+
+
+p{
+  font-size: 15px;
+  line-height: 25px;
+  max-height: 100%;
 }
 
 
