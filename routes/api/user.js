@@ -157,7 +157,7 @@ router.post('/addFriend', auth, async (req, res) => {
         const user = await User.findOne({_id: req.user.id});
 
         // get friend info from body
-        const newFriend = {Username: req.body.Username, userID: req.body.userID, Email: req.body.Email}
+        const newFriend = await User.findOne({Username: req.body.Username})
 
         user.Friends.push(newFriend);
         user.save();
@@ -188,6 +188,25 @@ router.post('/searchFriend', auth, async (req, res) => {
     })
 
     res.json(result);
+
+});
+
+
+// route: POST api/searchUsers
+// searches for users
+// optional username, email
+// private, does require token
+router.post('/searchUsers', auth, (req, res) => {
+
+    User.find({
+            "$or": [
+                { Username: { '$regex': req.body.search, '$options': 'i' } },
+                { Email: { '$regex': req.body.search, '$options': 'i' } }
+            ]
+        }).then((user) => {
+            res.json(user);
+        });
+
 
 });
 

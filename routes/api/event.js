@@ -24,8 +24,8 @@ router.post('/create', auth, (req, res) => {
             const newEvent = new Event({
                 Title,
                 Description, 
-                Author: {userID: req.user.id, Username: req.user.Username, Email: req.user.Email},
-                Participants: [{userID: req.user.id, Username: req.user.Username, Email: req.user.Email}],  
+                Author: { Username: req.user.Username, Email: req.user.Email},
+                Participants: [{ Username: req.user.Username, Email: req.user.Email}],  
                 Date_Start, 
                 Date_End,
                 comments: [] 
@@ -119,7 +119,7 @@ router.post('/update/:Title', auth, (req, res) => {
 router.post('/addParticipant', auth, async(req, res) => {
 
     const event = await Event.findOne({ Title: req.body.Title });
-    const newParticipant = ({userID: req.user.id, Username: req.user.Username, Email: req.user.Email});
+    const newParticipant = ({ Username: req.user.Username, Email: req.user.Email});
 
     event.Participants.push(newParticipant);
     event.save();
@@ -135,7 +135,7 @@ router.post('/addParticipant', auth, async(req, res) => {
 router.post('/removeParticipant', auth, async(req, res) => {
 
     const event = await Event.findOne({ Title: req.body.Title });
-    const deleteParticipant = ({ userID: req.user.id, Username: req.user.Username, Email: req.user.Email});
+    const deleteParticipant = ({  Username: req.user.Username, Email: req.user.Email});
 
     event.Participants.pull(deleteParticipant);
     event.save();
