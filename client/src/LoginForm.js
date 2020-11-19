@@ -31,7 +31,7 @@ class LoginForm extends React.Component {
           'Access-Control-Allow-Origin':'https://localhost:5000',
         }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success, message: data.msg}));
          if (this.state.isLoggedin) {
-          this.props.history.push('/' + this.state.message);
+          this.props.history.push('/Profile/' + this.state.message);
          }
          else {
          }
@@ -78,7 +78,7 @@ class LoginForm extends React.Component {
         })}).then(response => response.json()).then(data => this.setState({username: data.Username, message: data.msg, success: data.success, email: data.Email}));
 
       if(this.state.success){
-        this.props.history.push('/' + this.state.email);
+        this.props.history.push('/Profile/' + this.state.username);
       }
       else {
         this.resetForm();

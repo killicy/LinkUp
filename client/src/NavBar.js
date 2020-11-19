@@ -5,7 +5,7 @@ import './App.css';
 import UserStore from './stores/UserStore';
 import SubmitButton from './SubmitButton';
 import profile from './stores/user.svg';
-import logo from './stores/Logo.svg';
+import logo from './stores/Logo2.svg';
 import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button'
 import MenuItem from 'react-bootstrap/Dropdown'
@@ -66,8 +66,8 @@ class NavBar extends React.Component {
           'Access-Control-Allow-Origin':'https://localhost:5000',
         }}).then(response => response.json()).then(data => this.setState({success: data.success, message: data.msg, username: data.username}));
          if (this.state.success) {
-           this.props.history.replace('/');
-           this.prop.history.push('/' + this.state.username);
+           this.props.history.replace('/Profile');
+           this.props.history.push("/Profile/" + this.state.username);
          }
          else {
            this.props.history.replace('/');

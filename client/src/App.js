@@ -59,7 +59,7 @@ class App extends Component {
             <Route exact path="/" component={LoginForm}/>
             <Route exact path="/Register" component={RegisterForm} />
             <Route exact path="/Confirmation/:token" component={Confirmation} />
-            <Route path="/:user" component={LinkUp} />
+            <Route path="/Profile/:user" component={LinkUp} />
           </Switch>
         </div>
     </Router>

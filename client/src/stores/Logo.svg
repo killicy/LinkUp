@@ -150,7 +150,7 @@
          style="stroke-width:0.264583"></tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111px;line-height:0;font-family:'Script MT Bold';-inkscape-font-specification:'Script MT Bold, Italic';fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111px;line-height:0;font-family:'Script MT Bold';-inkscape-font-specification:'Script MT Bold, Italic';fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583;"
        x="22.017113"
        y="10.583333"
        id="text1097"><tspan
@@ -158,6 +158,6 @@
          id="tspan1095"
          x="22.017113"
          y="10.583333"
-         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111px;font-family:'Script MT Bold';-inkscape-font-specification:'Script MT Bold, Italic';fill:#ffffff;stroke-width:0.264583">LinkUP</tspan></text>
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.76111px;font-family:'Script MT Bold';-inkscape-font-specification:'Script MT Bold, Italic';fill:#ffffff;stroke-width:0.264583;">LinkUP</tspan></text>
   </g>
 </svg>

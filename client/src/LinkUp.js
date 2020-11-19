@@ -113,8 +113,8 @@ class LinkUp extends React.Component {
       <div className="MainPage">
         <EventMaker data={this.state} />
         <Switch>
-          <Route exact path={"/"+this.state.url} render={() => <MainContent data = {this.state}/>}/>
-          <Route exact path={"/"+this.state.url+"/:token"} render={() => <MainContent data = {this.state}/>}/>
+          <Route exact path={"/Profile/"+this.state.url} render={() => <MainContent data = {this.state}/>}/>
+          <Route exact path={"/Profile/"+this.state.url+"/:token"} render={() => <MainContent data = {this.state}/>}/>
           <Route exact path="" render={() => <Confirmation data = {this.state}/>}/>
         </Switch>
         <div className="leftContainer">
