@@ -134,9 +134,9 @@ class NavBar extends React.Component {
                       <Transformation width="400" height="400" gravity="face" radius="max" crop="crop" />
                       <Transformation width="200" crop="scale" />
                     </Image>
-                    <Card.Body>
+                    <Card.Body className="bodyCard">
                       <Card.Title><div className="name">Jen Eric Ladee</div></Card.Title>
-                      <Card.Text><p>About Me: I spend my free time posing for stock images. I enjoy events where I can eat food such as salads and yogurt while laughing with my head thrown back.</p></Card.Text>
+                      <Card.Text className="profileBody"><textarea className="editProfileText">About Me: I spend my free time posing for stock images. I enjoy events where I can eat food such as salads and yogurt while laughing with my head thrown back.</textarea></Card.Text>
                     </Card.Body>
                   </Card>
                 </div>

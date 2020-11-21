@@ -267,29 +267,27 @@ router.post('/update/:Email', auth, (req, res) => {
 
 router.get('/userInfo', auth, async(req, res) => {
   try{
-    const user = await User.findOne({ Email: req.user.Email });
-    const userEvents = await Event.find({ 'Participants.Email' : req.user.Email});
-    const friends = user.Friends;
+      const user = await User.findOne({ Email: req.user.Email });
+      const userEvents = await Event.find({ 'Participants.Email' : req.user.Email});
+      const friends = user.Friends;
 //    console.log(friends);
-    const friendEvents = [];
+      const friendEvents = [];
+      if(friends.length == 0)
+      {
+        return res.json({msg: 'You have no friends', Events: userEvents, friends: user.Friends, FriendEvents: friendEvents});
+      }
 
-    if(friends.length == 0)
-    {
-      return res.json({msg: 'You have no friends', Events: userEvents, friends: user.Friends, FriendEvents: friendEvents});
-    }
-    await Promise.all(friends.forEach(async friend => {
+      friends.forEach(async friend => {
       Username = friend.Username;
       const events = await Event.find({ 'Participants.Username' : friend.Username });
-
       friendEvents.push({Username: events});
-    }));
+    });
   }
   catch(err){
     console.log(err);
   }
 
-  console.log("hellowrorld", friendEvents);
-  res.json({Events: userEvents, friends: user.Friends, FriendEvents: friendEvents});
+  await Promise.all(friendEvents).then( (promises) => res.json({FriendEvents: promises, UserEvents: userEvents, Friends: user.friends}))
 });
 
 
