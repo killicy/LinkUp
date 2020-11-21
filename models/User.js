@@ -17,7 +17,8 @@ const userSchema = new Schema({
 
     Password: {
         type: String,
-        required: true
+        required: true,
+        select: false
     },
 
     Register_Date: {
