@@ -102,8 +102,9 @@ router.post('/login', (req, res) => {
                         Username: user.Username,
                         Email: user.Email,
                         Friends: user.Friends,
+                        Profile_pic: user.Profile_pic,
                         success: true
-                        // add link to profile pic
+
                     })
 
                 })
@@ -336,6 +337,24 @@ router.post('/usernameInfo', auth, async (req, res) => {
     }
 
     res.json({ Username: findUser.Username, Email: findUser.Email });
+
+})
+
+
+router.post('/changeProfilePic', auth, async (req, res) => {
+
+    const user = await User.findOne({ Username: req.user.Username });
+
+    user.Profile_pic = req.body.URL;
+    user.save();
+    const token = createToken.createToken(user);
+    res.cookie('access_token', token, {
+        maxAge: 3600000,
+        httpOnly: true,
+        secure: true
+    })
+
+    res.json({ msg: "Profile URL updated!" });
 
 })
 
