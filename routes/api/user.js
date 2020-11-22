@@ -249,7 +249,7 @@ router.get('/userInfo', auth, async(req, res) => {
         const friends = user.Friends;
         //    console.log(friends);
         if(friends.length == 0) {
-            return res.json({msg: 'You have no friends', Events: userEvents, friends: user.Friends, FriendEvents: friendEvents});
+            return res.json({msg: 'You have no friends', Events: userEvents, friends: user.Friends});
         }
 
         // Hold all my promises.
@@ -272,7 +272,7 @@ router.get('/userInfo', auth, async(req, res) => {
         });
         
         // Wait for all promises to complete, and aggregate them into `all`.
-        await Promise.all(promises).then( (all) => res.json({FriendEvents: all, UserEvents: userEvents, Friends: friends}))
+        await Promise.all(promises).then( (all) => res.json({ UserEvents: userEvents, Friends: friends, FriendEvents: all}))
     }
     
     catch(err) {
