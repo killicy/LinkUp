@@ -204,7 +204,8 @@ router.post('/searchUsers', auth, (req, res) => {
             { Username: { '$regex': req.body.search, '$options': 'i' } },
             { Email: { '$regex': req.body.search, '$options': 'i' } }
         ]
-    }).then((user) => {
+    }).select("-Password")
+    .then((user) => {
         res.json(user);
     });
 
