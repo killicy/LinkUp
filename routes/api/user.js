@@ -325,7 +325,10 @@ router.post('/usernameInfo', auth, async (req, res) => {
 
 })
 
-
+// route: post api/user/changeProfilePic
+// takes URL
+// creates a new token so that user does not have to logout/login
+// private, requires token
 router.post('/changeProfilePic', auth, async (req, res) => {
 
     const user = await User.findOne({ Username: req.user.Username });
