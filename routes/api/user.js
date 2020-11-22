@@ -242,61 +242,45 @@ router.post('/update/:Email', auth, (req, res) => {
 // route: post api/user/userInfo
 // displays logged in users friends and events
 // // private, requires token
-router.get('/userInfo', auth, async (req, res) => {
+router.get('/userInfo', auth, async(req, res) => {
+    try{
+        const user = await User.findOne({ Email: req.user.Email });
+        const userEvents = await Event.find({ 'Participants.Email' : req.user.Email});
+        const friends = user.Friends;
+        //    console.log(friends);
+        if(friends.length == 0) {
+            return res.json({msg: 'You have no friends', Events: userEvents, friends: user.Friends, FriendEvents: friendEvents});
+        }
 
-    //find logged in user
-    const user = await User.findOne({ Email: req.user.Email });
-
-    //find logged in users events
-    const userEvents = await Event.find({ 'Participants.Email': req.user.Email });
-
-    //logged in users friends
-    const friends = user.Friends;
-    //    console.log(friends);
-    const friendEvents = [];
-
-    //for each friend, we have their info{}. info.username, info.events.
-    // info.events is an array of events that the friend is going to 
-    friends.forEach(async friend => {
-
-        const info = {};
-
-        info.Username = friend.Username;
-        const events = await Event.find({ 'Participants.Username': friend.Username });
-
-        info.events = [];
-
-        //for each event the friend is going to, push the events info into info.events
-        events.forEach(event => {
-
-            info.events.push(event)
-            //console.log(info)
-            //info.events.push({Author: event.Author, Description: event.Description, Title: event.Title, Participants: event.Participants})
-            //console.log(event.Participants);
-            //arrayEvents.push({Author: event.Author});
-        })
-
-
-        //console.log(info.events.Participants);
-
-        // push the info{username, events} to an array of the logged in users friend events
-        friendEvents.push(info);
-        //res.json({ fevents: info});
-        //res.json({myevents: userEvents});
-
-        console.log("hellowrorld", friendEvents);
-
-
-
-    });
-
-    //console.log("**********************", friendEvents);
-
-    // res.json({Events: userEvents, friends: user.Friends, FriendEvents: friendEvents});
-    res.json({ Events: userEvents, friends: user.Friends });
-
-
+        // Hold all my promises.
+        let promises = [];
+        friends.forEach( (friend) => {
+            
+            let generatePromise = async () => {
+                const Username = friend.Username;
+                const events = await Event.find({ 'Participants.Username' : friend.Username });
+                
+                let retVal = {}
+                retVal[Username] = events;
+                
+                // Promise is resolved and returns the Events object for this friend.
+                return retVal;
+            };
+            
+            // Create the promise by calling the asynchronous function, and push it into our promises array.
+            promises.push(generatePromise());
+        });
+        
+        // Wait for all promises to complete, and aggregate them into `all`.
+        await Promise.all(promises).then( (all) => res.json({FriendEvents: all, UserEvents: userEvents, Friends: friends}))
+    }
+    
+    catch(err) {
+        console.log(err);
+    }
+  
 });
+
 
 
 

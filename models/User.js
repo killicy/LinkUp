@@ -18,7 +18,7 @@ const userSchema = new Schema({
     Password: {
         type: String,
         required: true,
-        select: false
+        select: true // This needs to be 'true' for the select on `login` to grab and compare with bcrypt.
     },
 
     Register_Date: {
