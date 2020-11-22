@@ -41,6 +41,10 @@ const eventSchema = new Schema({
         require: true
     },
 
+    Event_Image: {
+        type: String
+    },
+
     comments: [{
         body: String,  Username: String, createdAt: String
     }]
