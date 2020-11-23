@@ -25,6 +25,16 @@
   background-color: #f5f5f5;
 }
 
+.custom-control-label{
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 3px;
+}
+.LinkUp{
+  display: flex;
+  min-height: 100vh;
+  min-width: 100vw;
+}
 .friendSearch {
 
 }
@@ -66,6 +76,7 @@
   min-width: 40vw;
   background-color: #ffffff;
   white-space: nowrap;
+  
 }
 
 .myeventHeader{
@@ -192,17 +203,34 @@ p{
   color: black;
 }
 
-
 .loginForm {
   margin: auto;
   font-size: calc(10px + 2vmin);
   color: black;
+  background-color: #92bbf0;
+  padding: 40px;
+  padding-bottom: 10px;
+  border-radius: 15px;
+}
+.signInTitle
+{
+  padding-bottom: 15px;
+  text-align: center;
 }
 
+.registerTitle
+{
+  padding-bottom: 15px;
+  text-align: center;
+}
 .registerForm {
   margin: auto;
   font-size: calc(10px + 2vmin);
   color: black;
+  background-color: #92bbf0;
+  padding: 40px;
+  padding-bottom: 10px;
+  border-radius: 15px;
 }
 
 .Container {

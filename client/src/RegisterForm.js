@@ -2,6 +2,7 @@ import React from 'react';
 import InputField from './InputField';
 import SubmitButton from './SubmitButton';
 import Cookies from 'universal-cookie';
+import Button from 'react-bootstrap/Button';
 class RegisterForm extends React.Component {
 
     constructor(props){
@@ -85,20 +86,21 @@ class RegisterForm extends React.Component {
     return(
       <div className="registerForm">
         <form>
-           <h3>Sign Up</h3>
+        <div className= "registerTitle"><h4>Sign Up</h4></div>
            <div className="form-group">
-               <label>Username</label>
-               <input type="text" className="form-control" placeholder="Enter username" onChange = {e => this.setInputValue("username", e.target.value)}/>
+               <h6>Username</h6>
+               <input type="text" className="form-control" placeholder="Enter a username" onChange = {e => this.setInputValue("username", e.target.value)}/>
            </div>
            <div className="form-group">
-               <label>Email</label>
-               <input type="email" className="form-control" placeholder="Enter Email" onChange = {e => this.setInputValue("email", e.target.value)}/>
+               <h6>Email</h6>
+               <input type="email" className="form-control" placeholder="Enter an email" onChange = {e => this.setInputValue("email", e.target.value)}/>
            </div>
            <div className="form-group">
-               <label>Password</label>
-               <input type="password" className="form-control" placeholder="Enter password" onChange = {e => this.setInputValue("password", e.target.value)}/>
+               <h6>Password</h6>
+               <input type="password" className="form-control" placeholder="Enter a password" onChange = {e => this.setInputValue("password", e.target.value)}/>
            </div>
-           <button type="button" className="loginBtn btn-primary btn-block" onClick = {() => this.doRegister()}>Sign Up</button>
+           {/* <button type="button" className="loginBtn btn-primary btn-block" onClick = {() => this.doRegister()}>Sign Up</button> */}
+           <Button variant="primary" size= "lg" block onClick = {() => this.doRegister()}>Register</Button>{' '}
            <p className="need-an-account text-right">
                Took a wrong turn? <a href="http://localhost:3000">Go Back</a>
            </p>

@@ -8,6 +8,7 @@ import SubmitButton from './SubmitButton';
 import Confirmation from './Confirmation';
 import NavBar from './NavBar';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from 'react-bootstrap/Button';
 
 import {
   BrowserRouter as Router,

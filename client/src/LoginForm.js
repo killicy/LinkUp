@@ -2,6 +2,7 @@ import React from 'react';
 import InputField from './InputField';
 import SubmitButton from './SubmitButton';
 import UserStore from './stores/UserStore';
+import Button from 'react-bootstrap/Button';
 import {
   BrowserRouter as Router,
   Switch,
@@ -89,27 +90,28 @@ class LoginForm extends React.Component {
     return(
       <div className="loginForm">
         <form>
-           <h3>Sign In</h3>
+           <div className= "signInTitle"><h4>Sign In</h4></div>
            <div className="form-group">
-               <label>Username</label>
-               <input type="text" className="form-control" placeholder="Enter username" onChange = {e => this.setInputValue("username", e.target.value)}/>
+               <h6>Username</h6>
+               <input type="text" className="form-control" placeholder="Enter a username" onChange = {e => this.setInputValue("username", e.target.value)}/>
            </div>
            <div className="form-group">
-               <label>Password</label>
-               <input type="password" className="form-control" placeholder="Enter password" onChange = {e => this.setInputValue("password", e.target.value)}/>
+               <h6>Password</h6>
+               <input type="password" className="form-control" placeholder="Enter a password" onChange = {e => this.setInputValue("password", e.target.value)}/>
            </div>
            <div className="form-group">
                <div className="custom-control custom-checkbox">
                    <input type="checkbox" className="custom-control-input" id="customCheck1" />
-                   <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
+                   <label className="custom-control-label" htmlFor="customCheck1"><h7>Remember me</h7></label>
                </div>
            </div>
-           <button type="button" className="loginBtn btn-primary btn-block" onClick = {() => this.doLogin()}>Sign In</button>
+           {/* <button type="button" className="loginBtn btn-primary btn-block" onClick = {() => this.doLogin()}>Sign In</button> */}
+           <Button variant="primary" size= "lg" block onClick = {() => this.doLogin()}>Sign In</Button>{' '}
            <p className="need-an-account text-right">
                Need an account? <a href="http://localhost:3000/Register">Register</a>
            </p>
            <p className="forgot-password text-right">
-               Forgot <a href="#">Password?</a>
+               Forgot Password? <a href="#">Click here</a>
            </p>
        </form>
       </div>
