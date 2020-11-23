@@ -42,7 +42,7 @@ class Profile extends React.Component {
           </Image>
           <Card.Body>
             <Card.Title><div className="name">Jen Eric Ladee</div></Card.Title>
-            <Card.Text><p>About Me: I spend my free time posing for stock images. I enjoy events where I can eat food such as salads and yogurt while laughing with my head thrown back.</p></Card.Text>
+            <Card.Text className="profileBody"><p>About Me: I spend my free time posing for stock images. I enjoy events where I can eat food such as salads and yogurt while laughing with my head thrown back.</p></Card.Text>
           </Card.Body>
         </Card>
       </div>
