@@ -37,7 +37,8 @@ router.post('/register', (req, res) => {
                     const newUser = new User({
                         Email,
                         Password,
-                        Username
+                        Username,
+                        Description: ""
                     });
 
                     // Create salt and hash
@@ -179,6 +180,10 @@ router.post('/addFriend', auth, async (req, res) => {
 // private, requires token
 router.post('/searchFriend', auth, async (req, res) => {
 
+    if(!req.body.search){
+        res.json({ msg: "Please enter search criteria" });
+    }
+
     const user = await User.findOne({ _id: req.user.id })
 
     var condition = new RegExp(req.body.search);
@@ -199,6 +204,10 @@ router.post('/searchFriend', auth, async (req, res) => {
 // private, does require token
 router.post('/searchUsers', auth, (req, res) => {
 
+    if(!req.body.search){
+        res.json({ msg: "Please enter search criteria" });
+    }
+
     User.find({
         "$or": [
             { Username: { '$regex': req.body.search, '$options': 'i' } },
@@ -207,6 +216,7 @@ router.post('/searchUsers', auth, (req, res) => {
     }).select("-Password")
     .then((user) => {
         res.json(user);
+        console.log(user);
     });
 
 
@@ -292,7 +302,7 @@ router.post('/usernameInfo', auth, async (req, res) => {
 
     const loggedUser = await User.findOne({ Username: req.user.Username });
     const findUser = await User.findOne({ Username: req.body.Username });
-    const events = await Event.find({ 'Participants.Username': req.body.Username });
+    const events = await Event.find({ 'Participants.Username': req.body.Username }).sort('Date_Added');
 
     const friends = [];
 
@@ -305,7 +315,27 @@ router.post('/usernameInfo', auth, async (req, res) => {
     }
 
     if (findUser.Username == loggedUser.Username) {
-        res.json({ User: loggedUser, Events: events })
+        const friends = loggedUser.Friends;
+        let promises = [];
+        friends.forEach( (friend) => {
+            
+            let generatePromise = async () => {
+                const Username = friend.Username;
+                const events = await Event.find({ 'Participants.Username' : friend.Username }).sort('Date_Added');
+                
+                let retVal = {}
+                retVal[Username] = events;
+                
+                // Promise is resolved and returns the Events object for this friend.
+                return retVal;
+            };
+            
+            // Create the promise by calling the asynchronous function, and push it into our promises array.
+            promises.push(generatePromise());
+        });
+        
+        // Wait for all promises to complete, and aggregate them into `all`.
+        await Promise.all(promises).then( (all) => res.json({ UserEvents: events, Friends: friends, FriendEvents: all}))
         return;
     }
 
@@ -317,11 +347,31 @@ router.post('/usernameInfo', auth, async (req, res) => {
     })
 
     if (friends.includes(req.body.Username)) {
-        res.json({ User: findUser, Events: events })
+        const friends = findUser.Friends;
+        let promises = [];
+        friends.forEach( (friend) => {
+            
+            let generatePromise = async () => {
+                const Username = friend.Username;
+                const events = await Event.find({ 'Participants.Username' : friend.Username }).sort('Date_Added');
+                
+                let retVal = {}
+                retVal[Username] = events;
+                
+                // Promise is resolved and returns the Events object for this friend.
+                return retVal;
+            };
+            
+            // Create the promise by calling the asynchronous function, and push it into our promises array.
+            promises.push(generatePromise());
+        });
+        
+        // Wait for all promises to complete, and aggregate them into `all`.
+        await Promise.all(promises).then( (all) => res.json({ UserEvents: events, Friends: friends, FriendEvents: all}))
         return;
     }
 
-    res.json({ Username: findUser.Username, Email: findUser.Email });
+    res.json({ Username: findUser.Username, Email: findUser.Email, Profile_pic: findUser.Profile_pic });
 
 })
 
@@ -344,6 +394,42 @@ router.post('/changeProfilePic', auth, async (req, res) => {
 
     res.json({ msg: "Profile URL updated!" });
 
+})
+
+
+// route: get api/user/verifyUser
+// takes token, sets user isVerified to true
+// private, requires token
+router.get('/verifyUser', auth, async(req, res) => {
+   
+    try {
+        const user = await User.findOne({ Username: req.user.Username });
+
+        user.isVerified = true;
+        user.save();
+    
+        res.json({ msg: "User is now verified!" });
+        
+    } catch (error) {
+        res.json({ error });
+    }
+
+   
+    
+})
+
+// route: get api/user/getUser
+// takes token, returns user
+// private, requires token
+router.get('/getUser', auth, async(req, res) => {
+
+    try {
+        const user = await User.findOne({ Username: req.user.Username }).select('-Password');
+        res.json({ user });
+        
+    } catch (error) {
+        res.json({ error });
+    }
 })
 
 

@@ -25,10 +25,11 @@ router.post('/create', auth, (req, res) => {
                 Title,
                 Description, 
                 Author: { Username: req.user.Username, Email: req.user.Email},
-                Participants: [{ Username: req.user.Username, Email: req.user.Email}],  
+                Participants: [{ Username: req.user.Username, Email: req.user.Email, Profile_pic: req.user.Profile_pic}],  
                 Date_Start, 
                 Date_End,
                 comments: [] 
+                
             });
 
             newEvent.save()
@@ -119,7 +120,7 @@ router.post('/update/:Title', auth, (req, res) => {
 router.post('/addParticipant', auth, async(req, res) => {
 
     const event = await Event.findOne({ Title: req.body.Title });
-    const newParticipant = ({ Username: req.user.Username, Email: req.user.Email});
+    const newParticipant = ({ Username: req.user.Username, Email: req.user.Email, Profile_pic: req.user.Profile_pic});
 
     event.Participants.push(newParticipant);
     event.save();
@@ -135,7 +136,7 @@ router.post('/addParticipant', auth, async(req, res) => {
 router.post('/removeParticipant', auth, async(req, res) => {
 
     const event = await Event.findOne({ Title: req.body.Title });
-    const deleteParticipant = ({  Username: req.user.Username, Email: req.user.Email});
+    const deleteParticipant = ({  Username: req.user.Username, Email: req.user.Email, Profile_pic: req.user.Profile_pic});
 
     event.Participants.pull(deleteParticipant);
     event.save();
@@ -149,5 +150,26 @@ router.post('/removeParticipant', auth, async(req, res) => {
     res.json(event);
 
 });
+
+// route: post api/event/changeEventPic
+// takes URL, title
+// private, requires token
+router.post('/changeEventPic', auth, async (req, res) => {
+
+    try {
+        const event = await Event.findOne({ Title: req.body.Title });
+
+        event.Event_Image = req.body.URL;
+        event.save();
+       
+    
+        res.json({ msg: "Event_Image updated!" });
+
+    } catch (error) {
+        res.json({ error });
+    }
+   
+
+})
 
 module.exports = router;

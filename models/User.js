@@ -26,7 +26,7 @@ const userSchema = new Schema({
         default: Date.now
     },
 
-    Friends: [{ Username: String, Email: String}],
+    Friends: [{ Username: String, Email: String, Profile_pic: String }],
     
     Profile_pic: {
         type: String,
@@ -36,7 +36,13 @@ const userSchema = new Schema({
 
     isVerified: {
         type: Boolean,
+        required: true,
         default: false
+    },
+    
+    Description: {
+        type: String,
+        
     }
     
 });
