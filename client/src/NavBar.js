@@ -192,15 +192,18 @@ class NavBar extends React.Component {
           <Modal show={this.state.show} onHide={ () => this.setShow() }>
             <Modal.Dialog>
               <Modal.Header closeButton>
+                <div/>
                 <Modal.Title>Edit Account</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                   <div className="space"></div>
                     <form>
-                       <Image cloudName= "dsnnlkpj9" publicId={this.state.user.Profile_pic} className = "profilePic" onClick={(e) => this.beginUpload()}>
-                         <Transformation width="400" height="400" gravity="face" radius="max" crop="crop" />
-                         <Transformation width="200" crop="scale" />
-                       </Image>
+                      <div className="formEdit">
+                         <Image cloudName= "dsnnlkpj9" publicId={this.state.user.Profile_pic} className = "profilePic" onClick={(e) => this.beginUpload()}>
+                           <Transformation width="400" height="400" gravity="face" radius="max" crop="crop" />
+                           <Transformation width="200" crop="scale" />
+                         </Image>
+                        </div>
                        <div className="form-group">
                            <label>First Name:</label>
                            <input type="text" className="form-control" placeholder="First Name" onChange = {e => this.setInputValue("title", e.target.value)}/>

@@ -13,15 +13,13 @@ class RegisterForm extends React.Component {
             buttonDisabled: false,
             success: false,
             isLoggedin: false,
-            msg: ''
+            message: ''
         }
     }
 
   setInputValue(property, val) {
       val = val.trim();
-
-      // Username and Password is 12 characters max
-      if (val.length > 50) {
+      if (val.length > 25) {
           return;
       }
       this.setState({
@@ -31,13 +29,7 @@ class RegisterForm extends React.Component {
 
   resetForm() {
       this.setState({
-          username: '',
-          email: '',
-          password: '',
-          buttonDisabled: false,
-          success: false,
-          isLoggedin: false,
-          msg: ''
+
       })
   }
 
@@ -50,7 +42,7 @@ class RegisterForm extends React.Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin':'https://localhost:5000',
-        }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success, message: data.msg}));
+        }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success}));
          if (this.state.isLoggedin) {
            this.props.history.push('/LinkUp');
          }
@@ -78,14 +70,13 @@ class RegisterForm extends React.Component {
       this.props.history.push('/');
     }
     else {
-      this.resetForm();
     }
   }
   render() {
     return(
-      <div className="registerForm">
-        <form>
-           <h3>Sign Up</h3>
+      <div className="loginForm">
+        <form className="login">
+            {this.state.message}
            <div className="form-group">
                <label>Username</label>
                <input type="text" className="form-control" placeholder="Enter username" onChange = {e => this.setInputValue("username", e.target.value)}/>

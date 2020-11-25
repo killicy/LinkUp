@@ -43,12 +43,14 @@ class LinkUp extends React.Component {
           friendEvents: [],
           show: false,
           startDate: new Date(),
+          startDate1: new Date(),
           description: '',
           title: '',
           success: false,
           addFriend: false,
           friend: false,
-          Profile_pic: ''
+          Profile_pic: '',
+          user: {Username: 'placeholder'}
       }
   }
 
@@ -78,7 +80,7 @@ class LinkUp extends React.Component {
           Title: this.state.title,
           Description: this.state.description,
           Date_Start: this.state.startDate,
-          Date_End: this.state.startDate
+          Date_End: this.state.startDate1
         })}).then(response => response.json()).then(data => this.setState({success: data.success, message: data.msg}));
         if(this.state.success){
           this.setShow();
@@ -142,7 +144,13 @@ class LinkUp extends React.Component {
         },
         body: JSON.stringify({
           Username: this.state.url
-        })}).then(response => response.json()).then(data => this.setState({events: data.UserEvents, friends: data.Friends, friendEvents: data.FriendEvents, success: data.success, addFriend: data.addFriend, friend: data.friend, Profile_pic: data.Profile_pic}));
+        })}).then(response => response.json()).then(data => {
+          if(data.success === false)
+          {
+            this.props.history.push('/TheVoid');
+          }
+          this.setState({events: data.UserEvents, friends: data.Friends, friendEvents: data.FriendEvents, success: data.success, addFriend: data.addFriend, friend: data.friend, Profile_pic: data.Profile_pic, user: data.user});
+        });
         if(this.state.success === true){
           this.setState({
             success: true,
@@ -193,6 +201,9 @@ class LinkUp extends React.Component {
     catch(e) {
     }
   }
+  setDater(date){
+    this.setState({startDate: new Date(date), startDate1: new Date(date)});
+  }
   render() {
 
     return (
@@ -216,14 +227,14 @@ class LinkUp extends React.Component {
         <Modal show={this.state.show} onHide={ () => this.setShow() }>
           <Modal.Dialog>
             <Modal.Header closeButton>
-              <Modal.Title>
-                {this.state.message}
+              <div/>
+              <Modal.Title className="title">
+                <h3>Add Event</h3>
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <div className="addEvent">
                 <form>
-                   <h3>Add Event</h3>
                    <div className="form-group">
                        <label>Title:</label>
                        <input type="text" className="form-control" placeholder="What's your title?" onChange = {e => this.setInputValue("title", e.target.value)}/>
@@ -233,13 +244,15 @@ class LinkUp extends React.Component {
                        <textarea className="form-control" placeholder="Give us a quick description" onChange = {e => this.setInputValue("description", e.target.value)}/>
                    </div>
                    <div className="form-group">
-                       From: <DatePicker selected={this.state.startDate} onChange={date => this.setState({startDate: new Date(date)})} showTimeSelect dateFormat="Pp" />
-                       To: <DatePicker selected={this.state.startDate} onChange={date => this.setState({startDate: new Date(date)})} showTimeSelect dateFormat="Pp" />
+                       From: <DatePicker selected={this.state.startDate} onChange={date => this.setDater(date)} showTimeSelect dateFormat="Pp" />
+                       To: <DatePicker selected={this.state.startDate1} onChange={date => this.setState({startDate1: new Date(date)})} showTimeSelect dateFormat="Pp" />
                    </div>
+
                </form>
               </div>
             </Modal.Body>
             <Modal.Footer>
+              {this.state.message}
               <Button variant="secondary" onClick={ () => this.setShow() } >Close</Button>
               <Button variant="primary" onClick = {() => this.addEvent()}>Post Event</Button>
             </Modal.Footer>

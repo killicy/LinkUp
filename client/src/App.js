@@ -7,6 +7,10 @@ import LinkUp from './LinkUp';
 import SubmitButton from './SubmitButton';
 import Confirmation from './Confirmation';
 import NavBar from './NavBar';
+import Void from './Void';
+import PasswordRecovery from './PasswordRecovery';
+import PasswordRecoveryPage from './PasswordRecoveryPage';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {
@@ -52,9 +56,14 @@ class App extends Component {
         <div className= "app">
           <Switch>
             <Route exact path="/" component={LoginForm}/>
+            <Route path="/TheVoid" component={Void} />
+            <Route path="/PasswordRecovery" component={PasswordRecoveryPage} />
+            <Route path="/PasswordRecovery/:user" component={PasswordRecovery} />
             <Route exact path="/Register" component={RegisterForm} />
             <Route exact path="/Confirmation/:token" component={Confirmation} />
             <Route path="/Profile/:user" component={LinkUp} />
+            <Route path="" component={Void}/>
+
           </Switch>
         </div>
     </Router>

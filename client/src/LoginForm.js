@@ -2,6 +2,8 @@ import React from 'react';
 import InputField from './InputField';
 import SubmitButton from './SubmitButton';
 import UserStore from './stores/UserStore';
+import logo from './stores/drawing.svg';
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -87,31 +89,32 @@ class LoginForm extends React.Component {
 
   render() {
     return(
-      <div className="loginForm">
-        <form>
-           <h3>Sign In</h3>
-           <div className="form-group">
-               <label>Username</label>
-               <input type="text" className="form-control" placeholder="Enter username" onChange = {e => this.setInputValue("username", e.target.value)}/>
-           </div>
-           <div className="form-group">
-               <label>Password</label>
-               <input type="password" className="form-control" placeholder="Enter password" onChange = {e => this.setInputValue("password", e.target.value)}/>
-           </div>
-           <div className="form-group">
-               <div className="custom-control custom-checkbox">
-                   <input type="checkbox" className="custom-control-input" id="customCheck1" />
-                   <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
-               </div>
-           </div>
-           <button type="button" className="loginBtn btn-primary btn-block" onClick = {() => this.doLogin()}>Sign In</button>
-           <p className="need-an-account text-right">
-               Need an account? <a href="http://localhost:3000/Register">Register</a>
-           </p>
-           <p className="forgot-password text-right">
-               Forgot <a href="#">Password?</a>
-           </p>
-       </form>
+      <div className="loginStyling">
+        <div className="loginForm">
+          <form className="login">
+             <h3 className="header">Sign In</h3>
+             <div className="form-group">
+                 <label>Username</label>
+                 <input type="text" className="form-control" placeholder="Enter username" onChange = {e => this.setInputValue("username", e.target.value)}/>
+             </div>
+             <div className="form-group">
+                 <label>Password</label>
+                 <input type="password" className="form-control" placeholder="Enter password" onChange = {e => this.setInputValue("password", e.target.value)}/>
+             </div>
+             <div className="form-group">
+                 <div className="custom-control custom-checkbox">
+                     <input type="checkbox" className="custom-control-input" id="customCheck1" />
+                 </div>
+             </div>
+             <button type="button" className="loginBtn btn-primary btn-block" onClick = {() => this.doLogin()}>Sign In</button>
+             <p className="need-an-account text-right">
+                 Need an account? <a href="http://localhost:3000/Register">Register</a>
+             </p>
+             <p className="forgot-password text-right">
+                 Forgot <a href="http://localhost:3000/PasswordRecovery">Password?</a>
+             </p>
+         </form>
+        </div>
       </div>
     );
   }

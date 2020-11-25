@@ -60,8 +60,11 @@ async addEvent(Title){
                   <div className="contentGrid">{this.props.data.events.map((event, index) => {
                     return (
                         <Card key={index} className="EventCards border border-dark mb-1">
+                        <Card.Header>
+                          <Card.Title>{event.Title}</Card.Title>
+                          <DatePicker selected={new Date(event.Date_Start)} showTimeSelect dateFormat="Pp" /> <DatePicker selected={new Date(event.Date_End)} showTimeSelect dateFormat="Pp" />
+                        </Card.Header>
                         <Card.Body>
-                          <Card.Title>{event.Title} <DatePicker selected={new Date(event.Date_Start)} showTimeSelect dateFormat="Pp" /> <DatePicker selected={new Date(event.Date_End)} showTimeSelect dateFormat="Pp" /></Card.Title>
                           <Card.Text>-{event.Description}</Card.Text>
                         </Card.Body>
                         <Card.Footer>

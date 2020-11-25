@@ -18,7 +18,8 @@ router.post('/register', (req, res) => {
     const { Email, Password, Username } = req.body;
 
     if(!Email || !Password || !Username) {
-        return res.status(400).json({ msg: 'Please enter all fields' });
+      console.log("help");
+      return res.status(400).json({ msg: 'Please enter all fields' });
     }
 
     // check to see if user exists
@@ -128,10 +129,14 @@ router.get('/confirmationEmail', auth,  (req, res) => {
     res.json({success: true})
 });
 
+router.post('/passwordEmail', (req, res) => {
+    sendEmail(req.body.email, templates.password(req.body.username));
+    res.json({success: true})
+});
+
 
 router.post('/confirmation', (req, res) => {
-  const token = req.body.token
-
+  const token = req.body.token;
   // Check for token
   if(!token){
       res.status(401).json({ msg: 'This page doesn\'t exist', success: false});
@@ -327,7 +332,7 @@ router.post('/usernameInfo', auth, async (req, res) => {
     console.log(friends.includes(req.body.Username));
 
     if (findUser == null) {
-        res.json({ msg: "Username not found", UserEvents: [], Friends: [], FriendEvents: [], success: false});
+        res.json({ msg: "Username not found", UserEvents: [], Friends: [], FriendEvents: [], success: false, user: {Username: 'placeholder'}});
         return;
     }
 
@@ -354,7 +359,7 @@ router.post('/usernameInfo', auth, async (req, res) => {
         // Wait for all promises to complete, and aggregate them into `all`.
         await Promise.all(promises).then( (all) => {
           console.log(all);
-           res.json({ UserEvents: events, Friends: friends, FriendEvents: all, success: true, addFriend: false, friend: false, Username: findUser.Username, Email: findUser.Email, Profile_pic: findUser.Profile_pic})
+           res.json({ UserEvents: events, Friends: friends, FriendEvents: all, success: true, addFriend: false, friend: false, Username: findUser.Username, Email: findUser.Email, Profile_pic: findUser.Profile_pic, user: findUser})
         })
         return;
     }
@@ -386,11 +391,11 @@ router.post('/usernameInfo', auth, async (req, res) => {
         });
 
         // Wait for all promises to complete, and aggregate them into `all`.
-        await Promise.all(promises).then( (all) => res.json({ UserEvents: events, Friends: friends, FriendEvents: all, success: true, addFriend: false, friend: true, Username: findUser.Username, Email: findUser.Email, Profile_pic: findUser.Profile_pic}))
+        await Promise.all(promises).then( (all) => res.json({ UserEvents: events, Friends: friends, FriendEvents: all, success: true, addFriend: false, friend: true, Username: findUser.Username, Email: findUser.Email, Profile_pic: findUser.Profile_pic, user: findUser}))
         return;
     }
     else{
-      res.json({msg: "Add this user to see their posts.", UserEvents: [], Friends: [], FriendEvents: [], success: false, addFriend: true, friend: true, Username: findUser.Username, Email: findUser.Email, Profile_pic: findUser.Profile_pic})
+      res.json({msg: "Add this user to see their posts.", UserEvents: [], Friends: [], FriendEvents: [], success: true, addFriend: true, friend: true, Username: findUser.Username, Email: findUser.Email, Profile_pic: findUser.Profile_pic, user: findUser})
     }
 
 
