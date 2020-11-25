@@ -1,0 +1,35 @@
+.loginForm
+{
+    height: 100vh;
+    width: 100vw;
+    background-color: rgb(95, 197, 64);
+    text-align: right;
+}
+
+.block
+{
+    min-height:45vh;
+    min-width: 35vw;
+    text-align: center;
+    border-radius: 25px;
+    background-color: blue;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    margin: auto;
+    color: rgb(184, 201, 36);
+}
+
+.innerContents
+{
+    color: rgb(218, 93, 84);
+    text-align: center;
+    padding-top: 10px;
+    padding-left: 15px;
+}
+
+.buttons
+{
+    padding-top: 5%;
+}

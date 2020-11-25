@@ -13,15 +13,270 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
+.app {
+  display: flex;
   min-height: 100vh;
+  min-width: 100vw;
+  flex-direction: column;
+  align-items: top;
+  justify-content: left;
+  font-size: calc(10px + 2vmin);
+  color: black;
+  background-color: #f5f5f5;
+}
+
+.custom-control-label{
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 3px;
+}
+.LinkUp{
+  display: flex;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+.friendSearch {
+
+}
+
+.leftContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
+  max-height: 100%;
+}
+
+.Profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 35vh;
+  min-width: 239.3px;
+  max-width: 239.9px;
+  background-color: #525252;
+  margin-bottom: 10px;
+  max-height: 100%;
+  min-height: 300px;
+  overflow: hidden;
+}
+
+.Friends {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 55vh;
+  min-width: 239.3px;
+  background-color: #ffffff;
+  white-space: nowrap;
+  border-style: outset;
+}
+
+.mainContent {
+  min-width: 40vw;
+  background-color: #ffffff;
+  white-space: nowrap;
+  
+}
+
+.myeventHeader{
+  border-bottom: 1px solid rgba(0,0,0,.125);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
+}
+p{
+  max-height: 3vh;
+  line-height: 5vh;
+}
+.userEvents {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 70vh;
+  min-width: 239.3px;
+  background-color: #ffffff;
+  white-space: nowrap;
+}
+
+.Findfriends {
+  background-color: #ffffff;
+  display: flex;
+  white-space: nowrap;
+}
+
+
+
+.MainPage {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: calc(.5px + 2vmin);
+  color: black;
+  margin: auto;
+}
+
+.profileDropdown{
+
+    background-color: #282c34;
+    margin-right: 1vw;
+}
+
+
+.profilePic{
+
+    border-radius: 100px;
+    max-width: 100px;
+    max-height: 100px;
+    border: 2px solid black;
+}
+
+.name{
+  text-align: center;
+}
+
+.profileStuff{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: none;
+  max-height: 100%;
+  min-height: 90%;
+  background-color: #525252;
+}
+
+.profileBody{
+  overflow-y: auto;
+
+}
+.bodyCard{
+}
+.editProfileText{
+  min-width: 239.3px;
+  min-height: 200px;
+  overflow-y: auto;
+}
+
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.space{
+  background-color: #0098b1;
+  min-height: 10%;
+}
+
+
+p{
+  font-size: 15px;
+  line-height: 25px;
+  max-height: 100%;
+}
+
+
+.navBarDropdown{
+  margin-left: 10vw;
+}
+
+
+
+.Expand{
+    display:block;
+    width:25px;
+    height: 25px;
+    border-radius: 25px;
+    font-size: 25px;
+    text-align: center;
+    margin-right: 25px;
+    background: #fff;
+    line-height: 1.7em;
+    max-width: 50px;
+    max-height: 50px;
+}
+
+.NavBar {
+  background-color: #283e4a;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 6.5vh;
+  min-height: 50px;
+  min-width: 100vw;
   font-size: calc(10px + 2vmin);
-  color: white;
+}
+
+.Confirmation {
+  margin: auto;
+  font-size: calc(10px + 2vmin);
+  color: black;
+}
+
+.loginForm {
+  margin: auto;
+  font-size: calc(10px + 2vmin);
+  color: black;
+  background-color: #92bbf0;
+  padding: 40px;
+  padding-bottom: 10px;
+  border-radius: 15px;
+}
+.signInTitle
+{
+  padding-bottom: 15px;
+  text-align: center;
+}
+
+.registerTitle
+{
+  padding-bottom: 15px;
+  text-align: center;
+}
+.registerForm {
+  margin: auto;
+  font-size: calc(10px + 2vmin);
+  color: black;
+  background-color: #92bbf0;
+  padding: 40px;
+  padding-bottom: 10px;
+  border-radius: 15px;
+}
+
+.Container {
+  margin: 100px;
+  font-size: calc(10px + 2vmin);
+  color: black;
+}
+.postEvent {
+  margin: 100px;
+  font-size: calc(10px + 2vmin);
+  color: black;
+}
+.mainContent {
+  margin: 100px;
+  font-size: calc(10px + 2vmin);
+  color: black;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn {
+
+}
+
+.profileDropdown {
+  border-radius: 50px;
+  background-color: black;
+
 }
 
 .App-link {

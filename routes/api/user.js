@@ -13,8 +13,6 @@ const msgs = require('../../middleware/confirmationMsgs');
 const templates = require('../../middleware/emailTemplate');
 const Event = require('../../models/Event.js');
 
-
-
 // route: POST api/user/register
 // registers a new user, email=unique
 // public, does not require token
@@ -69,9 +67,6 @@ router.post('/register', (req, res) => {
         })
 });
 
-
-
-
 // route: POST api/user/login
 // login user
 // takes email, Password
@@ -105,7 +100,6 @@ router.post('/login', (req, res) => {
                         Friends: user.Friends,
                         Profile_pic: user.Profile_pic,
                         success: true
-
                     })
 
                 })
@@ -113,20 +107,43 @@ router.post('/login', (req, res) => {
 
 });
 
-
-
 // GET api/user/auth
 // header takes x-auth-token and token value
 // returns user assigned to token
 // private, requires token
-
 router.get('/auth', auth, (req, res) => {
     User.findById(req.user.id)
         .select('-Password')
         .then(user => res.json(user));
 });
 
+router.get('/confirmationEmail', auth,  (req, res) => {
+    const token = createToken.createToken(req.user);
+    console.log(req.user.Email)
+    sendEmail(req.user.Email, templates.confirm(req.user.Username, token));
+    res.json({success: true})
+});
 
+
+router.post('/confirmation', (req, res) => {
+  const token = req.body.token
+
+  // Check for token
+  if(!token){
+      res.status(401).json({ msg: 'This page doesn\'t exist', success: false});
+      return;
+  }
+
+  try{
+      // Verify token
+      const decoded = jwt.verify(token, key.secretOrKey);
+
+
+      res.json({msg: 'Welcome to LinkUp ' + decoded.Username +', you are now verified!!!',success: true})
+  } catch(e) {
+      res.status(400).json({ msg: 'This page doesn\'t exist', success: false});
+  }
+});
 
 router.get('/isLoggedIn', auth, (req, res) => {
     // Create new token and cookie if the user is still logged in
@@ -139,6 +156,15 @@ router.get('/isLoggedIn', auth, (req, res) => {
     res.json({ success: true, msg: req.user.Username });
 });
 
+router.get('/user', auth, (req, res) => {
+  const token = createToken.createToken(req.user);
+  res.cookie('access_token', token,{
+    maxAge: 3600000,
+    httpOnly: true,
+    secure: true
+  })
+  res.json({success: true, username: req.user.Username});
+});
 
 router.get('/logOut', auth, (req, res) => {
     // Delete cookie if the user logs out
@@ -148,7 +174,6 @@ router.get('/logOut', auth, (req, res) => {
     })
     res.json({ success: false });
 });
-
 
 // post api/user/addFriend
 // adding a friend to the list
@@ -172,9 +197,6 @@ router.post('/addFriend', auth, async (req, res) => {
 
 });
 
-
-
-
 // post api/user/addFriend
 // regex search on logged in users friends list
 // private, requires token
@@ -197,7 +219,6 @@ router.post('/searchFriend', auth, async (req, res) => {
 
 });
 
-
 // route: POST api/searchUsers
 // searches for users
 // optional username, email
@@ -218,19 +239,34 @@ router.post('/searchUsers', auth, (req, res) => {
         res.json(user);
         console.log(user);
     });
-
-
+    
 });
 
 // route: Delete api/user/delete
 // deletes user by Email
 // private, requires token
-
 router.delete('/delete', auth, (req, res) => {
     const { Email } = req.body;
     User.findOneAndDelete({ Email })
         .then(user => user.remove().then(() => res.json({ msg: 'User successfully deleted' })))
         .catch(err => res.status(404).json({ msg: 'User does not exist' }));
+});
+
+// route: post api/user/update/Username
+// updates user info
+// private, requires token
+router.post('/update/:Username', auth, (req, res) => {
+    User.findOneAndUpdate( {Username: req.params.Username},
+        req.body, {new: true}, (err, user) => {
+            if(err){
+                console.log(err)
+                res.status(404).json({msg: 'User does not exist or username/email is already taken'})
+            }
+            else{
+                console.log(user)
+                res.json( {msg: 'User successfully updated'})
+            }
+    });
 });
 
 // route: post api/user/update/Email
@@ -291,9 +327,6 @@ router.get('/userInfo', auth, async(req, res) => {
     }
   
 });
-
-
-
 
 // route: post api/user/usernameInfo
 // takes username, displays that users info in accordance to your relationship
@@ -431,6 +464,5 @@ router.get('/getUser', auth, async(req, res) => {
         res.json({ error });
     }
 })
-
 
 module.exports = router;

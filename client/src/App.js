@@ -1,36 +1,62 @@
-import React from 'react'
+import React, { Component } from 'react';
 //import ReactDOM from 'react-dom'
 import './App.css';
-import Login from './login.js';
-//import logo from './routes/api/logo.svg'
+import LoginForm from './LoginForm';
+import RegisterForm from './RegisterForm';
+import LinkUp from './LinkUp';
+import Confirmation from './Confirmation';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-class App extends React.Component{
-  constructor() {
-    super();
-    this.state = {
-      date: 'hello world'
-    };
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
+import createBrowserHistory from "history/createBrowserHistory"
+
+
+export const history = createBrowserHistory({
+  forceRefresh: true
+})
+
+class App extends Component {
+  constructor(props){
+      super(props);
+      this.state = {
+          message: '',
+          success: false,
+          username: '',
+          isLoggedin: false
+      }
   }
-  componentDidMount() {
-    let res = fetch('https://localhost:5000/api/user/login', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        Username: 'jjj@gmail.com',
-        Password: ''
-      })
-    }).then(response => response.json()).then(data => this.setState({ date: data.msg }));
+
+  async componentDidMount() {
+    try {
+      await fetch(process.env.REACT_APP_API_URL + '/api/user/isLoggedin', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
+        }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success, message: data.msg}));
+    }
+    catch(e) {
+    }
   }
 
   render() {
-    return (
-      <div className="App">
-        <Login />
-        {this.state.date}
-      </div>
+    return(
+      <Router>
+        <div className= "app">
+          <Switch>
+            <Route exact path="/" component={LoginForm}/>
+            <Route exact path="/Register" component={RegisterForm} />
+            <Route exact path="/Confirmation/:token" component={Confirmation} />
+            <Route path="/Profile/:user" component={LinkUp} />
+          </Switch>
+        </div>
+    </Router>
     );
   }
 }

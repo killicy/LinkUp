@@ -67,7 +67,7 @@ router.post('/search', auth, (req, res) => {
 router.get('/myEvents', auth, (req, res) => {
 
     Event.find({ 'Participants.Username' : req.user.Username})
-    
+
     .then((event) => {
         res.json(event);
     });

@@ -3,6 +3,7 @@
 // npm i nodemailer   
 // npm i cookie-parser
 
+require('dotenv').config({path: './client/.env'});
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -13,12 +14,15 @@ const keys = require('./config/keys');
 const cors = require('cors');
 
 const app = express();
-
+var corsOptions = {
+  origin: process.env.REACT_APP_CLIENT_URL,
+  credentials: true
+}
 // Bodyparser Middleware
 app.use(express.json());
 
 var corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: process.env.REACT_APP_CLIENT_URL,
   credentials: true
 }
 
@@ -61,5 +65,5 @@ const server = https.createServer(httpsOptions, app)
   .listen(port, () => {
       console.log('https server running at ' + port)
   });
-  
+
 // openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout cert.key -out cert.pem -config req.cnf -sha256
