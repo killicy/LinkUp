@@ -7,22 +7,26 @@ import Cookies from 'universal-cookie';
 import SubmitButton from './SubmitButton';
 import EventMaker from './EventMaker';
 import { Card } from "react-bootstrap";
-
+import DatePicker from "react-datepicker";
 class MainContent extends React.Component {
+
+
+  componentDidUpdate(prevProps) {
+}
 
     render() {
         return(
           <div className= "mainContent">
-              <div className="grid">{this.props.data.friendEvents.map((event, index) => {
+              <div className="contentGrid">{this.props.data.events.map((event, index) => {
                 return (
-                    <Card style={{ width: "18rem" }} key={index} className="box border border-dark mb-1">
+                    <Card key={index} className="EventCards border border-dark mb-1">
                     <Card.Body>
-                        <Card.Title>{event.title}</Card.Title>
-                        <Card.Text>-{event.description}</Card.Text>
+                      <Card.Title>{event.Title} <DatePicker selected={new Date(event.Date_Start)} showTimeSelect dateFormat="Pp" /> <DatePicker selected={new Date(event.Date_End)} showTimeSelect dateFormat="Pp" /></Card.Title>
+                      <Card.Text>-{event.Description}</Card.Text>
                     </Card.Body>
                     </Card>
                 );
-                })}
+              })}
               </div>
           </div>
         );

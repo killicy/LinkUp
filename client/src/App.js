@@ -18,12 +18,7 @@ import {
   Route,
   useParams,
 } from "react-router-dom";
-import createBrowserHistory from "history/createBrowserHistory"
 
-
-export const history = createBrowserHistory({
-  forceRefresh: true
-})
 
 class App extends Component {
   constructor(props){

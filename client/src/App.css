@@ -13,6 +13,19 @@
   }
 }
 
+
+.fade {
+  display:flex !important;
+}
+
+.modal-dialog {
+  margin: auto !important;
+  min-width: 500px !important;
+  display:flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+}
+
 .app {
   display: flex;
   min-height: 100vh;
@@ -25,6 +38,22 @@
   background-color: #f5f5f5;
 }
 
+.middleContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: top;
+  min-height: 872px;
+  margin-bottom: 3vh;
+}
+
+
+.btnEvent {
+  width: 200px;
+  border-radius: 2px;
+}
+
+
 .friendSearch {
 
 }
@@ -35,6 +64,8 @@
   align-items: center;
   justify-content: space-between;
   max-height: 100%;
+  margin-top: 20px;
+  margin-right: 2vw;
 }
 
 .Profile {
@@ -55,12 +86,34 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: top;
   height: 55vh;
   min-width: 239.3px;
+  max-height: 533px;
   background-color: #ffffff;
   white-space: nowrap;
   border-style: outset;
 }
+
+.userGrid {
+  min-width: 239.3px;
+  max-height: calc(533px - 89px - 47px);
+  min-height: calc(533px - 89px - 47px);
+
+  overflow-y: auto;
+}
+
+.box {
+  min-width: 239.3px;
+  max-height: 50px;
+  overflow-y: auto;
+}
+
+.tab-content {
+  min-width: 239.3px;
+  max-height: 533px;
+}
+
 
 .mainContent {
   min-width: 40vw;
@@ -83,11 +136,13 @@ p{
 .userEvents {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: top;
   height: 70vh;
   min-width: 239.3px;
   background-color: #ffffff;
   white-space: nowrap;
+  margin-left: 2vw;
+
 }
 
 .Findfriends {
@@ -105,7 +160,6 @@ p{
   justify-content: space-between;
   font-size: calc(.5px + 2vmin);
   color: black;
-  margin: auto;
 }
 
 .profileDropdown{
@@ -139,13 +193,16 @@ p{
 
 .profileBody{
   overflow-y: auto;
+  max-height: 150px;
 
 }
-.bodyCard{
+.card-body{
+  padding: .25rem !important;
 }
 .editProfileText{
   min-width: 239.3px;
-  min-height: 200px;
+  max-height: 175px;
+  min-height: 175px;
   overflow-y: auto;
 }
 

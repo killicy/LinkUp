@@ -72,6 +72,17 @@ class EventMaker extends React.Component {
         <div className="myeventHeader">
           <p>Events</p>
         </div>
+        <div className="grid">{this.props.data.events.map((event, index) => {
+          return (
+              <Card style={{ width: "18rem" }} key={index} className="box border border-dark mb-1">
+              <Card.Body>
+                  <Card.Title>{event.Title}</Card.Title>
+                  <Card.Text>-{event.Description}</Card.Text>
+              </Card.Body>
+              </Card>
+          );
+          })}
+        </div>
       </div>
     );
   }
