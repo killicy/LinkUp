@@ -44,7 +44,9 @@
   align-items: center;
   justify-content: top;
   min-height: 872px;
+  max-height: 872px;
   margin-bottom: 3vh;
+  overflow-y: auto;
 }
 
 

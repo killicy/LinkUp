@@ -144,8 +144,10 @@ class LinkUp extends React.Component {
           Username: this.state.url
         })}).then(response => response.json()).then(data => this.setState({events: data.UserEvents, friends: data.Friends, friendEvents: data.FriendEvents, success: data.success, addFriend: data.addFriend, friend: data.friend, Profile_pic: data.Profile_pic}));
         if(this.state.success === true){
-          this.state.success = false;
-          console.log(this.state.Profile_pic);
+          this.setState({
+            success: true,
+            friend: this.state.friend
+          })
         }
         else{
         }
