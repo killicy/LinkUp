@@ -57,13 +57,13 @@ class LinkUp extends React.Component {
 
   async resendConfirmation(){
     try {
-      await fetch('https://localhost:5000/api/user/confirmationEmail', {
+      await fetch(process.env.REACT_APP_API_URL + '/api/user/confirmationEmail', {
         method: 'GET',
         credentials: 'include',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin':'https://localhost:5000',
+          'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
         }}).then(response => response.json()).then(data => this.setState({success: data.success, message: data.msg, username: data.username}));
          if (this.state.success) {
 
@@ -76,13 +76,13 @@ class LinkUp extends React.Component {
   }
   async componentDidMount() {
     try {
-      await fetch('https://localhost:5000/api/user/isLoggedin', {
+      await fetch(process.env.REACT_APP_API_URL + '/api/user/isLoggedin', {
         method: 'GET',
         credentials: 'include',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin':'https://localhost:5000',
+          'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
         }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success, message: data.msg}));
          if (this.state.isLoggedin) {
          }
@@ -93,14 +93,14 @@ class LinkUp extends React.Component {
     catch(e) {
     }
     try {
-      await fetch('https://localhost:5000/api/user/userInfo', {
+      await fetch(process.env.REACT_APP_API_URL + '/api/user/userInfo', {
         method: 'GET',
         credentials: 'include',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin':'https://localhost:5000',
-        }}).then(response => response.json()).then(data => this.setState({events: data.Events, friends: data.friends, friendEvents: data.FriendEvents}));
+          'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
+        }}).then(response => response.json()).then(data => this.setState({events: data.Events, friends: data.Friends, friendEvents: data.FriendEvents}));
     }
     catch(e) {
     }

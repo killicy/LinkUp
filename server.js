@@ -1,6 +1,9 @@
 // for jwt
 // npm i jsonwebtoken bcryptjs
+// npm i nodemailer   
+// npm i cookie-parser
 
+require('dotenv').config({path: './client/.env'});
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -12,17 +15,19 @@ const cors = require('cors');
 
 const app = express();
 var corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: process.env.REACT_APP_CLIENT_URL,
   credentials: true
 }
 // Bodyparser Middleware
 app.use(express.json());
 
+var corsOptions = {
+  origin: process.env.REACT_APP_CLIENT_URL,
+  credentials: true
+}
+
 // Cross Origin Requests
 app.use(cors(corsOptions));
-
-// headers
-
 
 // DB Config
 const dbConnection = keys.mongoURI;

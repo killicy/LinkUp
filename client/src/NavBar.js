@@ -47,13 +47,13 @@ class NavBar extends React.Component {
 
   async componentDidMount() {
     try {
-      await fetch('https://localhost:5000/api/user/isLoggedin', {
+      await fetch(process.env.REACT_APP_API_URL + '/api/user/isLoggedin', {
         method: 'GET',
         credentials: 'include',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin':'https://localhost:5000',
+          'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
         }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success, message: data.msg}));
     }
     catch(e) {
@@ -62,13 +62,13 @@ class NavBar extends React.Component {
   async profile(){
     console.log(this.props);
     try {
-      await fetch('https://localhost:5000/api/user/user', {
+      await fetch(process.env.REACT_APP_API_URL + '/api/user/user', {
         method: 'GET',
         credentials: 'include',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin':'https://localhost:5000',
+          'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
         }}).then(response => response.json()).then(data => this.setState({success: data.success, message: data.msg, username: data.username}));
          if (this.state.success) {
            this.props.history.replace('/Profile');
@@ -85,13 +85,13 @@ class NavBar extends React.Component {
 
   async doLogout(){
     try {
-       await fetch('https://localhost:5000/api/user/logOut', {
+       await fetch(process.env.REACT_APP_API_URL + '/api/user/logOut', {
          method: 'GET',
          credentials: 'include',
          headers: {
            'Accept': 'application/json',
            'Content-Type': 'application/json',
-           'Access-Control-Allow-Origin':'https://localhost:5000',
+           'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
          }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success}));
          this.props.history.push('/');
      }

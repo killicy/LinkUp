@@ -20,11 +20,12 @@ class Confirmation extends React.Component {
 
   async componentDidMount() {
     let token = this.props.match.params.token;
-    await fetch('https://localhost:5000/api/user/confirmation', {
+    await fetch(process.env.REACT_APP_API_URL + '/api/user/confirmation', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
       },
       body: JSON.stringify({
         token: token,

@@ -1,24 +1,8 @@
 import React from 'react';
 //import ReactDOM from 'react-dom'
 import './App.css';
-import UserStore from './stores/UserStore';
-import Cookies from 'universal-cookie';
-import SubmitButton from './SubmitButton';
-import EventMaker from './EventMaker';
-import MainContent from './MainContent';
-import Friends from './Friends';
 import { Card } from "react-bootstrap";
-import Confirmation from './Confirmation';
-import NavBar from './NavBar';
-import { CloudinaryContext, Image, Transformation } from "cloudinary-react";
-import { fetchPhotos, openUploadWidget } from "./CloudinaryService";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Link,
-  Redirect,
-  Route,
-} from "react-router-dom";
+import { Image, Transformation } from "cloudinary-react";
 
 
 class Profile extends React.Component {

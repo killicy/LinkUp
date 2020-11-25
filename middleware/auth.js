@@ -4,6 +4,7 @@ const key = require('../config/keys');
 //get token
 function auth(req, res, next) {
 
+    //const token = req.headers["authorization"];
     const token = req.cookies.access_token
     // Check for token
     if(!token){

@@ -44,13 +44,13 @@ class RegisterForm extends React.Component {
 
   async componentDidMount() {
     try {
-      await fetch('https://localhost:5000/api/user/isLoggedin', {
+      await fetch(process.env.REACT_APP_API_URL + '/api/user/isLoggedin', {
         method: 'GET',
         credentials: 'include',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin':'https://localhost:5000',
+          'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
         }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success, message: data.msg}));
          if (this.state.isLoggedin) {
            this.props.history.push('/LinkUp');
@@ -63,11 +63,12 @@ class RegisterForm extends React.Component {
   }
 
   async doRegister() {
-  await fetch('https://localhost:5000/api/user/register', {
+  await fetch(process.env.REACT_APP_API_URL + '/api/user/register', {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
     },
     body: JSON.stringify({
       Username: this.state.username,

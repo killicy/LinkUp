@@ -30,13 +30,13 @@ class EventMaker extends React.Component {
             buttonDisabled: true
         })
 
-      await fetch('https://localhost:5000/api/event/create', {
+      await fetch(process.env.REACT_APP_API_URL + '/api/event/create', {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin':'https://localhost:5000',
+          'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
         },
         body: JSON.stringify({
           Title: this.state.title,

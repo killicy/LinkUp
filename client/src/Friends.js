@@ -41,13 +41,13 @@ class Friends extends React.Component {
 
   async addFriend(){
       try {
-         await fetch('https://localhost:5000/api/user/addFriend', {
+         await fetch(process.env.REACT_APP_API_URL + '/api/user/addFriend', {
            method: 'POST',
            credentials: 'include',
            headers: {
              'Accept': 'application/json',
              'Content-Type': 'application/json',
-             'Access-Control-Allow-Origin':'https://localhost:5000',
+             'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
            }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success}));
        }
        catch(e) {
@@ -57,13 +57,13 @@ class Friends extends React.Component {
 
   async findFriend(){
     try {
-      await fetch('https://localhost:5000/api/user/searchFriend', {
+      await fetch(process.env.REACT_APP_API_URL + '/api/user/searchFriend', {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin':'https://localhost:5000',
+          'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
         },
         body: JSON.stringify({
           searchField: this.state.searchField
