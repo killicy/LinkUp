@@ -413,7 +413,7 @@ router.post('/changeProfilePic', auth, async (req, res) => {
         secure: true
     })
 
-    res.json({ msg: "Profile URL updated!" });
+    res.json({ msg: "Profile URL updated!", success: true});
 
 })
 

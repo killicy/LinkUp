@@ -95,6 +95,13 @@
   border-style: outset;
 }
 
+.friendImages {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+}
+
 .userGrid {
   min-width: 239.3px;
   max-height: calc(533px - 89px - 47px);
@@ -105,7 +112,6 @@
 
 .box {
   min-width: 239.3px;
-  max-height: 50px;
   overflow-y: auto;
 }
 

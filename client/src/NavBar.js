@@ -174,6 +174,8 @@ class NavBar extends React.Component {
         })}).then(response => response.json()).then(data => this.setState({success: data.success}));
         if(this.state.success === true){
           this.state.success = false;
+          this.setShow();
+          window.location.reload();
         }
         else{
         }

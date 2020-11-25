@@ -48,7 +48,7 @@ class LinkUp extends React.Component {
           success: false,
           addFriend: false,
           friend: false,
-          Profile_pic: 'pzeegrq7gjtnhhn54clg'
+          Profile_pic: ''
       }
   }
 
@@ -207,7 +207,7 @@ class LinkUp extends React.Component {
         </div>
         <div className="leftContainer">
           <Profile data={this.state}/>
-          <Friends data={this.state}/>
+          <Friends data={this.state} data2={this.props}/>
         </div>
       </div>
       <div>
@@ -234,13 +234,12 @@ class LinkUp extends React.Component {
                        From: <DatePicker selected={this.state.startDate} onChange={date => this.setState({startDate: new Date(date)})} showTimeSelect dateFormat="Pp" />
                        To: <DatePicker selected={this.state.startDate} onChange={date => this.setState({startDate: new Date(date)})} showTimeSelect dateFormat="Pp" />
                    </div>
-                   <button type="button" className="eventBtn btn-primary btn-block" onClick = {() => this.addEvent()}>Post Your Event</button>
                </form>
               </div>
             </Modal.Body>
             <Modal.Footer>
               <Button variant="secondary" onClick={ () => this.setShow() } >Close</Button>
-              <Button variant="primary">Add Event</Button>
+              <Button variant="primary" onClick = {() => this.addEvent()}>Post Event</Button>
             </Modal.Footer>
           </Modal.Dialog>
         </Modal>

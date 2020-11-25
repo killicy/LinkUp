@@ -6,7 +6,8 @@ import EventMaker from './EventMaker';
 import { Card } from "react-bootstrap";
 import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
-
+import { fetchPhotos, openUploadWidget } from "./CloudinaryService";
+import { CloudinaryContext, Image, Transformation } from "cloudinary-react";
 
 
 class Friends extends React.Component {
@@ -58,6 +59,11 @@ class Friends extends React.Component {
      }
   }
 
+  profile(username){
+    console.log(username);
+    window.location.href = username;
+  }
+
   async findUsers(){
     try {
       await fetch('https://localhost:5000/api/user/searchUsers', {
@@ -101,7 +107,13 @@ class Friends extends React.Component {
                 return (
                     <Card key={index} className="box border border-dark mb-1">
                       <Card.Body>
-                        <p>{friend.Username}</p>
+                      {console.log(friend)}
+                        <div className='friendImages'>
+                          <Image cloudName= "dsnnlkpj9" publicId="dmiigmmpxpfb7wqfprfj" className = "profilePic" onClick={ () => this.profile(friend.Username) }>
+                            <Transformation width="200" height="200" gravity="face" radius="max" crop="crop" />
+                            <Transformation width="50" crop="scale" />
+                          </Image><p>{friend.Username}</p>
+                        </div>
                       </Card.Body>
                     </Card>
                 );
@@ -121,7 +133,12 @@ class Friends extends React.Component {
                 return (
                     <Card key={index} className="box border border-dark mb-1">
                       <Card.Body>
-                        <p>{friend.Username}</p>
+                        <div className='friendImages'>
+                          <Image cloudName= "dsnnlkpj9" publicId="dmiigmmpxpfb7wqfprfj" className = "profilePic" onClick={ () => this.profile(friend.Username) }>
+                            <Transformation width="200" height="200" gravity="face" radius="max" crop="crop" />
+                            <Transformation width="50" crop="scale" />
+                          </Image><p>{friend.Username}</p>
+                        </div>
                       </Card.Body>
                     </Card>
                 );
