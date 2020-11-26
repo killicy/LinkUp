@@ -13,6 +13,19 @@
   }
 }
 
+
+.fade {
+  display:flex !important;
+}
+
+.modal-dialog {
+  margin: auto !important;
+  min-width: 500px !important;
+  display:flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+}
+
 .app {
   display: flex;
   min-height: 100vh;
@@ -25,19 +38,23 @@
   background-color: #f5f5f5;
 }
 
-.custom-control-label{
-  font-size: 12px;
-  font-weight: bold;
-  margin-top: 3px;
-}
-.LinkUp{
+.middleContainer {
   display: flex;
-  min-height: 100vh;
-  min-width: 100vw;
+  flex-direction: column;
+  align-items: center;
+  justify-content: top;
+  min-height: 872px;
+  max-height: 872px;
+  margin-bottom: 3vh;
 }
-.friendSearch {
 
+
+.btnEvent {
+  width: 200px;
+  border-radius: 2px;
 }
+
+
 
 .leftContainer {
   display: flex;
@@ -45,6 +62,8 @@
   align-items: center;
   justify-content: space-between;
   max-height: 100%;
+  margin-top: 20px;
+  margin-right: 5vw;
 }
 
 .Profile {
@@ -65,19 +84,75 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: top;
   height: 55vh;
   min-width: 239.3px;
+  max-height: 533px;
+  min-height: 533px;
+
   background-color: #ffffff;
-  white-space: nowrap;
   border-style: outset;
 }
+
+.friendImages {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center;
+}
+.modal-header .close {
+    padding: 1rem 1rem;
+    margin: -1rem -1rem -1rem 0!important;
+}
+.formEdit {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.modal-header {
+  display: flex!important;
+  flex-direction: row!important;
+  justify-content: space-between!important;
+  align-items: center!important;
+}
+
+.userGrid {
+  min-width: 239.3px;
+  max-height: calc(533px - 89px - 47px);
+  min-height: calc(533px - 89px - 47px);
+
+  overflow-y: auto;
+}
+
+.eventGrid {
+  overflow-y: auto;
+}
+
+.box {
+  min-width: 239.3px;
+  overflow-y: auto;
+}
+
+.tab-content {
+  min-width: 239.3px;
+  max-height: 533px;
+}
+
 
 .mainContent {
   min-width: 40vw;
   background-color: #ffffff;
   white-space: nowrap;
-  
+  overflow-y: auto;
+  margin-top: 50px;
+  font-size: calc(10px + 2vmin);
+  color: black;
 }
+
+.contentGrid {
+}
+
 
 .myeventHeader{
   border-bottom: 1px solid rgba(0,0,0,.125);
@@ -94,17 +169,22 @@ p{
 .userEvents {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: top;
   height: 70vh;
   min-width: 239.3px;
   background-color: #ffffff;
-  white-space: nowrap;
+  margin-left: 5vw;
+
 }
 
 .Findfriends {
   background-color: #ffffff;
   display: flex;
   white-space: nowrap;
+}
+
+.Myfriends{
+  max-height: 100%!important;
 }
 
 
@@ -116,7 +196,6 @@ p{
   justify-content: space-between;
   font-size: calc(.5px + 2vmin);
   color: black;
-  margin: auto;
 }
 
 .profileDropdown{
@@ -150,13 +229,54 @@ p{
 
 .profileBody{
   overflow-y: auto;
+  max-height: 150px;
+
+  border-top: solid 5px #0098b1;
+  border-bottom: solid 5px #0098b1;
+  padding: 10px;
+
 
 }
-.bodyCard{
+.loginStyling{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginImage{
+  max-width: 500px;
+}
+.card-body{
+  padding: .75rem !important;
+  max-width: 100% !important;
+  max-height: 200px;
+  word-wrap: break-word!important;
+
+}
+
+.card-text{
+  display: flex;
+  flex-flow: wrap;
+  overflow-y: auto;
+  word-wrap: break-word!important;
+}
+
+.ptag{
+  max-width: 100%!important;
+  word-wrap: break-word!important;
+}
+
+.boxer{
+  overflow-x:hidden !important;
+  max-width: 237px !important;
+  flex-flow: wrap;
 }
 .editProfileText{
   min-width: 239.3px;
-  min-height: 200px;
+  max-height: 175px;
+  min-height: 175px;
   overflow-y: auto;
 }
 
@@ -215,9 +335,20 @@ p{
   font-size: calc(10px + 2vmin);
   color: black;
 }
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 
 .loginForm {
   margin: auto;
+  display: block;
+  border-radius: 8px;
+  padding: 40px 50px 20px 50px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
   font-size: calc(10px + 2vmin);
   color: black;
   background-color: #92bbf0;
@@ -229,6 +360,9 @@ p{
 {
   padding-bottom: 15px;
   text-align: center;
+  background-color: #fff;
+  width: 600px;
+  height: 500px;
 }
 
 .registerTitle
@@ -252,11 +386,6 @@ p{
   color: black;
 }
 .postEvent {
-  margin: 100px;
-  font-size: calc(10px + 2vmin);
-  color: black;
-}
-.mainContent {
   margin: 100px;
   font-size: calc(10px + 2vmin);
   color: black;

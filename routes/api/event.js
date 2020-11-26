@@ -14,27 +14,27 @@ router.post('/create', auth, (req, res) => {
     const {Title, Description, Date_Start, Date_End} = req.body;
     
     if(!Title || !Description || !Date_End || !Date_Start)
-        return res.status(400).json({ msg: 'Please enter all fields' });
-    
+        return res.status(400).json({ msg: 'Please enter all fields', success: false});
+
     Event.findOne({ Title })
         .then(event => {
-            if (event) return res.status(400).json({ msg: 'Event already exists' });
+            if (event) return res.status(400).json({ msg: 'Event already exists', success: false});
             console.log(req.user);
     
             const newEvent = new Event({
                 Title,
-                Description, 
+                Description,
                 Author: { Username: req.user.Username, Email: req.user.Email},
-                Participants: [{ Username: req.user.Username, Email: req.user.Email, Profile_pic: req.user.Profile_pic}],  
-                Date_Start, 
+                Participants: [{ Username: req.user.Username, Email: req.user.Email, Profile_pic: req.user.Profile_pic}],
+                Date_Start,
                 Date_End,
-                comments: [] 
-                
+                comments: []
+
             });
 
             newEvent.save()
                 .then(event => {
-                    res.json(newEvent);
+                    res.json({newEvent, success: true});
                 })
         }) 
 
@@ -161,14 +161,14 @@ router.post('/changeEventPic', auth, async (req, res) => {
 
         event.Event_Image = req.body.URL;
         event.save();
-       
-    
+
+
         res.json({ msg: "Event_Image updated!" });
 
     } catch (error) {
         res.json({ error });
     }
-   
+
 
 })
 

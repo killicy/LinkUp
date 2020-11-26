@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { observer } from 'mobx-react';
 //import ReactDOM from 'react-dom'
@@ -12,6 +13,7 @@ import MenuItem from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/Dropdown'
 import Modal from 'react-bootstrap/Modal'
 import { Card } from "react-bootstrap";
+import { fetchPhotos, openUploadWidget } from "./CloudinaryService";
 
 
 
@@ -41,9 +43,31 @@ class NavBar extends React.Component {
           message: '',
           success: false,
           username: '',
-          show: false
+          show: false,
+          id: '',
+          user: {Profile_pic: 'lady.jpg'}
       }
   }
+
+
+  beginUpload(tag) {
+  // <button onClick={(e) => this.beginUpload()}>Upload Image</button>
+  const uploadOptions = {
+    cloudName: "dsnnlkpj9",
+    tags: [tag, 'anImage'],
+    uploadPreset: "cqswrbcf"
+  };
+  openUploadWidget(uploadOptions, (error, photos) => {
+    if (!error) {
+      if(photos.event === 'success'){
+        this.state.id = photos.info.public_id;
+      }
+    } else {
+      console.log(error);
+    }
+  })
+}
+
 
   async componentDidMount() {
     try {
@@ -58,11 +82,30 @@ class NavBar extends React.Component {
     }
     catch(e) {
     }
+    try {
+      await fetch(process.env.REACT_APP_API_URL + '/api/user/getUser', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin':process.env.REACT_APP_CLIENT_URL,
+        }}).then(response => response.json()).then(data => this.setState({user: data.user, success: data.success}));
+        if (this.state.success) {
+          console.log(this.state.user.Profile_pic);
+          this.setState({
+            user: this.state.user});
+        }
+        else {
+        }
+    }
+    catch(e) {
+    }
   }
   async profile(){
     console.log(this.props);
     try {
-      await fetch(process.env.REACT_APP_API_URL + '/api/user/user', {
+      await fetch(process.env.REACT_APP_API_URL + '/api/user/getUser', {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -72,7 +115,7 @@ class NavBar extends React.Component {
         }}).then(response => response.json()).then(data => this.setState({success: data.success, message: data.msg, username: data.username}));
          if (this.state.success) {
            this.props.history.replace('/Profile');
-           this.props.history.push("/Profile/" + this.state.username);
+           this.props.history.push("/Profile/" + this.state.user.Username);
          }
          else {
            this.props.history.replace('/');
@@ -103,7 +146,7 @@ class NavBar extends React.Component {
 
   setShow(){
     console.log("help");
-    if(this.state.show == false){
+    if(this.state.show === false){
       this.setState({
         show: true
       });
@@ -116,6 +159,31 @@ class NavBar extends React.Component {
     }
   }
 
+  async setChanges(){
+    try {
+      await fetch(process.env.REACT_APP_API_URL + '/api/user/changeProfilePic', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
+        },
+        body: JSON.stringify({
+          Url: this.state.id
+        })}).then(response => response.json()).then(data => this.setState({success: data.success}));
+        if(this.state.success === true){
+          this.state.success = false;
+          this.setShow();
+          window.location.reload();
+        }
+        else{
+        }
+    }
+    catch(e) {
+    }
+  }
+
 
   render() {
     return(
@@ -124,26 +192,35 @@ class NavBar extends React.Component {
           <Modal show={this.state.show} onHide={ () => this.setShow() }>
             <Modal.Dialog>
               <Modal.Header closeButton>
+                <div/>
                 <Modal.Title>Edit Account</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                <div className="Profile border border-dark">
                   <div className="space"></div>
-                  <Card className="profileStuff mb-4 border-0">
-                    <Image cloudName= "demo" publicId="lady.jpg" className = "profilePic">
-                      <Transformation width="400" height="400" gravity="face" radius="max" crop="crop" />
-                      <Transformation width="200" crop="scale" />
-                    </Image>
-                    <Card.Body className="bodyCard">
-                      <Card.Title><div className="name">Jen Eric Ladee</div></Card.Title>
-                      <Card.Text className="profileBody"><textarea className="editProfileText">About Me: I spend my free time posing for stock images. I enjoy events where I can eat food such as salads and yogurt while laughing with my head thrown back.</textarea></Card.Text>
-                    </Card.Body>
-                  </Card>
-                </div>
+                    <form>
+                      <div className="formEdit">
+                         <Image cloudName= "dsnnlkpj9" publicId={this.state.user.Profile_pic} className = "profilePic" onClick={(e) => this.beginUpload()}>
+                           <Transformation width="400" height="400" gravity="face" radius="max" crop="crop" />
+                           <Transformation width="200" crop="scale" />
+                         </Image>
+                        </div>
+                       <div className="form-group">
+                           <label>First Name:</label>
+                           <input type="text" className="form-control" placeholder="First Name" onChange = {e => this.setInputValue("title", e.target.value)}/>
+                       </div>
+                       <div className="form-group">
+                           <label>Last Name:</label>
+                           <input type="text" className="form-control" placeholder="Last Name" onChange = {e => this.setInputValue("title", e.target.value)}/>
+                       </div>
+                       <div className="form-group">
+                           <label>Description:</label>
+                           <textarea className="form-control" placeholder="Tell us about yourself" onChange = {e => this.setInputValue("description", e.target.value)}/>
+                       </div>
+                   </form>
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={ () => this.setShow() } >Close</Button>
-                <Button variant="primary">Save changes</Button>
+                <Button variant="primary" onClick={ () => this.setChanges() }>Save changes</Button>
               </Modal.Footer>
             </Modal.Dialog>
           </Modal>
@@ -153,7 +230,7 @@ class NavBar extends React.Component {
         </div>
         <Dropdown className = "profileDropdown">
           <Dropdown.Toggle as={CustomToggle}>
-          <Image cloudName= "demo" publicId="lady.jpg" className = "profilePic">
+          <Image cloudName= "dsnnlkpj9" publicId={this.state.user.Profile_pic} className = "profilePic">
             <Transformation width="400" height="400" gravity="face" radius="max" crop="crop" />
             <Transformation width="50" crop="scale" />
           </Image>

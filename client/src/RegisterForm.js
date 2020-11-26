@@ -14,15 +14,13 @@ class RegisterForm extends React.Component {
             buttonDisabled: false,
             success: false,
             isLoggedin: false,
-            msg: ''
+            message: ''
         }
     }
 
   setInputValue(property, val) {
       val = val.trim();
-
-      // Username and Password is 12 characters max
-      if (val.length > 50) {
+      if (val.length > 25) {
           return;
       }
       this.setState({
@@ -32,13 +30,7 @@ class RegisterForm extends React.Component {
 
   resetForm() {
       this.setState({
-          username: '',
-          email: '',
-          password: '',
-          buttonDisabled: false,
-          success: false,
-          isLoggedin: false,
-          msg: ''
+
       })
   }
 
@@ -80,14 +72,13 @@ class RegisterForm extends React.Component {
       this.props.history.push('/');
     }
     else {
-      this.resetForm();
     }
   }
   render() {
     return(
-      <div className="registerForm">
-        <form>
-        <div className= "registerTitle"><h4>Sign Up</h4></div>
+      <div className="loginForm">
+        <form className="login">
+            {this.state.message}
            <div className="form-group">
                <h6>Username</h6>
                <input type="text" className="form-control" placeholder="Enter a username" onChange = {e => this.setInputValue("username", e.target.value)}/>

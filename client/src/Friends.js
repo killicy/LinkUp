@@ -2,15 +2,12 @@ import React from 'react';
 import { observer } from 'mobx-react';
 //import ReactDOM from 'react-dom'
 import './App.css';
-import InputField from './InputField';
-import UserStore from './stores/UserStore';
-import Cookies from 'universal-cookie';
-import SubmitButton from './SubmitButton';
 import EventMaker from './EventMaker';
 import { Card } from "react-bootstrap";
 import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
-
+import { fetchPhotos, openUploadWidget } from "./CloudinaryService";
+import { CloudinaryContext, Image, Transformation } from "cloudinary-react";
 
 
 class Friends extends React.Component {
@@ -18,15 +15,16 @@ class Friends extends React.Component {
   constructor(props){
       super(props);
       this.state = {
-          username: ''
+          username: '',
+          search: '',
+          userList: null,
+          success1: false,
+          success: false,
       }
   }
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      filtered: nextProps.items
-    });
-  }
+  componentDidUpdate(prevProps, prevState) {
 
+  }
   setInputValue(property, val) {
       val = val.trim();
 
@@ -66,35 +64,109 @@ class Friends extends React.Component {
           'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
         },
         body: JSON.stringify({
-          searchField: this.state.searchField
-        })}).then(response => response.json()).then(data => this.setState({message: data.msg}));
+          search: this.state.search
+        })}).then(response => response.json()).then(data => this.setState({userList: data.user}));
+        if(this.state.userList){
+          this.setState({success: true})
+        }
      }
      catch(e) {
          console.log(e)
      }
   }
+
+  profile(username){
+    console.log(username);
+    window.location.href = username;
+  }
+
+  async findUsers(){
+    try {
+      await fetch(process.env.REACT_APP_API_URL + '/api/user/searchUsers', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': process.env.REACT_APP_API_URL,
+        },
+        body: JSON.stringify({
+          search: this.state.search
+        })}).then(response => response.json()).then(data => this.setState({userList: data.user}));
+        if(this.state.userList){
+          this.setState({success1: true})
+        }
+     }
+     catch(e) {
+         console.log(e)
+     }
+  }
+
   render() {
     return (
-      <div className="Friends flex-nowrap border border-dark">
-        <Tabs defaultActiveKey="home" className="friendTabs flex-nowrap" transition={false} id="noanim-tab-example">
+      <div className="Friends border border-dark">
+        <Tabs defaultActiveKey="home" className="friendTabs flex-nowrap" transition={false}>
           <Tab eventKey="home" className="Myfriends" title="Friends">
-            <div className="grid">{this.props.data.friends.map((friend, index) => {
-              return (
-                  <Card style={{ width: "18rem" }} key={index} className="box border border-dark mb-1">
-                  <Card.Body>
-                      <Card.Title>{friend.Username}</Card.Title>
-                  </Card.Body>
-                  </Card>
-              );
-              })}
-            </div>
-          </Tab>
-          <Tab eventKey="profile" className="Findfriends"title="Find Friends">
+            {this.state.success ?
+              <div className="userGrid">{this.state.userList.map((friend, index) => {
+                return (
+                    <Card key={index} className="box border border-dark mb-1">
+                      <Card.Body>
+                        <p>{friend.Username}</p>
+                      </Card.Body>
+                    </Card>
+                );
+                })}
+              </div>
+              :
+              <div className="userGrid">{this.props.data.friends.map((friend, index) => {
+                return (
+                    <Card key={index} className="box border border-dark mb-1">
+                      <Card.Body>
+                      {console.log(friend)}
+                        <div className='friendImages'>
+                          <Image cloudName= "dsnnlkpj9" publicId="dmiigmmpxpfb7wqfprfj" className = "profilePic" onClick={ () => this.profile(friend.Username) }>
+                            <Transformation width="200" height="200" gravity="face" radius="max" crop="crop" />
+                            <Transformation width="50" crop="scale" />
+                          </Image><p>{friend.Username}</p>
+                        </div>
+                      </Card.Body>
+                    </Card>
+                );
+                })}
+              </div>
+            }
             <form className="friendSearch">
                <div className="form-group">
-                   <input type="text" className="form-control" placeholder="Enter username" onChange = {e => this.setInputValue("username", e.target.value)}/>
+                   <input type="text" className="form-control" placeholder="Enter a Username or Email" onChange = {e => this.setInputValue("search", e.target.value)}/>
                </div>
-               <button type="button" className="searchBtn btn-primary btn-block" onClick = {() => this.findFriend()}>Find a friend</button>
+               <button type="button" className="searchBtn btn-primary btn-block" onClick = {() => this.findFriends()}>Find a friend</button>
+           </form>
+          </Tab>
+          <Tab eventKey="profile" className="Findfriends"title="Find Friends">
+            {this.state.success1 ?
+              <div className="userGrid">{this.state.userList.map((friend, index) => {
+                return (
+                    <Card key={index} className="box border border-dark mb-1">
+                      <Card.Body>
+                        <div className='friendImages'>
+                          <Image cloudName= "dsnnlkpj9" publicId="dmiigmmpxpfb7wqfprfj" className = "profilePic" onClick={ () => this.profile(friend.Username) }>
+                            <Transformation width="200" height="200" gravity="face" radius="max" crop="crop" />
+                            <Transformation width="50" crop="scale" />
+                          </Image><p>{friend.Username}</p>
+                        </div>
+                      </Card.Body>
+                    </Card>
+                );
+                })}
+              </div>
+              : null
+            }
+            <form className="friendSearch">
+               <div className="form-group">
+                   <input type="text" className="form-control" placeholder="Enter a Username or Email" onChange = {e => this.setInputValue("search", e.target.value)}/>
+               </div>
+               <button type="button" className="searchBtn btn-primary btn-block" onClick = {() => this.findUsers()}>Find a user</button>
            </form>
           </Tab>
         </Tabs>

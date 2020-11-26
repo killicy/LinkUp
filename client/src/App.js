@@ -5,6 +5,11 @@ import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import LinkUp from './LinkUp';
 import Confirmation from './Confirmation';
+import NavBar from './NavBar';
+import Void from './Void';
+import PasswordRecovery from './PasswordRecovery';
+import PasswordRecoveryPage from './PasswordRecoveryPage';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {
@@ -12,12 +17,7 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import createBrowserHistory from "history/createBrowserHistory"
 
-
-export const history = createBrowserHistory({
-  forceRefresh: true
-})
 
 class App extends Component {
   constructor(props){
@@ -51,9 +51,14 @@ class App extends Component {
         <div className= "app">
           <Switch>
             <Route exact path="/" component={LoginForm}/>
+            <Route path="/TheVoid" component={Void} />
+            <Route path="/PasswordRecovery" component={PasswordRecoveryPage} />
+            <Route path="/PasswordRecovery/:user" component={PasswordRecovery} />
             <Route exact path="/Register" component={RegisterForm} />
             <Route exact path="/Confirmation/:token" component={Confirmation} />
             <Route path="/Profile/:user" component={LinkUp} />
+            <Route path="" component={Void}/>
+
           </Switch>
         </div>
     </Router>

@@ -20,13 +20,13 @@ class Profile extends React.Component {
       <div className="Profile border border-dark">
         <div className="space"></div>
         <Card className="profileStuff mb-4 border-0">
-          <Image cloudName= "demo" publicId="lady.jpg" className = "profilePic">
+          <Image cloudName= "dsnnlkpj9" publicId={this.props.data.Profile_pic} className = "profilePic">
             <Transformation width="400" height="400" gravity="face" radius="max" crop="crop" />
             <Transformation width="200" crop="scale" />
           </Image>
           <Card.Body>
-            <Card.Title><div className="name">Jen Eric Ladee</div></Card.Title>
-            <Card.Text className="profileBody"><p>About Me: I spend my free time posing for stock images. I enjoy events where I can eat food such as salads and yogurt while laughing with my head thrown back.</p></Card.Text>
+            <Card.Title><div className="name">{this.props.data.user.Username}</div></Card.Title>
+            <Card.Text className="profileBody"><p className="profiler">About Me: I spend my free time posing for stock images. I enjoy events where I can eat food such as salads and yogurt while laughing with my head thrown back. I am spiritually a robot.</p></Card.Text>
           </Card.Body>
         </Card>
       </div>
