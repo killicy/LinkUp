@@ -213,7 +213,7 @@ router.post('/addFriend', auth, async (req, res) => {
 // private, requires token
 router.post('/searchFriend', auth, async (req, res) => {
     if(!req.body.search){
-          res.json({ msg: "Please enter search criteria"});
+          res.json({ msg: "Please enter search criteria", user: []});
       }
     const user = await User.findOne({_id: req.user.id})
 
