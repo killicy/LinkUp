@@ -88,8 +88,9 @@
   height: 55vh;
   min-width: 239.3px;
   max-height: 533px;
+  min-height: 533px;
+
   background-color: #ffffff;
-  white-space: nowrap;
   border-style: outset;
 }
 
@@ -179,6 +180,10 @@ p{
   background-color: #ffffff;
   display: flex;
   white-space: nowrap;
+}
+
+.Myfriends{
+  max-height: 100%!important;
 }
 
 

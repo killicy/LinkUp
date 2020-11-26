@@ -88,8 +88,8 @@ class Friends extends React.Component {
 
   render() {
     return (
-      <div className="Friends flex-nowrap border border-dark">
-        <Tabs defaultActiveKey="home" className="friendTabs flex-nowrap" transition={false} id="noanim-tab-example">
+      <div className="Friends border border-dark">
+        <Tabs defaultActiveKey="home" className="friendTabs flex-nowrap" transition={false}>
           <Tab eventKey="home" className="Myfriends" title="Friends">
             {this.state.success ?
               <div className="userGrid">{this.state.userList.map((friend, index) => {
