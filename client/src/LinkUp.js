@@ -55,12 +55,7 @@ class LinkUp extends React.Component {
   }
 
   setInputValue(property, val) {
-      val = val.trim();
 
-      // Username and Password is 12 characters max
-      if (val.length > 50) {
-          return;
-      }
       this.setState({
           [property]: val
       })

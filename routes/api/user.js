@@ -35,7 +35,8 @@ router.post('/register', (req, res) => {
                 Email,
                 Password,
                 Username,
-                Description: ""
+                Description: "",
+                Profile_pic: "esiurmc4vzfadgrmumm7"
             });
 
             // Create salt and hash
@@ -391,7 +392,7 @@ router.post('/usernameInfo', auth, async (req, res) => {
         });
 
         // Wait for all promises to complete, and aggregate them into `all`.
-        await Promise.all(promises).then( (all) => res.json({ UserEvents: events, Friends: friends, FriendEvents: all, success: true, addFriend: false, friend: true, Username: findUser.Username, Email: findUser.Email, Profile_pic: findUser.Profile_pic, user: findUser}))
+        await Promise.all(promises).then( (all) => res.json({UserEvents: events, Friends: friends, FriendEvents: all, success: true, addFriend: false, friend: true, Username: findUser.Username, Email: findUser.Email, Profile_pic: findUser.Profile_pic, user: findUser}))
         return;
     }
     else{
