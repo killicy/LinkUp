@@ -108,7 +108,7 @@ class LoginForm extends React.Component {
            {/* <button type="button" className="loginBtn btn-primary btn-block" onClick = {() => this.doLogin()}>Sign In</button> */}
            <Button variant="primary" size= "lg" block onClick = {() => this.doLogin()}>Sign In</Button>{' '}
            <p className="need-an-account text-right">
-               Need an account? <a href="http://localhost:3000/Register">Register</a>
+               Need an account? <a href={process.env.REACT_APP_CLIENT_URL + "/Register"}>Register</a>
            </p>
            <p className="forgot-password text-right">
                Forgot Password? <a href="#">Click here</a>

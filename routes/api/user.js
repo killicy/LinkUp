@@ -91,7 +91,7 @@ router.post('/login', (req, res) => {
                     res.cookie('access_token', token, {
                         maxAge: 3600000,
                         httpOnly: true,
-                        secure: true
+                        //secure: true
                     })
                     return res.json({
                         msg: "Logged in",
@@ -151,7 +151,7 @@ router.get('/isLoggedIn', auth, (req, res) => {
     res.cookie('access_token', token, {
         maxAge: 3600000,
         httpOnly: true,
-        secure: true
+        //secure: true
     })
     res.json({ success: true, msg: req.user.Username });
 });
@@ -161,7 +161,7 @@ router.get('/user', auth, (req, res) => {
   res.cookie('access_token', token,{
     maxAge: 3600000,
     httpOnly: true,
-    secure: true
+    //secure: true
   })
   res.json({success: true, username: req.user.Username});
 });
@@ -422,7 +422,7 @@ router.post('/changeProfilePic', auth, async (req, res) => {
     res.cookie('access_token', token, {
         maxAge: 3600000,
         httpOnly: true,
-        secure: true
+        //secure: true
     })
 
     res.json({ msg: "Profile URL updated!" });

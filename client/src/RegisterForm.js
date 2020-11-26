@@ -103,7 +103,7 @@ class RegisterForm extends React.Component {
            {/* <button type="button" className="loginBtn btn-primary btn-block" onClick = {() => this.doRegister()}>Sign Up</button> */}
            <Button variant="primary" size= "lg" block onClick = {() => this.doRegister()}>Register</Button>{' '}
            <p className="need-an-account text-right">
-               Took a wrong turn? <a href="http://localhost:3000">Go Back</a>
+               Took a wrong turn? <a href={process.env.REACT_APP_CLIENT_URL}>Go Back</a>
            </p>
        </form>
       </div>

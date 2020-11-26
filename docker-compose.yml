@@ -6,10 +6,11 @@ services:
         restart: always
         command: npm run start
         ports:
-            - "3000:3000"
+            - "443:3000"
         volumes:
             - ./client:/client
             - /client/node_modules
+            - ./security:/security
         links:
             - server
         environment:
@@ -24,6 +25,7 @@ services:
         volumes:
             - ./:/server
             - /server/node_modules
+            - ./security:/security
         depends_on:
             - mongo
     mongo:

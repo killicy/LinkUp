@@ -3,3 +3,5 @@ package-lock.json
 .eslintcache
 .env
 .vscode
+live.cert.pem
+live.privkey.pem
