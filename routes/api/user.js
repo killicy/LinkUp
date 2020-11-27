@@ -27,7 +27,6 @@ router.post('/register', (req, res) => {
     // check to see if user exists
     User.findOne({ Email })
         .then(user => {
-<<<<<<< Updated upstream
             if (user) return res.status(400).json({msg: 'Email already exists!' });
     User.findOne({ Username })
         .then(user => {
@@ -38,7 +37,6 @@ router.post('/register', (req, res) => {
                 Email,
                 Password,
                 Username,
-                Description: "",
                 Profile_pic: "esiurmc4vzfadgrmumm7"
             });
 
@@ -57,44 +55,6 @@ router.post('/register', (req, res) => {
                             })
                         }
                     )
-=======
-            if (user) return res.status(400).json({ msg: 'Email already exists!' });
-            User.findOne({ Username })
-                .then(user => {
-                    if (user) return res.status(400).json({ msg: 'Username already exists!' });
-
-                    // create user
-                    const newUser = new User({
-                        Email,
-                        Password,
-                        Username,
-                    });
-
-                    // Create salt and hash
-                    bcrypt.genSalt(10, (err, salt) => {
-                        bcrypt.hash(newUser.Password, salt, (err, hash) => {
-                            if (err) throw err;
-
-                            newUser.Password = hash;
-                            newUser.save()
-                                .then(user => {
-                                    res.json({
-                                        msg: 'Registered!',
-                                        success: true,
-                                        Username: user.Username
-                                    })
-                                }
-                            )
-                        })
-                    })
-                    // New code to send email upon creation of account
-                    // try{
-                    //   sendEmail(newUser.Email, templates.confirm(newUser.Username))
-                    // }
-                    // catch(err){
-                    //   console.log(err)
-                    // }
->>>>>>> Stashed changes
                 })
             })
             try{
@@ -256,14 +216,8 @@ router.post('/searchFriend', auth, async (req, res) => {
     if(!req.body.search){
         res.json({ msg: "Please enter search criteria", user: []});
     }
-<<<<<<< Updated upstream
     
     const user = await User.findOne({_id: req.user.id})
-=======
-
-    const user = await User.findOne({ _id: req.user.id })
-    console.log(user)
->>>>>>> Stashed changes
 
     var condition = new RegExp(req.body.search);
 
@@ -271,15 +225,10 @@ router.post('/searchFriend', auth, async (req, res) => {
         return condition.test(el.Username);
         //return condition.test(el.fName || el.lName);
     })
-<<<<<<< Updated upstream
-    res.json({user: [user]})
-    console.log(user);
-=======
-    console.log(result)
+    
 
     res.json(result);
 
->>>>>>> Stashed changes
 });
 
 
