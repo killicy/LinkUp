@@ -27,6 +27,7 @@ router.post('/register', (req, res) => {
     // check to see if user exists
     User.findOne({ Email })
         .then(user => {
+<<<<<<< Updated upstream
             if (user) return res.status(400).json({msg: 'Email already exists!' });
     User.findOne({ Username })
         .then(user => {
@@ -56,6 +57,44 @@ router.post('/register', (req, res) => {
                             })
                         }
                     )
+=======
+            if (user) return res.status(400).json({ msg: 'Email already exists!' });
+            User.findOne({ Username })
+                .then(user => {
+                    if (user) return res.status(400).json({ msg: 'Username already exists!' });
+
+                    // create user
+                    const newUser = new User({
+                        Email,
+                        Password,
+                        Username,
+                    });
+
+                    // Create salt and hash
+                    bcrypt.genSalt(10, (err, salt) => {
+                        bcrypt.hash(newUser.Password, salt, (err, hash) => {
+                            if (err) throw err;
+
+                            newUser.Password = hash;
+                            newUser.save()
+                                .then(user => {
+                                    res.json({
+                                        msg: 'Registered!',
+                                        success: true,
+                                        Username: user.Username
+                                    })
+                                }
+                            )
+                        })
+                    })
+                    // New code to send email upon creation of account
+                    // try{
+                    //   sendEmail(newUser.Email, templates.confirm(newUser.Username))
+                    // }
+                    // catch(err){
+                    //   console.log(err)
+                    // }
+>>>>>>> Stashed changes
                 })
             })
             try{
@@ -105,6 +144,7 @@ router.post('/login', (req, res) => {
                         Email: user.Email,
                         Friends: user.Friends,
                         Profile_pic: user.Profile_pic,
+                        Description: user.Description,
                         success: true
                     })
 
@@ -193,6 +233,11 @@ router.post('/addFriend', auth, async (req, res) => {
         // get friend info from body
         const newFriend = await User.findOne({ Username: req.body.Username })
 
+        if(newFriend == null){
+            res.json({msg: "User not found"});
+            return;
+        }
+
         user.Friends.push(newFriend);
         user.save();
 
@@ -211,8 +256,14 @@ router.post('/searchFriend', auth, async (req, res) => {
     if(!req.body.search){
         res.json({ msg: "Please enter search criteria", user: []});
     }
+<<<<<<< Updated upstream
     
     const user = await User.findOne({_id: req.user.id})
+=======
+
+    const user = await User.findOne({ _id: req.user.id })
+    console.log(user)
+>>>>>>> Stashed changes
 
     var condition = new RegExp(req.body.search);
 
@@ -220,8 +271,15 @@ router.post('/searchFriend', auth, async (req, res) => {
         return condition.test(el.Username);
         //return condition.test(el.fName || el.lName);
     })
+<<<<<<< Updated upstream
     res.json({user: [user]})
     console.log(user);
+=======
+    console.log(result)
+
+    res.json(result);
+
+>>>>>>> Stashed changes
 });
 
 
@@ -456,5 +514,66 @@ router.get('/getUser', auth, async(req, res) => {
         res.json({ error });
     }
 });
+
+// route: get api/user/updateDescription
+// takes Description, updates user desctiption
+// private, requires token
+router.post('/updateDescription', auth, async(req, res) => {
+
+    try {
+        const user = await User.findOne({ Username: req.user.Username});
+        user.Description = req.body.Description;
+
+        user.save();
+
+        res.json({ msg: "Description updated", Description: user.Description });
+        
+    } catch (error) {
+        res.json({ error });
+    }
+})
+
+// route: get api/user/updateUsername
+// takes Username, updates user Username
+// private, requires token
+router.post('/updateUsername', auth, async(req, res) => {
+
+    try {
+        const user = await User.findOne({ Username: req.user.Username});
+        user.Username = req.body.Username;
+
+        user.save();
+
+        res.json({ msg: "Username updated", Username: user.Username });
+        
+    } catch (error) {
+        res.json({ error });
+    }
+})
+
+// route: get api/user/forgotPassword
+// takes Password, updates user Password
+// private, requires token
+router.post('/forgotPassword', auth, async(req, res) => {
+
+    const user = await User.findOne({ Username: req.user.Username});
+    user.Password = req.body.Password;
+    bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(user.Password, salt, (err, hash) => {
+            if (err) throw err;
+
+            user.Password = hash;
+            user.save()
+                .then(user => {
+                    res.json({
+                        msg: 'Password updated!',
+                        success: true,
+                        Username: user.Username
+                    })
+                })
+
+        })
+    })
+})
 
 module.exports = router;

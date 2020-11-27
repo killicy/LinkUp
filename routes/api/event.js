@@ -172,4 +172,24 @@ router.post('/changeEventPic', auth, async (req, res) => {
 
 })
 
+// route: post api/event/attendingEvent
+// takes Title, finds if logged in user is a participant
+// private, requires token
+router.post('/attendingEvent', auth, async (req, res) => {
+
+    try {
+        const event = await Event.findOne({ Title: req.body.Title, 'Participants.Username' : req.user.Username });
+
+        if(event == null){
+            res.json({ msg: "You are not attending this event or it does not exist" });
+        }
+        
+    
+        res.json({ msg: "You are attending this event!", Event: event });
+
+    } catch (error) {
+        res.json({ error });
+    }
+})
+
 module.exports = router;

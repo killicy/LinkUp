@@ -43,6 +43,7 @@ const userSchema = new Schema({
     Description: {
         type: String,
         
+        default: ""
     }
     
 });
