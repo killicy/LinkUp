@@ -296,6 +296,7 @@ router.get('/userInfo', auth, async(req, res) => {
 
         // Hold all my promises.
         let promises = [];
+        let friendEvents = [];
         friends.forEach( (friend) => {
 
             let generatePromise = async () => {
@@ -304,6 +305,10 @@ router.get('/userInfo', auth, async(req, res) => {
 
                 // let retVal = {}
                 // retVal[Username] = events;
+                
+                events.forEach( (event) => {
+                    friendEvents.push(event);
+                });
 
                 // Promise is resolved and returns the Events object for this friend.
                 return events;
@@ -314,7 +319,7 @@ router.get('/userInfo', auth, async(req, res) => {
         });
 
         // Wait for all promises to complete, and aggregate them into `all`.
-        await Promise.all(promises).then( (all) => res.json({ UserEvents: userEvents, Friends: friends, FriendEvents: all}))
+        await Promise.all(promises).then( (all) => res.json({ UserEvents: userEvents, Friends: friends, FriendEvents: friendEvents}))
     }
 
     catch(err) {
