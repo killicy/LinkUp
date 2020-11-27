@@ -302,11 +302,11 @@ router.get('/userInfo', auth, async(req, res) => {
                 const Username = friend.Username;
                 const events = await Event.find({ 'Participants.Username' : friend.Username });
 
-                let retVal = {}
-                retVal[Username] = events;
+                // let retVal = {}
+                // retVal[Username] = events;
 
                 // Promise is resolved and returns the Events object for this friend.
-                return retVal;
+                return events;
             };
 
             // Create the promise by calling the asynchronous function, and push it into our promises array.
