@@ -8,11 +8,39 @@ import SubmitButton from './SubmitButton';
 import EventMaker from './EventMaker';
 import { Card } from "react-bootstrap";
 import DatePicker from "react-datepicker";
+import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
 
 class MainContent extends React.Component {
 
+  constructor(props){
+      super(props);
+      this.state = {
+          message: '',
+          showy: [],
+          success: false
+      }
+  }
 
-  componentDidUpdate(prevProps) {
+setShow(){
+  if(this.state.show === false){
+    this.setState({
+      show: true
+    });
+  }
+  else{
+    console.log("help");
+    this.setState({
+      show: false,
+      message: ''
+    });
+  }
+}
+
+
+
+async componentDidMount() {
+  console.log(this.props);
 }
 
 async addEvent(Title){
@@ -33,50 +61,30 @@ async addEvent(Title){
   }
 }
 
-    render() {
-          if(this.props.data.friend){
-            return(
-              <div className= "mainContent">
-                  <div className="contentGrid">{this.props.data.events.map((event, index) => {
-                    return (
-                        <Card key={index} className="EventCards border border-dark mb-1">
-                        <Card.Body>
-                          <Card.Title>{event.Title} <DatePicker selected={new Date(event.Date_Start)} showTimeSelect dateFormat="Pp" /> <DatePicker selected={new Date(event.Date_End)} showTimeSelect dateFormat="Pp" /></Card.Title>
-                          <Card.Text>-{event.Description}</Card.Text>
-                        </Card.Body>
-                        <Card.Footer>
-                          <button type="button" className="searchBtn btn-secondary btn-block" onClick = {() => this.addEvent(event.Title)}>Add Event</button>
-                        </Card.Footer>
-                        </Card>
-                    );
-                  })}
-                  </div>
-              </div>
+  render() {
+    return(
+      <div className= "mainContent">
+          <div className="contentGrid">{this.props.data.events.map((event, index) => {
+            return (
+                <Card key={index} className="EventCards border border-dark mb-1">
+                <Card.Header>
+                  <Card.Title onClick={ () => this.setShow() }>{event.Title}</Card.Title>
+                  <DatePicker selected={new Date(event.Date_Start)} showTimeSelect dateFormat="Pp" /> <DatePicker selected={new Date(event.Date_End)} showTimeSelect dateFormat="Pp" />
+                </Card.Header>
+                <Card.Body>
+                  <Card.Text>-{event.Description}</Card.Text>
+                </Card.Body>
+                <Card.Footer>
+                </Card.Footer>
+                  {this.props.data.showy[index] === false ? <button type="button" className="searchBtn btn-secondary btn-block" onClick = {() => this.addEvent(event.Title)}>Add Event</button>
+                  : <button type="button" className="searchBtn btn-secondary btn-block" onClick = {() => this.addEvent(event.Title)}>Unenroll</button>}
+                </Card>
             );
-          }
-          else {
-            return(
-              <div className= "mainContent">
-                  <div className="contentGrid">{this.props.data.events.map((event, index) => {
-                    return (
-                        <Card key={index} className="EventCards border border-dark mb-1">
-                        <Card.Header>
-                          <Card.Title>{event.Title}</Card.Title>
-                          <DatePicker selected={new Date(event.Date_Start)} showTimeSelect dateFormat="Pp" /> <DatePicker selected={new Date(event.Date_End)} showTimeSelect dateFormat="Pp" />
-                        </Card.Header>
-                        <Card.Body>
-                          <Card.Text>-{event.Description}</Card.Text>
-                        </Card.Body>
-                        <Card.Footer>
-                        </Card.Footer>
-                        </Card>
-                    );
-                  })}
-                  </div>
-              </div>
-            );
-          }
-      }
+          })}
+          </div>
+      </div>
+    );
+  }
 }
 
 export default MainContent;

@@ -50,7 +50,8 @@ class LinkUp extends React.Component {
           addFriend: false,
           friend: false,
           Profile_pic: '',
-          user: {Username: 'placeholder'}
+          user: {Username: 'placeholder'},
+          showy: []
       }
   }
 
@@ -147,6 +148,10 @@ class LinkUp extends React.Component {
           this.setState({events: data.UserEvents, friends: data.Friends, friendEvents: data.FriendEvents, success: data.success, addFriend: data.addFriend, friend: data.friend, Profile_pic: data.Profile_pic, user: data.user});
         });
         if(this.state.success === true){
+          this.state.events.map((event, index) => {
+              this.enrolled(event, index);
+          });
+
           this.setState({
             success: true,
             friend: this.state.friend
@@ -166,7 +171,6 @@ class LinkUp extends React.Component {
       });
     }
     else{
-      console.log("help");
       this.setState({
         show: false,
         message: ''
@@ -188,7 +192,9 @@ class LinkUp extends React.Component {
           Username: this.state.url
         })}).then(response => response.json()).then(data => this.setState({success: data.success}));
         if(this.state.success === true){
-          this.state.success = false;
+          this.setState({
+            success: false
+          });
         }
         else{
         }
@@ -199,6 +205,35 @@ class LinkUp extends React.Component {
   setDater(date){
     this.setState({startDate: new Date(date), startDate1: new Date(date)});
   }
+
+  async enrolled(event, index){
+    try {
+      await fetch(process.env.REACT_APP_API_URL + '/api/event/attendingEvent', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
+        },
+        body: JSON.stringify({
+          Title: event.Title,
+        })}).then(response => response.json()).then(data => {
+          if(data.success === true){
+            this.state.showy[index] = true;
+          }
+          else{
+            this.state.showy[index] = false;
+          }
+      });
+        this.setState({
+          success: false
+        });
+    }
+    catch(e) {
+    }
+  }
+
   render() {
 
     return (

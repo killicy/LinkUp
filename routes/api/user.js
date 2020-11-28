@@ -216,7 +216,7 @@ router.post('/searchFriend', auth, async (req, res) => {
     if(!req.body.search){
         res.json({ msg: "Please enter search criteria", user: []});
     }
-    
+
     const user = await User.findOne({_id: req.user.id})
 
     var condition = new RegExp(req.body.search);
@@ -225,7 +225,7 @@ router.post('/searchFriend', auth, async (req, res) => {
         return condition.test(el.Username);
         //return condition.test(el.fName || el.lName);
     })
-    
+
 
     res.json(result);
 
@@ -305,7 +305,7 @@ router.get('/userInfo', auth, async(req, res) => {
 
                 // let retVal = {}
                 // retVal[Username] = events;
-                
+
                 events.forEach( (event) => {
                     friendEvents.push(event);
                 });
@@ -463,7 +463,7 @@ router.get('/getUser', auth, async(req, res) => {
     try {
         const user = await User.findOne({ Username: req.user.Username }).select('-Password');
         res.json({ user });
-        
+
     } catch (error) {
         res.json({ error });
     }
@@ -481,7 +481,7 @@ router.post('/updateDescription', auth, async(req, res) => {
         user.save();
 
         res.json({ msg: "Description updated", Description: user.Description });
-        
+
     } catch (error) {
         res.json({ error });
     }
@@ -499,7 +499,7 @@ router.post('/updateUsername', auth, async(req, res) => {
         user.save();
 
         res.json({ msg: "Username updated", Username: user.Username });
-        
+
     } catch (error) {
         res.json({ error });
     }

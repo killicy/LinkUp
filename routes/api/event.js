@@ -12,7 +12,7 @@ router.use(cookieParser())
 // private, does require token
 router.post('/create', auth, (req, res) => {
     const {Title, Description, Date_Start, Date_End} = req.body;
-    
+
     if(!Title || !Description || !Date_End || !Date_Start)
         return res.status(400).json({ msg: 'Please enter all fields', success: false});
 
@@ -20,7 +20,7 @@ router.post('/create', auth, (req, res) => {
         .then(event => {
             if (event) return res.status(400).json({ msg: 'Event already exists', success: false});
             console.log(req.user);
-    
+
             const newEvent = new Event({
                 Title,
                 Description,
@@ -36,7 +36,7 @@ router.post('/create', auth, (req, res) => {
                 .then(event => {
                     res.json({newEvent, success: true});
                 })
-        }) 
+        })
 
 });
 
@@ -181,14 +181,14 @@ router.post('/attendingEvent', auth, async (req, res) => {
         const event = await Event.findOne({ Title: req.body.Title, 'Participants.Username' : req.user.Username });
 
         if(event == null){
-            res.json({ msg: "You are not attending this event or it does not exist" });
+            res.json({ msg: "You are not attending this event or it does not exist", success: false});
+            return;
         }
-        
-    
-        res.json({ msg: "You are attending this event!", Event: event });
+        console.log("true")
+        res.json({ msg: "You are attending this event!", Event: event, success: true});
 
     } catch (error) {
-        res.json({ error });
+        res.json({ error, success: false});
     }
 })
 
