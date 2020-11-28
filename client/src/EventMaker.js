@@ -70,15 +70,20 @@ class EventMaker extends React.Component {
     return(
       <div className= "userEvents flex-nowrap border border-dark">
         <div className="myeventHeader">
-          <p>Events</p>
+          <p className="headerText">Events</p>
         </div>
         <div className="eventGrid">{this.props.data.events.map((event, index) => {
           return (
-              <Card key={index} className="boxer border border-dark mb-1">
+              <Card key={index} className="boxer border mb-1">
+              <Card.Header>
+                <Card.Title><p>{event.Title}</p></Card.Title>
+              </Card.Header>
               <Card.Body>
-                  <Card.Title><p>{event.Title}</p></Card.Title>
-                  <Card.Text><p className="ptag">-{event.Description}</p></Card.Text>
+                <Card.Text><p className="ptag">-{event.Description}</p></Card.Text>
               </Card.Body>
+              <Card.Footer>
+                <button type="button" className="searchBtn btn-secondary btn-block" onClick = {() => this.addEvent(event.Title)}>Remove Event</button>
+              </Card.Footer>
               </Card>
           );
           })}

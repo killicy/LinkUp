@@ -17,7 +17,7 @@ class Profile extends React.Component {
   }
   render() {
     return (
-      <div className="Profile border border-dark">
+      <div className="Profile border ">
         <div className="space"></div>
         <Card className="profileStuff mb-4 border-0">
           <Image cloudName= "dsnnlkpj9" publicId={this.props.data.Profile_pic} className = "profilePic">

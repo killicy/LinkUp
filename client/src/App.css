@@ -127,12 +127,19 @@
 
 .eventGrid {
   overflow-y: auto;
+  background-color: lightgrey;
 }
 
 .box {
   min-width: 239.3px;
   overflow-y: auto;
 }
+
+.friendDisplay{
+  display: flex;
+  flex-direction: row!important;
+}
+
 
 .tab-content {
   min-width: 239.3px;
@@ -161,10 +168,42 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  background-color: #007bff;
+
 }
 p{
   max-height: 3vh;
   line-height: 5vh;
+  text-align: center;
+
+
+}
+
+.card-header{
+  text-align: center;
+  background-color: white!important;
+}
+
+.cardHead{
+  font-size: 25px;
+}
+
+.btnEvent{
+  background-color: #007bff!important;
+  border-radius: 5px!important;
+  border-color: #007bff!important;
+  width: 500px!important;
+}
+
+
+
+
+p.headerText{
+  font-style: bold;
+  color: white;
+  font-size: 30px;
+  margin-top: 10px;
+  text-shadow: 1px black;
 }
 .userEvents {
   display: flex;
@@ -231,8 +270,8 @@ p{
   overflow-y: auto;
   max-height: 150px;
 
-  border-top: solid 5px #0098b1;
-  border-bottom: solid 5px #0098b1;
+  border-top: solid 5px #007bff;
+  border-bottom: solid 5px #007bff;
   padding: 10px;
 
 
@@ -273,6 +312,7 @@ p{
   max-width: 237px !important;
   flex-flow: wrap;
 }
+
 .editProfileText{
   min-width: 239.3px;
   max-height: 175px;
@@ -286,7 +326,7 @@ p{
 }
 
 .space{
-  background-color: #0098b1;
+  background-color: #007bff;
   min-height: 10%;
 }
 

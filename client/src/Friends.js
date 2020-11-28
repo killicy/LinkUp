@@ -104,15 +104,15 @@ class Friends extends React.Component {
 
   render() {
     return (
-      <div className="Friends border border-dark">
+      <div className="Friends border">
         <Tabs defaultActiveKey="home" className="friendTabs flex-nowrap" transition={false}>
           <Tab eventKey="home" className="Myfriends" title="Friends">
             {this.state.success ?
               <div className="userGrid">{this.state.userList.map((friend, index) => {
                 return (
-                    <Card key={index} className="box border border-dark mb-1">
+                    <Card key={index} className="box border mb-1">
                       <Card.Body>
-                        <p>{friend.Username}</p>
+                        <p className="cardHead">{friend.Username}</p>
                       </Card.Body>
                     </Card>
                 );
@@ -121,15 +121,16 @@ class Friends extends React.Component {
               :
               <div className="userGrid">{this.props.data.friends.map((friend, index) => {
                 return (
-                    <Card key={index} className="box border border-dark mb-1">
-                      <Card.Body>
+                    <Card key={index} className="box border mb-1">
+                      <Card.Body className="friendDisplay">
                       {console.log(friend)}
                         <div className='friendImages'>
                           <Image cloudName= "dsnnlkpj9" publicId="dmiigmmpxpfb7wqfprfj" className = "profilePic" onClick={ () => this.profile(friend.Username) }>
                             <Transformation width="200" height="200" gravity="face" radius="max" crop="crop" />
                             <Transformation width="50" crop="scale" />
-                          </Image><p>{friend.Username}</p>
+                          </Image>
                         </div>
+                        <p className="cardHead">{friend.Username}</p>
                       </Card.Body>
                     </Card>
                 );
@@ -147,13 +148,13 @@ class Friends extends React.Component {
             {this.state.success1 ?
               <div className="userGrid">{this.state.userList.map((friend, index) => {
                 return (
-                    <Card key={index} className="box border border-dark mb-1">
+                    <Card key={index} className="box border mb-1">
                       <Card.Body>
                         <div className='friendImages'>
                           <Image cloudName= "dsnnlkpj9" publicId="dmiigmmpxpfb7wqfprfj" className = "profilePic" onClick={ () => this.profile(friend.Username) }>
                             <Transformation width="200" height="200" gravity="face" radius="max" crop="crop" />
                             <Transformation width="50" crop="scale" />
-                          </Image><p>{friend.Username}</p>
+                          </Image><p className="cardHead">{friend.Username}</p>
                         </div>
                       </Card.Body>
                     </Card>
