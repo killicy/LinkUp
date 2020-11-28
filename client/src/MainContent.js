@@ -76,8 +76,8 @@ async addEvent(Title){
                 </Card.Body>
                 <Card.Footer>
                 </Card.Footer>
-                  {this.props.data.showy[index] === false ? <button type="button" className="searchBtn btn-secondary btn-block" onClick = {() => this.addEvent(event.Title)}>Add Event</button>
-                  : <button type="button" className="searchBtn btn-secondary btn-block" onClick = {() => this.addEvent(event.Title)}>Remove Event</button>}
+                  {this.props.data.showy[index] === false ? <button type="button" className="searchBtn btn-dark btn-block" onClick = {() => this.addEvent(event.Title)}>Add Event</button>
+                  : <button type="button" className="searchBtn btn-dark btn-block" onClick = {() => this.addEvent(event.Title)}>Remove Event</button>}
                 </Card>
             );
           })}

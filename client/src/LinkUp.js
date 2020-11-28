@@ -242,7 +242,7 @@ class LinkUp extends React.Component {
       <div className="MainPage">
         <EventMaker data={this.state} />
         <div className="middleContainer">
-          {this.state.addFriend ? <button type="button" className="btnEvent btn-secondary" onClick={ () => this.addFriend() }>Add Friend</button> : this.state.friend ? null :  <button type="button" className="btnEvent btn-secondary" onClick={ () => this.setShow() }>Add Event</button>}
+          {this.state.addFriend ? <button type="button" className="btnEvent btn-secondary" onClick={ () => this.addFriend() }>Add Friend</button> : this.state.friend ? null :  <button type="button" className="btnEvent btn-secondary" onClick={ () => this.setShow() }>Create Event</button>}
           <Switch>
             <Route exact path={"/Profile/"+this.state.url} render={() => <MainContent data = {this.state}/>}/>
             <Route exact path={"/Profile/"+this.state.url+"/:token"} render={() => <MainContent data = {this.state}/>}/>

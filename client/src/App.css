@@ -1,3 +1,6 @@
+/* important note: Make sure you set the description inside profileBody with a padding
+to compensate for the scrollbar*/
+
 .App {
   text-align: center;
 }
@@ -126,9 +129,18 @@
 }
 
 .eventGrid {
-  overflow-y: auto;
+  direction: rtl;
   background-color: lightgrey;
+  overflow-y: hidden;
 }
+
+
+.eventGrid:hover {
+  overflow-y: overlay;
+  padding-right: 0px;
+}
+
+
 
 .box {
   min-width: 239.3px;
@@ -149,16 +161,26 @@
 
 .mainContent {
   min-width: 40vw;
-  background-color: #ffffff;
   white-space: nowrap;
-  overflow-y: auto;
   margin-top: 50px;
   font-size: calc(10px + 2vmin);
   color: black;
+  overflow-y: hidden;
+  background-color: lightgrey;
+}
+
+
+.mainContent:hover {
+  overflow-y: overlay;
+  padding-right: 0px;
 }
 
 .contentGrid {
+  margin: 8px;
 }
+
+
+
 
 
 .myeventHeader{
@@ -181,11 +203,12 @@ p{
 
 .card-header{
   text-align: center;
-  background-color: white!important;
+  background-color: white;
 }
 
 .cardHead{
   font-size: 25px;
+
 }
 
 .btnEvent{
@@ -267,14 +290,16 @@ p.headerText{
 }
 
 .profileBody{
-  overflow-y: auto;
+  overflow-y: hidden!important;
   max-height: 150px;
 
   border-top: solid 5px #007bff;
   border-bottom: solid 5px #007bff;
   padding: 10px;
+}
 
-
+.profileBody:hover{
+  overflow-y: auto!important;
 }
 .loginStyling{
   min-height: 100vh;
@@ -311,6 +336,8 @@ p.headerText{
   overflow-x:hidden !important;
   max-width: 237px !important;
   flex-flow: wrap;
+  direction:ltr;
+  margin: 8px;
 }
 
 .editProfileText{
@@ -322,8 +349,17 @@ p.headerText{
 
 
 ::-webkit-scrollbar {
-    display: none;
+  width: 8px;
 }
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
 
 .space{
   background-color: #007bff;

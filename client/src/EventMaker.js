@@ -68,7 +68,7 @@ class EventMaker extends React.Component {
 
   render() {
     return(
-      <div className= "userEvents flex-nowrap border border-dark">
+      <div className= "userEvents flex-nowrap border">
         <div className="myeventHeader">
           <p className="headerText">Events</p>
         </div>
@@ -82,7 +82,7 @@ class EventMaker extends React.Component {
                 <Card.Text><p className="ptag">-{event.Description}</p></Card.Text>
               </Card.Body>
               <Card.Footer>
-                <button type="button" className="searchBtn btn-secondary btn-block" onClick = {() => this.addEvent(event.Title)}>Remove Event</button>
+                <button type="button" className="searchBtn btn-dark btn-block" onClick = {() => this.addEvent(event.Title)}>Remove Event</button>
               </Card.Footer>
               </Card>
           );
