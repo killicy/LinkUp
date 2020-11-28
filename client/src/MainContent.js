@@ -10,6 +10,7 @@ import { Card } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
+import { Image, Transformation } from "cloudinary-react";
 
 class MainContent extends React.Component {
 
@@ -66,10 +67,13 @@ async addEvent(Title){
       <div className= "mainContent">
           <div className="contentGrid">{this.props.data.events.map((event, index) => {
             return (
-                <Card key={index} className="EventCards border mb-1">
+                <Card key={index} className="EventCards border">
                 <Card.Header>
                   <Card.Title onClick={ () => this.setShow() }><p className="cardHead">{event.Title}</p></Card.Title>
-                  <DatePicker selected={new Date(event.Date_Start)} showTimeSelect dateFormat="Pp" /> <DatePicker selected={new Date(event.Date_End)} showTimeSelect dateFormat="Pp" />
+                  <div className="eventDate"><DatePicker selected={new Date(event.Date_Start)} showTimeSelect dateFormat="Pp" /> <DatePicker selected={new Date(event.Date_End)} showTimeSelect dateFormat="Pp" /></div>
+                  <Image cloudName= "dsnnlkpj9" publicId="pdu4zotrzptkew0g5gxe" className = "eventPic">
+                    <Transformation border="8px_solid_black" />
+                  </Image>
                 </Card.Header>
                 <Card.Body>
                   <Card.Text>{event.Description}</Card.Text>

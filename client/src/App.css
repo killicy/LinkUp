@@ -81,6 +81,7 @@ to compensate for the scrollbar*/
   max-height: 100%;
   min-height: 300px;
   overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
 }
 
 .Friends {
@@ -95,6 +96,8 @@ to compensate for the scrollbar*/
 
   background-color: #ffffff;
   border-style: outset;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+
 }
 
 .friendImages {
@@ -126,6 +129,7 @@ to compensate for the scrollbar*/
   min-height: calc(533px - 89px - 47px);
 
   overflow-y: auto;
+  background-color: lightgrey;
 }
 
 .eventGrid {
@@ -150,6 +154,7 @@ to compensate for the scrollbar*/
 .friendDisplay{
   display: flex;
   flex-direction: row!important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
 }
 
 
@@ -160,13 +165,16 @@ to compensate for the scrollbar*/
 
 
 .mainContent {
-  min-width: 40vw;
+  min-width: 700px;
+  max-width: 40vw;
+
   white-space: nowrap;
   margin-top: 50px;
   font-size: calc(10px + 2vmin);
   color: black;
   overflow-y: hidden;
   background-color: lightgrey;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
 }
 
 
@@ -176,9 +184,13 @@ to compensate for the scrollbar*/
 }
 
 .contentGrid {
-  margin: 8px;
+  margin: 8px 8px 8px 8px;
 }
 
+.EventCards{
+  margin: 0px 0px 8px 0px!important;
+
+}
 
 
 
@@ -201,14 +213,26 @@ p{
 
 }
 
+.eventDate{
+  margin-bottom: 8px;
+  max-width: 100%;
+}
+
+.react-datepicker-wrapper {
+    width: 300px;
+}
+
 .card-header{
   text-align: center;
   background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .cardHead{
   font-size: 25px;
-
+  width: 100%;
 }
 
 .btnEvent{
@@ -216,6 +240,7 @@ p{
   border-radius: 5px!important;
   border-color: #007bff!important;
   width: 500px!important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
 }
 
 
@@ -236,10 +261,10 @@ p.headerText{
   min-width: 239.3px;
   background-color: #ffffff;
   margin-left: 5vw;
-
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
 }
 
-.Findfriends {
+.Findnds {
   background-color: #ffffff;
   display: flex;
   white-space: nowrap;
@@ -258,6 +283,8 @@ p.headerText{
   justify-content: space-between;
   font-size: calc(.5px + 2vmin);
   color: black;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+
 }
 
 .profileDropdown{
@@ -275,6 +302,11 @@ p.headerText{
     border: 2px solid black;
 }
 
+.eventPic{
+    max-width: 90%;
+    max-height: 90%;
+}
+
 .name{
   text-align: center;
 }
@@ -287,6 +319,7 @@ p.headerText{
   max-height: 100%;
   min-height: 90%;
   background-color: #525252;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
 }
 
 .profileBody{
@@ -296,6 +329,8 @@ p.headerText{
   border-top: solid 5px #007bff;
   border-bottom: solid 5px #007bff;
   padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+
 }
 
 .profileBody:hover{
@@ -315,14 +350,14 @@ p.headerText{
 .card-body{
   padding: .75rem !important;
   max-width: 100% !important;
-  max-height: 200px;
+  max-height: 500px;
   word-wrap: break-word!important;
 
 }
 
 .card-text{
   display: flex;
-  flex-flow: wrap;
+  flex-flow: wrap!important;
   overflow-y: auto;
   word-wrap: break-word!important;
 }
