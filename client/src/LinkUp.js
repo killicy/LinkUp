@@ -122,6 +122,7 @@ class LinkUp extends React.Component {
           'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
         }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success, message: data.msg}));
          if (this.state.isLoggedin) {
+
          }
          else {
            this.props.history.push('/');
@@ -156,6 +157,8 @@ class LinkUp extends React.Component {
             success: true,
             friend: this.state.friend
           })
+          console.log("help");
+          console.log(this.state.friendEvents);
         }
         else{
         }

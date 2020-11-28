@@ -8,6 +8,10 @@ import Cookies from 'universal-cookie';
 import {BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import InputField from './InputField';
+import DatePicker from "react-datepicker";
+import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
+import { Image, Transformation } from "cloudinary-react";
 
 
 class EventMaker extends React.Component {
@@ -21,8 +25,25 @@ class EventMaker extends React.Component {
             buttonDisabled: false,
             success: false,
             isLoggedin: false,
-            msg: ''
+            msg: '',
+            show: []
         }
+    }
+
+    setShow(index){
+
+      if(this.state.show[index] === undefined || this.state.show[index] === false){
+        this.state.show[index] = true;
+        this.setState({
+          message: ''
+        });
+      }
+      else{
+        this.state.show[index] = false;
+        this.setState({
+          message: ''
+        });
+      }
     }
     async doEvent() {
 
@@ -74,17 +95,44 @@ class EventMaker extends React.Component {
         </div>
         <div className="eventGrid">{this.props.data.events.map((event, index) => {
           return (
+            <div>
               <Card key={index} className="boxer border mb-1">
-              <Card.Header>
-                <Card.Title><p>{event.Title}</p></Card.Title>
+              <Card.Header onClick={ () => this.setShow(index) }>
+                <Card.Title><p className="eventHeight">{event.Title}</p></Card.Title>
               </Card.Header>
               <Card.Body>
                 <Card.Text><p className="ptag">-{event.Description}</p></Card.Text>
               </Card.Body>
               <Card.Footer>
-                <button type="button" className="searchBtn btn-dark btn-block" onClick = {() => this.addEvent(event.Title)}>Remove Event</button>
+                <button type="button" className="searchBtn btn-dark btn-block" onClick={ () => this.setShow(index) }>Remove Event</button>
               </Card.Footer>
               </Card>
+              <Modal show={this.state.show[index]} onHide={ () => this.setShow(index) }>
+                <Modal.Dialog>
+                  <Modal.Body>
+                    <Card key={index} className="EventCards border">
+                    <Card.Header>
+                      <Card.Title><p className="cardHead">{event.Title}</p></Card.Title>
+                      <div className="eventDate"><DatePicker selected={new Date(event.Date_Start)} showTimeSelect dateFormat="Pp" /> <DatePicker selected={new Date(event.Date_End)} showTimeSelect dateFormat="Pp" /></div>
+                      <Image cloudName= "dsnnlkpj9" publicId="pdu4zotrzptkew0g5gxe" className = "eventPic">
+                        <Transformation border="8px_solid_black" />
+                      </Image>
+                    </Card.Header>
+                    <Card.Body>
+                      <Card.Text>{event.Description}</Card.Text>
+                    </Card.Body>
+                    <Card.Footer>
+                    </Card.Footer>
+                      {this.props.data.showy[index] === false ? <button type="button" className="searchBtn btn-dark btn-block" onClick = {() => this.addEvent(event.Title)}>Join Event</button>
+                      : <button type="button" className="searchBtn btn-dark btn-block" onClick = {() => this.addEvent(event.Title)}>Remove Event</button>}
+                    </Card>
+                    </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="secondary" onClick={ () => this.setShow(index) } >Close</Button>
+                  </Modal.Footer>
+                </Modal.Dialog>
+              </Modal>
+            </div>
           );
           })}
         </div>

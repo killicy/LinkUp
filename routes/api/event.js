@@ -168,8 +168,6 @@ router.post('/changeEventPic', auth, async (req, res) => {
     } catch (error) {
         res.json({ error });
     }
-
-
 })
 
 // route: post api/event/attendingEvent

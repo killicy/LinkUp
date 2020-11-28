@@ -167,8 +167,6 @@ to compensate for the scrollbar*/
 .mainContent {
   min-width: 700px;
   max-width: 40vw;
-
-  white-space: nowrap;
   margin-top: 50px;
   font-size: calc(10px + 2vmin);
   color: black;
@@ -188,7 +186,8 @@ to compensate for the scrollbar*/
 }
 
 .EventCards{
-  margin: 0px 0px 8px 0px!important;
+  margin: 0px 0px 50px 0px!important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
 
 }
 
@@ -215,11 +214,18 @@ p{
 
 .eventDate{
   margin-bottom: 8px;
-  max-width: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.eventHeight{
+  margin-top: 20px;
 }
 
 .react-datepicker-wrapper {
-    width: 300px;
+  width: inherit;
 }
 
 .card-header{
@@ -228,6 +234,7 @@ p{
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: bottom;
 }
 
 .cardHead{
@@ -324,7 +331,7 @@ p.headerText{
 
 .profileBody{
   overflow-y: hidden!important;
-  max-height: 150px;
+  max-height: 150px!important;
 
   border-top: solid 5px #007bff;
   border-bottom: solid 5px #007bff;
@@ -356,10 +363,9 @@ p.headerText{
 }
 
 .card-text{
-  display: flex;
-  flex-flow: wrap!important;
   overflow-y: auto;
-  word-wrap: break-word!important;
+  max-height: 300px;
+
 }
 
 .ptag{

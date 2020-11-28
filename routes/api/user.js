@@ -369,7 +369,7 @@ router.post('/usernameInfo', auth, async (req, res) => {
 
         // Wait for all promises to complete, and aggregate them into `all`.
         await Promise.all(promises).then( (all) => {
-          console.log(all);
+            console.log(all);
            res.json({ UserEvents: events, Friends: friends, FriendEvents: all, success: true, addFriend: false, friend: false, Username: findUser.Username, Email: findUser.Email, Profile_pic: findUser.Profile_pic, user: findUser})
         })
         return;
