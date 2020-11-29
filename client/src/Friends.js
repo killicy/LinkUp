@@ -123,8 +123,8 @@ class Friends extends React.Component {
                     <Card key={index} className="box border mb-1">
                       <Card.Body className="friendDisplay">
                         <div className='friendImages'>
-                          <Image cloudName= "dsnnlkpj9" publicId="dmiigmmpxpfb7wqfprfj" className = "profilePic" onClick={ () => this.profile(friend.Username) }>
-                            <Transformation width="200" height="200" gravity="face" radius="max" crop="crop" />
+                          <Image cloudName= "dsnnlkpj9" publicId={friend.Profile_pic} className = "profilePic" onClick={ () => this.profile(friend.Username) }>
+                            <Transformation width="400" height="400" gravity="face" radius="max" crop="crop" />
                             <Transformation width="50" crop="scale" />
                           </Image>
                         </div>
@@ -149,10 +149,11 @@ class Friends extends React.Component {
                     <Card key={index} className="box border mb-1">
                       <Card.Body>
                         <div className='friendImages'>
-                          <Image cloudName= "dsnnlkpj9" publicId="dmiigmmpxpfb7wqfprfj" className = "profilePic" onClick={ () => this.profile(friend.Username) }>
-                            <Transformation width="200" height="200" gravity="face" radius="max" crop="crop" />
+                          <Image cloudName= "dsnnlkpj9" publicId={friend.Profile_pic} className = "profilePic" onClick={ () => this.profile(friend.Username) }>
+                            <Transformation width="400" height="400" gravity="face" radius="max" crop="crop" />
                             <Transformation width="50" crop="scale" />
-                          </Image><p className="cardHead">{friend.Username}</p>
+                          </Image>
+                          <p className="cardHead">{friend.Username}</p>
                         </div>
                       </Card.Body>
                     </Card>
@@ -164,10 +165,11 @@ class Friends extends React.Component {
                       <Card key={index} className="box border mb-1">
                         <Card.Body>
                           <div className='friendImages'>
-                            <Image cloudName= "dsnnlkpj9" publicId="dmiigmmpxpfb7wqfprfj" className = "profilePic" onClick={ () => this.profile(friend.Username) }>
-                              <Transformation width="200" height="200" gravity="face" radius="max" crop="crop" />
+                            <Image cloudName= "dsnnlkpj9" publicId={friend.Profile_pic} className = "profilePic" onClick={ () => this.profile(friend.Username) }>
+                              <Transformation width="400" height="400" gravity="face" radius="max" crop="crop" />
                               <Transformation width="50" crop="scale" />
-                            </Image><p className="cardHead">{friend.Username}</p>
+                            </Image>
+                            <p className="cardHead">{friend.Username}</p>
                           </div>
                         </Card.Body>
                       </Card>

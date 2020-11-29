@@ -131,12 +131,12 @@ router.get('/confirmationEmail', auth,  (req, res) => {
 });
 
 router.post('/passwordEmail', async (req, res) => {
-    
+
     const { Username, Email } = req.body;
     if (!Username || !Email) {
         return res.status(400).json({ msg: 'Please enter all fields' });
     }
-    
+
     const user = await User.findOne({ Username: Username, Email: Email });
 
     if(user == null){
@@ -146,7 +146,7 @@ router.post('/passwordEmail', async (req, res) => {
 
     sendEmail(Email, templates.password(Username, token));
     res.json({success: true})
-    
+
 });
 
 
@@ -366,7 +366,7 @@ router.post('/usernameInfo', auth, async (req, res) => {
 
             let generatePromise = async () => {
                 const Username = friend.Username;
-                const events = await Event.find({ 'Participants.Username' : friend.Username }).sort('Date_Added');
+                const events = await Event.find({ 'Participants.Username' : friend.Username }).sort()
 
                 let retVal = {}
                 retVal[Username] = events;
@@ -520,17 +520,17 @@ router.post('/updateUsername', auth, async(req, res) => {
 // takes Password, updates user Password
 // private, requires token
 router.post('/forgotPassword', async(req, res) => {
-    
+
     const { Token, Password } = req.body;
     if (!Password || !Token) {
         return res.status(400).json({ msg: 'Please enter all fields' });
     }
-    
+
     let user;
-    
+
     try {
         const userData = createToken.verifyToken(Token);
-        
+
         user = await User.findOne({ Username: userData.Username, Email: userData.Email });
 
         if (user == null) {
@@ -540,16 +540,16 @@ router.post('/forgotPassword', async(req, res) => {
     catch (e) {
         return res.status(400).json({ msg: 'Invalid token' });
     }
-    
-    
+
+
     if (user == null) {
          return res.status(400).json({ msg: 'Invalid User' });
     }
-    
+
     user.Password = Password;
-    
+
     const token = createToken.createToken(user);
-    
+
     bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(user.Password, salt, (err, hash) => {
             if (err) throw err;

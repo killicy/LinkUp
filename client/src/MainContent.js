@@ -38,12 +38,9 @@ setShow(){
 }
 
 list(data){
-  console.log("help");
-
-  console.log(data);
   if(data === undefined){
     return(
-      <div>kill me</div>
+      null
     )
   }
   return (
@@ -86,11 +83,11 @@ async addEvent(Title){
   render() {
     return(
       <div className= "mainContent">
-          <div className="contentGrid">{this.props.data.events.map((event, index) => {
+          <div className="contentGrid">{this.props.data.friendEvents1.map((event, index) => {
             return (
                 <Card key={index} className="EventCards">
                 <Card.Header>
-                  <Card.Title onClick={ () => this.setShow() }><p className="cardHead">{event.Title}</p></Card.Title>
+                  <Card.Title onClick={ () => this.setShow() }><p className="cardHead">{event.Title}<br/><br/>Made by:<div>{" "}</div>{event.Author.Username}</p></Card.Title>
                   <div className="eventDate"><DatePicker selected={new Date(event.Date_Start)} todayHighlight showTimeSelect dateFormat="Pp" /> <DatePicker selected={new Date(event.Date_End)} showTimeSelect dateFormat="Pp" /></div>
                   <Image cloudName= "dsnnlkpj9" publicId={event.Event_Image} className = "eventPic">
                     <Transformation border="8px_solid_black" />

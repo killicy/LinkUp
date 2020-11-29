@@ -128,8 +128,13 @@ to compensate for the scrollbar*/
   max-height: calc(533px - 89px - 47px);
   min-height: calc(533px - 89px - 47px);
 
-  overflow-y: auto;
   background-color: lightgrey;
+  overflow-y: hidden;
+
+}
+.userGrid:hover {
+  background-color: lightgrey;
+  overflow-y: overlay;
 }
 
 .eventGrid {
@@ -308,10 +313,10 @@ p.headerText{
 .Myfriends{
   max-height: 100%!important;
 }
+
 .tab-content {
     background-color: lightgrey;
 }
-
 
 .MainPage {
   display: flex;
@@ -497,8 +502,9 @@ p{
   padding: 40px 50px 20px 50px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
   font-size: calc(10px + 2vmin);
-  color: black;
-  background-color: #92bbf0;
+  width: 600px;
+  height: 500px;
+  background-color: white;
   padding: 40px;
   padding-bottom: 10px;
   border-radius: 15px;

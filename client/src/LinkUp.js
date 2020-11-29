@@ -41,6 +41,7 @@ class LinkUp extends React.Component {
           events: [],
           friends: [],
           friendEvents: [],
+          friendEvents1: [],
           show: false,
           startDate: new Date(),
           startDate1: new Date(),
@@ -53,7 +54,9 @@ class LinkUp extends React.Component {
           user: {Username: 'placeholder'},
           showy: [],
           event_id: null,
-          participants: []
+          participants: [],
+          showy1: [],
+          participants1: []
       }
   }
 
@@ -94,7 +97,7 @@ class LinkUp extends React.Component {
      }
   }
 
-  async participate(event, index){
+  async participate(event, index, string){
     try {
       await fetch(process.env.REACT_APP_API_URL + '/api/event/participants', {
         method: 'POST',
@@ -108,7 +111,7 @@ class LinkUp extends React.Component {
           Title: event.Title
         })}).then(response => response.json()).then(data => {
           if(data.success === true){
-            this.state.participants[index] = data.participants;
+            this.state[string][index] = data.participants;
           }
         });
         this.setState({
@@ -118,6 +121,24 @@ class LinkUp extends React.Component {
      catch(e) {
      }
   }
+
+  sort_by(field, reverse, primer){
+
+  const key = primer ?
+    function(x) {
+      return primer(x[field])
+    } :
+    function(x) {
+      return x[field]
+    };
+
+  reverse = !reverse ? 1 : -1;
+
+  return function(a, b) {
+    return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
+  }
+}
+
 
 
   async resendConfirmation(){
@@ -177,11 +198,35 @@ class LinkUp extends React.Component {
           this.setState({events: data.UserEvents, friends: data.Friends, friendEvents: data.FriendEvents, success: data.success, addFriend: data.addFriend, friend: data.friend, Profile_pic: data.Profile_pic, user: data.user});
         });
         if(this.state.success === true){
-          this.state.events.map((event, index) => {
-              this.enrolled(event, index);
-              this.participate(event, index);
+          this.state.friendEvents.map((events, index) => {
+              var User = this.state.friends[index].Username;
+              events[User].map((event, index) =>{
+                console.log(event);
+                this.state.friendEvents1.push(event);
+              });
           });
-          console.log(this.state.participants);
+
+          var seenNames = {};
+          this.state.friendEvents1 = this.state.friendEvents1.filter(function(currentObject) {
+              if (currentObject.Title in seenNames) {
+                  return false;
+              } else {
+                  seenNames[currentObject.Title] = true;
+                  return true;
+              }
+          });
+          console.log(this.state.friendEvents1[1]);
+          this.state.friendEvents1 = this.state.friendEvents1.sort((a,b) => {
+              return new Date(b.Date_Added) - new Date(a.Date_Added);})
+
+          this.state.friendEvents1.map((event, index) => {
+              this.enrolled(event, index, "showy");
+              this.participate(event, index, "participants");
+          });
+          this.state.events.map((event, index) => {
+              this.enrolled(event, index, "showy1");
+              this.participate(event, index, "participants1");
+          });
           this.setState({
             success: true,
             friend: this.state.friend
@@ -236,7 +281,7 @@ class LinkUp extends React.Component {
     this.setState({startDate: new Date(date), startDate1: new Date(date)});
   }
 
-  async enrolled(event, index){
+  async enrolled(event, index, string){
     try {
       await fetch(process.env.REACT_APP_API_URL + '/api/event/attendingEvent', {
         method: 'POST',
@@ -250,10 +295,10 @@ class LinkUp extends React.Component {
           Title: event.Title,
         })}).then(response => response.json()).then(data => {
           if(data.success === true){
-            this.state.showy[index] = true;
+            this.state[string][index] = true;
           }
           else{
-            this.state.showy[index] = false;
+            this.state[string][index] = false;
           }
       });
         this.setState({

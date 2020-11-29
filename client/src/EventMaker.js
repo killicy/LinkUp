@@ -115,7 +115,7 @@ class EventMaker extends React.Component {
                     <Card.Header>
                       <Card.Title><p className="cardHead">{event.Title}</p></Card.Title>
                       <div className="eventDate"><DatePicker selected={new Date(event.Date_Start)} showTimeSelect dateFormat="Pp" /> <DatePicker selected={new Date(event.Date_End)} showTimeSelect dateFormat="Pp" /></div>
-                      <Image cloudName= "dsnnlkpj9" publicId="pdu4zotrzptkew0g5gxe" className = "eventPic">
+                      <Image cloudName= "dsnnlkpj9" publicId={event.Event_Image} className = "eventPic">
                         <Transformation border="8px_solid_black" />
                       </Image>
                     </Card.Header>
