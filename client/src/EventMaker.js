@@ -97,8 +97,9 @@ class EventMaker extends React.Component {
           return (
             <div>
               <Card key={index} className="boxer border mb-1">
-              <Card.Header onClick={ () => this.setShow(index) }>
+              <Card.Header className="eventhead"onClick={ () => this.setShow(index) }>
                 <Card.Title><p className="eventHeight">{event.Title}</p></Card.Title>
+                <DatePicker selected={new Date(event.Date_Start)} zIndexOffset={-50} showTimeSelect dateFormat="Pp" />
               </Card.Header>
               <Card.Body>
                 <Card.Text><p className="ptag">-{event.Description}</p></Card.Text>
@@ -114,7 +115,7 @@ class EventMaker extends React.Component {
                     <Card.Header>
                       <Card.Title><p className="cardHead">{event.Title}</p></Card.Title>
                       <div className="eventDate"><DatePicker selected={new Date(event.Date_Start)} showTimeSelect dateFormat="Pp" /> <DatePicker selected={new Date(event.Date_End)} showTimeSelect dateFormat="Pp" /></div>
-                      <Image cloudName= "dsnnlkpj9" publicId="pdu4zotrzptkew0g5gxe" className = "eventPic">
+                      <Image cloudName= "dsnnlkpj9" publicId={event.Event_Image} className = "eventPic">
                         <Transformation border="8px_solid_black" />
                       </Image>
                     </Card.Header>

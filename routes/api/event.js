@@ -11,15 +11,17 @@ router.use(cookieParser())
 // requires Title, Description, Author, Participants, Date_Start, Date_End
 // private, does require token
 router.post('/create', auth, (req, res) => {
-    const {Title, Description, Date_Start, Date_End} = req.body;
+    var {Title, Description, Date_Start, Date_End, Event_Image} = req.body;
 
     if(!Title || !Description || !Date_End || !Date_Start)
         return res.status(400).json({ msg: 'Please enter all fields', success: false});
+    if(!Event_Image){
+      Event_Image = "pdu4zotrzptkew0g5gxe"
+    }
 
     Event.findOne({ Title })
         .then(event => {
             if (event) return res.status(400).json({ msg: 'Event already exists', success: false});
-            console.log(req.user);
 
             const newEvent = new Event({
                 Title,
@@ -28,7 +30,8 @@ router.post('/create', auth, (req, res) => {
                 Participants: [{ Username: req.user.Username, Email: req.user.Email, Profile_pic: req.user.Profile_pic}],
                 Date_Start,
                 Date_End,
-                comments: []
+                comments: [],
+                Event_Image
 
             });
 
@@ -71,8 +74,16 @@ router.get('/myEvents', auth, (req, res) => {
     .then((event) => {
         res.json(event);
     });
-    console.log(req.user);
 
+})
+
+router.post('/participants', auth, async(req, res) => {
+  const event = await Event.findOne({ Title: req.body.Title });
+  if (!event) {
+    res.json({success: false});
+    return;
+  }
+  res.json({success: true, participants: event.Participants});
 })
 
 // route: Delete api/event/delete
@@ -103,11 +114,9 @@ router.post('/update/:Title', auth, (req, res) => {
     //Event.findOneAndUpdate( {Title: 'test123'}, req.body, (err) => {
         req.body, {new: true}, (err, doc) => {
             if(err){
-                console.log(err)
                 res.status(404).json({msg: 'Event does not exist or title already exists'})
             }
             else{
-                console.log(doc)
                 res.json( {msg: 'Event successfully updated'})
             }
     });
@@ -182,8 +191,7 @@ router.post('/attendingEvent', auth, async (req, res) => {
             res.json({ msg: "You are not attending this event or it does not exist", success: false});
             return;
         }
-        console.log("true")
-        res.json({ msg: "You are attending this event!", Event: event, success: true});
+        res.json({ msg: "You are attending this event!", success: true});
 
     } catch (error) {
         res.json({ error, success: false});

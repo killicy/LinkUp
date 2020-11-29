@@ -41,6 +41,7 @@ class LinkUp extends React.Component {
           events: [],
           friends: [],
           friendEvents: [],
+          friendEvents1: [],
           show: false,
           startDate: new Date(),
           startDate1: new Date(),
@@ -51,7 +52,11 @@ class LinkUp extends React.Component {
           friend: false,
           Profile_pic: '',
           user: {Username: 'placeholder'},
-          showy: []
+          showy: [],
+          event_id: null,
+          participants: [],
+          showy1: [],
+          participants1: []
       }
   }
 
@@ -76,7 +81,8 @@ class LinkUp extends React.Component {
           Title: this.state.title,
           Description: this.state.description,
           Date_Start: this.state.startDate,
-          Date_End: this.state.startDate1
+          Date_End: this.state.startDate1,
+          Event_Image: this.state.event_id
         })}).then(response => response.json()).then(data => this.setState({success: data.success, message: data.msg}));
         if(this.state.success){
           this.setShow();
@@ -91,6 +97,49 @@ class LinkUp extends React.Component {
      }
   }
 
+  async participate(event, index, string){
+    try {
+      await fetch(process.env.REACT_APP_API_URL + '/api/event/participants', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
+        },
+        body: JSON.stringify({
+          Title: event.Title
+        })}).then(response => response.json()).then(data => {
+          if(data.success === true){
+            this.state[string][index] = data.participants;
+          }
+        });
+        this.setState({
+          success: false
+        });
+     }
+     catch(e) {
+     }
+  }
+
+  sort_by(field, reverse, primer){
+
+  const key = primer ?
+    function(x) {
+      return primer(x[field])
+    } :
+    function(x) {
+      return x[field]
+    };
+
+  reverse = !reverse ? 1 : -1;
+
+  return function(a, b) {
+    return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
+  }
+}
+
+
 
   async resendConfirmation(){
     try {
@@ -101,7 +150,7 @@ class LinkUp extends React.Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
-        }}).then(response => response.json()).then(data => this.setState({success: data.success, message: data.msg, username: data.username}));
+        }}).then(response => response.json()).then(data => this.setState({success: data.success, username: data.username}));
          if (this.state.success) {
            this.state.success = false;
          }
@@ -120,7 +169,7 @@ class LinkUp extends React.Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
-        }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success, message: data.msg}));
+        }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success}));
          if (this.state.isLoggedin) {
 
          }
@@ -149,16 +198,39 @@ class LinkUp extends React.Component {
           this.setState({events: data.UserEvents, friends: data.Friends, friendEvents: data.FriendEvents, success: data.success, addFriend: data.addFriend, friend: data.friend, Profile_pic: data.Profile_pic, user: data.user});
         });
         if(this.state.success === true){
-          this.state.events.map((event, index) => {
-              this.enrolled(event, index);
+          this.state.friendEvents.map((events, index) => {
+              var User = this.state.friends[index].Username;
+              events[User].map((event, index) =>{
+                console.log(event);
+                this.state.friendEvents1.push(event);
+              });
           });
 
+          var seenNames = {};
+          this.state.friendEvents1 = this.state.friendEvents1.filter(function(currentObject) {
+              if (currentObject.Title in seenNames) {
+                  return false;
+              } else {
+                  seenNames[currentObject.Title] = true;
+                  return true;
+              }
+          });
+          console.log(this.state.friendEvents1[1]);
+          this.state.friendEvents1 = this.state.friendEvents1.sort((a,b) => {
+              return new Date(b.Date_Added) - new Date(a.Date_Added);})
+
+          this.state.friendEvents1.map((event, index) => {
+              this.enrolled(event, index, "showy");
+              this.participate(event, index, "participants");
+          });
+          this.state.events.map((event, index) => {
+              this.enrolled(event, index, "showy1");
+              this.participate(event, index, "participants1");
+          });
           this.setState({
             success: true,
             friend: this.state.friend
           })
-          console.log("help");
-          console.log(this.state.friendEvents);
         }
         else{
         }
@@ -209,7 +281,7 @@ class LinkUp extends React.Component {
     this.setState({startDate: new Date(date), startDate1: new Date(date)});
   }
 
-  async enrolled(event, index){
+  async enrolled(event, index, string){
     try {
       await fetch(process.env.REACT_APP_API_URL + '/api/event/attendingEvent', {
         method: 'POST',
@@ -223,10 +295,10 @@ class LinkUp extends React.Component {
           Title: event.Title,
         })}).then(response => response.json()).then(data => {
           if(data.success === true){
-            this.state.showy[index] = true;
+            this.state[string][index] = true;
           }
           else{
-            this.state.showy[index] = false;
+            this.state[string][index] = false;
           }
       });
         this.setState({
@@ -236,6 +308,24 @@ class LinkUp extends React.Component {
     catch(e) {
     }
   }
+
+  beginUpload(tag) {
+  // <button onClick={(e) => this.beginUpload()}>Upload Image</button>
+  const uploadOptions = {
+    cloudName: "dsnnlkpj9",
+    tags: [tag, 'anImage'],
+    uploadPreset: "cqswrbcf"
+  };
+  openUploadWidget(uploadOptions, (error, photos) => {
+    if (!error) {
+      if(photos.event === 'success'){
+        this.state.event_id = photos.info.public_id;
+      }
+    } else {
+      console.log(error);
+    }
+  })
+}
 
   render() {
 
@@ -280,7 +370,9 @@ class LinkUp extends React.Component {
                        From: <DatePicker selected={this.state.startDate} onChange={date => this.setDater(date)} showTimeSelect dateFormat="Pp" />
                        To: <DatePicker selected={this.state.startDate1} onChange={date => this.setState({startDate1: new Date(date)})} showTimeSelect dateFormat="Pp" />
                    </div>
-
+                   <div className="form-group2">
+                    <Button variant="secondary" onClick={(e) => this.beginUpload()}>Add an Image</Button>
+                   </div>
                </form>
               </div>
             </Modal.Body>

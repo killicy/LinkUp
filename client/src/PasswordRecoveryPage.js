@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-class PasswordRecovery extends Component {
+class PasswordRecoveryPage extends Component {
+  
   constructor(props){
       super(props);
+      
       this.state = {
           message: '',
           success: false,
@@ -21,7 +23,7 @@ class PasswordRecovery extends Component {
     })
   }
 
-  async newPassword(){
+  async newPassword() {
     try {
       await fetch(process.env.REACT_APP_API_URL + '/api/user/passwordEmail', {
         method: 'POST',
@@ -32,33 +34,32 @@ class PasswordRecovery extends Component {
           'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
         },
         body: JSON.stringify({
-          username: this.state.username,
-          email: this.state.email
+          Username: this.state.username,
+          Email: this.state.email
         })}).then(response => response.json()).then(data => this.setState({}));
     }
     catch(e) {
     }
   }
 
-
   render() {
     return(
       <div className="loginForm">
         <form className="login">
-           <h3 className="header">Set New Password</h3>
+           <h3 className="header">Reset Password</h3>
            <div className="form-group">
-               <label>New Password</label>
+               <label>Email</label>
                <input type="email" className="form-control" placeholder="Enter Email" onChange = {e => this.setInputValue("email", e.target.value)}/>
            </div>
            <div className="form-group">
-               <label>Confirm Password</label>
-               <input type="password" className="form-control" placeholder="Enter Username" onChange = {e => this.setInputValue("username", e.target.value)}/>
+               <label>Username</label>
+               <input type="textfield" className="form-control" placeholder="Enter Username" value={ this.state.username } onChange = {e => this.setInputValue("username", e.target.value)}/>
            </div>
-           <button type="button" className="loginBtn btn-primary btn-block" onClick = {() => this.newPassword()}>Set New Password</button>
+           <button type="button" className="loginBtn btn-primary btn-block" onClick = {() => this.newPassword()}>Confirm Email</button>
        </form>
       </div>
     );
   }
 }
 
-export default PasswordRecovery;
+export default PasswordRecoveryPage;

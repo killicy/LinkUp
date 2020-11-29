@@ -130,9 +130,23 @@ router.get('/confirmationEmail', auth,  (req, res) => {
     res.json({success: true})
 });
 
-router.post('/passwordEmail', (req, res) => {
-    sendEmail(req.body.email, templates.password(req.body.username));
+router.post('/passwordEmail', async (req, res) => {
+
+    const { Username, Email } = req.body;
+    if (!Username || !Email) {
+        return res.status(400).json({ msg: 'Please enter all fields' });
+    }
+
+    const user = await User.findOne({ Username: Username, Email: Email });
+
+    if(user == null){
+        return res.status(400).json({ msg: 'User does not exist' });
+    }
+    const token = createToken.createToken(user);
+
+    sendEmail(Email, templates.password(Username, token));
     res.json({success: true})
+
 });
 
 
@@ -336,11 +350,9 @@ router.post('/usernameInfo', auth, async (req, res) => {
     const loggedUser = await User.findOne({ Username: req.user.Username });
     const findUser = await User.findOne({ Username: req.body.Username });
     const events = await Event.find({ 'Participants.Username': req.body.Username }).sort('Date_Added');
-    console.log(events);
     const friends = [];
 
 
-    console.log(friends.includes(req.body.Username));
 
     if (findUser == null) {
         res.json({ msg: "Username not found", UserEvents: [], Friends: [], FriendEvents: [], success: false, user: {Username: 'placeholder'}});
@@ -354,7 +366,7 @@ router.post('/usernameInfo', auth, async (req, res) => {
 
             let generatePromise = async () => {
                 const Username = friend.Username;
-                const events = await Event.find({ 'Participants.Username' : friend.Username }).sort('Date_Added');
+                const events = await Event.find({ 'Participants.Username' : friend.Username }).sort()
 
                 let retVal = {}
                 retVal[Username] = events;
@@ -369,7 +381,6 @@ router.post('/usernameInfo', auth, async (req, res) => {
 
         // Wait for all promises to complete, and aggregate them into `all`.
         await Promise.all(promises).then( (all) => {
-            console.log(all);
            res.json({ UserEvents: events, Friends: friends, FriendEvents: all, success: true, addFriend: false, friend: false, Username: findUser.Username, Email: findUser.Email, Profile_pic: findUser.Profile_pic, user: findUser})
         })
         return;
@@ -508,10 +519,37 @@ router.post('/updateUsername', auth, async(req, res) => {
 // route: get api/user/forgotPassword
 // takes Password, updates user Password
 // private, requires token
-router.post('/forgotPassword', auth, async(req, res) => {
+router.post('/forgotPassword', async(req, res) => {
 
-    const user = await User.findOne({ Username: req.user.Username});
-    user.Password = req.body.Password;
+    const { Token, Password } = req.body;
+    if (!Password || !Token) {
+        return res.status(400).json({ msg: 'Please enter all fields' });
+    }
+
+    let user;
+
+    try {
+        const userData = createToken.verifyToken(Token);
+
+        user = await User.findOne({ Username: userData.Username, Email: userData.Email });
+
+        if (user == null) {
+            return res.status(400).json({ msg: 'We have way bigger problems...' });
+        }
+    }
+    catch (e) {
+        return res.status(400).json({ msg: 'Invalid token' });
+    }
+
+
+    if (user == null) {
+         return res.status(400).json({ msg: 'Invalid User' });
+    }
+
+    user.Password = Password;
+
+    const token = createToken.createToken(user);
+
     bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(user.Password, salt, (err, hash) => {
             if (err) throw err;

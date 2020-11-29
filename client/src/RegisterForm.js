@@ -43,7 +43,7 @@ class RegisterForm extends React.Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
-        }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success, message: data.msg}));
+        }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success}));
          if (this.state.isLoggedin) {
            this.props.history.push('/LinkUp');
          }
@@ -78,7 +78,6 @@ class RegisterForm extends React.Component {
     return(
       <div className="loginForm">
         <form className="login">
-            {this.state.message}
            <div className="form-group">
                <h6>Username</h6>
                <input type="text" className="form-control" placeholder="Enter a username" onChange = {e => this.setInputValue("username", e.target.value)}/>
@@ -96,6 +95,7 @@ class RegisterForm extends React.Component {
            <p className="need-an-account text-right">
                Took a wrong turn? <a href={process.env.REACT_APP_CLIENT_URL}>Go Back</a>
            </p>
+           {this.state.message}
        </form>
       </div>
     );

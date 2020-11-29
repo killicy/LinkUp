@@ -51,11 +51,11 @@ class App extends Component {
         <div className= "app">
           <Switch>
             <Route exact path="/" component={LoginForm}/>
-            <Route path="/TheVoid" component={Void} />
-            <Route path="/PasswordRecovery" component={PasswordRecoveryPage} />
+            <Route exact path="/TheVoid" component={Void} />
+            <Route exact path="/PasswordRecovery" component={PasswordRecoveryPage} />
             <Route path="/PasswordRecovery/:user" component={PasswordRecovery} />
             <Route exact path="/Register" component={RegisterForm} />
-            <Route exact path="/Confirmation/:token" component={Confirmation} />
+            <Route path="/Confirmation/:token" component={Confirmation} />
             <Route path="/Profile/:user" component={LinkUp} />
             <Route path="" component={Void}/>
 
