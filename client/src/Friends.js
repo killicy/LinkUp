@@ -17,7 +17,7 @@ class Friends extends React.Component {
       this.state = {
           username: '',
           search: '',
-          userList: null,
+          userList: [],
           success1: false,
           success: false,
       }
@@ -76,7 +76,6 @@ class Friends extends React.Component {
   }
 
   profile(username){
-    console.log(username);
     window.location.href = username;
   }
 
@@ -123,7 +122,6 @@ class Friends extends React.Component {
                 return (
                     <Card key={index} className="box border mb-1">
                       <Card.Body className="friendDisplay">
-                      {console.log(friend)}
                         <div className='friendImages'>
                           <Image cloudName= "dsnnlkpj9" publicId="dmiigmmpxpfb7wqfprfj" className = "profilePic" onClick={ () => this.profile(friend.Username) }>
                             <Transformation width="200" height="200" gravity="face" radius="max" crop="crop" />
@@ -161,7 +159,21 @@ class Friends extends React.Component {
                 );
                 })}
               </div>
-              : null
+              :   <div className="userGrid">{this.state.userList.map((friend, index) => {
+                  return (
+                      <Card key={index} className="box border mb-1">
+                        <Card.Body>
+                          <div className='friendImages'>
+                            <Image cloudName= "dsnnlkpj9" publicId="dmiigmmpxpfb7wqfprfj" className = "profilePic" onClick={ () => this.profile(friend.Username) }>
+                              <Transformation width="200" height="200" gravity="face" radius="max" crop="crop" />
+                              <Transformation width="50" crop="scale" />
+                            </Image><p className="cardHead">{friend.Username}</p>
+                          </div>
+                        </Card.Body>
+                      </Card>
+                  );
+                  })}
+                </div>
             }
             <form className="friendSearch">
                <div className="form-group">

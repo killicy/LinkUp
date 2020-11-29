@@ -51,7 +51,9 @@ class LinkUp extends React.Component {
           friend: false,
           Profile_pic: '',
           user: {Username: 'placeholder'},
-          showy: []
+          showy: [],
+          event_id: null,
+          participants: []
       }
   }
 
@@ -76,7 +78,8 @@ class LinkUp extends React.Component {
           Title: this.state.title,
           Description: this.state.description,
           Date_Start: this.state.startDate,
-          Date_End: this.state.startDate1
+          Date_End: this.state.startDate1,
+          Event_Image: this.state.event_id
         })}).then(response => response.json()).then(data => this.setState({success: data.success, message: data.msg}));
         if(this.state.success){
           this.setShow();
@@ -91,6 +94,31 @@ class LinkUp extends React.Component {
      }
   }
 
+  async participate(event, index){
+    try {
+      await fetch(process.env.REACT_APP_API_URL + '/api/event/participants', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
+        },
+        body: JSON.stringify({
+          Title: event.Title
+        })}).then(response => response.json()).then(data => {
+          if(data.success === true){
+            this.state.participants[index] = data.participants;
+          }
+        });
+        this.setState({
+          success: false
+        });
+     }
+     catch(e) {
+     }
+  }
+
 
   async resendConfirmation(){
     try {
@@ -101,7 +129,7 @@ class LinkUp extends React.Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
-        }}).then(response => response.json()).then(data => this.setState({success: data.success, message: data.msg, username: data.username}));
+        }}).then(response => response.json()).then(data => this.setState({success: data.success, username: data.username}));
          if (this.state.success) {
            this.state.success = false;
          }
@@ -120,7 +148,7 @@ class LinkUp extends React.Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
-        }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success, message: data.msg}));
+        }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success}));
          if (this.state.isLoggedin) {
 
          }
@@ -151,14 +179,13 @@ class LinkUp extends React.Component {
         if(this.state.success === true){
           this.state.events.map((event, index) => {
               this.enrolled(event, index);
+              this.participate(event, index);
           });
-
+          console.log(this.state.participants);
           this.setState({
             success: true,
             friend: this.state.friend
           })
-          console.log("help");
-          console.log(this.state.friendEvents);
         }
         else{
         }
@@ -237,6 +264,24 @@ class LinkUp extends React.Component {
     }
   }
 
+  beginUpload(tag) {
+  // <button onClick={(e) => this.beginUpload()}>Upload Image</button>
+  const uploadOptions = {
+    cloudName: "dsnnlkpj9",
+    tags: [tag, 'anImage'],
+    uploadPreset: "cqswrbcf"
+  };
+  openUploadWidget(uploadOptions, (error, photos) => {
+    if (!error) {
+      if(photos.event === 'success'){
+        this.state.event_id = photos.info.public_id;
+      }
+    } else {
+      console.log(error);
+    }
+  })
+}
+
   render() {
 
     return (
@@ -280,7 +325,9 @@ class LinkUp extends React.Component {
                        From: <DatePicker selected={this.state.startDate} onChange={date => this.setDater(date)} showTimeSelect dateFormat="Pp" />
                        To: <DatePicker selected={this.state.startDate1} onChange={date => this.setState({startDate1: new Date(date)})} showTimeSelect dateFormat="Pp" />
                    </div>
-
+                   <div className="form-group2">
+                    <Button variant="secondary" onClick={(e) => this.beginUpload()}>Add an Image</Button>
+                   </div>
                </form>
               </div>
             </Modal.Body>

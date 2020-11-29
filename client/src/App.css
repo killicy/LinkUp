@@ -165,7 +165,7 @@ to compensate for the scrollbar*/
 
 
 .mainContent {
-  min-width: 700px;
+  min-width: 750px;
   max-width: 40vw;
   margin-top: 50px;
   font-size: calc(10px + 2vmin);
@@ -188,7 +188,37 @@ to compensate for the scrollbar*/
 .EventCards{
   margin: 0px 0px 50px 0px!important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+  border: 1px solid #007bff!important;
 
+}
+
+.participantsList{
+  display: flex;
+  flex-direction: row;
+  max-height: 200px;
+  max-width: 100%;
+  margin-left: 5px;
+  max-width: 400px;
+  overflow-x: auto;
+}
+
+.participants{
+  padding: 2px;
+  display: flex;
+  flex-direction: row;
+  max-height: 200px;
+  max-width: 100%;
+}
+
+.parti{
+  margin: 2px;
+}
+
+
+.form-group2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }
 
 
@@ -204,12 +234,8 @@ to compensate for the scrollbar*/
   background-color: #007bff;
 
 }
-p{
-  max-height: 3vh;
-  line-height: 5vh;
-  text-align: center;
-
-
+.eventhead{
+  max-width: 235px;
 }
 
 .eventDate{
@@ -221,7 +247,6 @@ p{
 }
 
 .eventHeight{
-  margin-top: 20px;
 }
 
 .react-datepicker-wrapper {
@@ -266,21 +291,26 @@ p.headerText{
   justify-content: top;
   height: 70vh;
   min-width: 239.3px;
-  background-color: #ffffff;
+  background-color: lightgrey;
   margin-left: 5vw;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
 }
 
-.Findnds {
-  background-color: #ffffff;
-  display: flex;
-  white-space: nowrap;
+.Findfriends{
+  background-color: lightgrey;
 }
+
+.friendSearch {
+  background-color: white;
+}
+
 
 .Myfriends{
   max-height: 100%!important;
 }
-
+.tab-content {
+    background-color: lightgrey;
+}
 
 
 .MainPage {

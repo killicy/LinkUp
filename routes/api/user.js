@@ -336,11 +336,9 @@ router.post('/usernameInfo', auth, async (req, res) => {
     const loggedUser = await User.findOne({ Username: req.user.Username });
     const findUser = await User.findOne({ Username: req.body.Username });
     const events = await Event.find({ 'Participants.Username': req.body.Username }).sort('Date_Added');
-    console.log(events);
     const friends = [];
 
 
-    console.log(friends.includes(req.body.Username));
 
     if (findUser == null) {
         res.json({ msg: "Username not found", UserEvents: [], Friends: [], FriendEvents: [], success: false, user: {Username: 'placeholder'}});
@@ -369,7 +367,6 @@ router.post('/usernameInfo', auth, async (req, res) => {
 
         // Wait for all promises to complete, and aggregate them into `all`.
         await Promise.all(promises).then( (all) => {
-            console.log(all);
            res.json({ UserEvents: events, Friends: friends, FriendEvents: all, success: true, addFriend: false, friend: false, Username: findUser.Username, Email: findUser.Email, Profile_pic: findUser.Profile_pic, user: findUser})
         })
         return;
