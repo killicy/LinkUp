@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from "react-router";
 class PasswordRecovery extends Component {
   constructor(props){
       super(props);
@@ -6,7 +7,8 @@ class PasswordRecovery extends Component {
           message: '',
           success: false,
           username: '',
-          username2: '',
+          token: props.match.params.user !== undefined ? props.match.params.user : '',
+          password: '',
           isLoggedin: false
       }
   }
@@ -20,6 +22,28 @@ class PasswordRecovery extends Component {
       [property]: val
     })
   }
+  
+  async newPassword() {
+    try {
+      await fetch(process.env.REACT_APP_API_URL + '/api/user/forgotPassword', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
+        },
+        body: JSON.stringify({
+          Token: this.state.token,
+          Password: this.state.password
+        })}).then(response => response.json()).then(data => {
+          this.setState({});
+          window.location.href = process.env.REACT_APP_CLIENT_URL;
+        });
+    }
+    catch(e) {
+    }
+  }
 
   render() {
     return(
@@ -27,11 +51,7 @@ class PasswordRecovery extends Component {
         <form className="login">
            <h3 className="header">Set New Password</h3>
            <div className="form-group">
-               <label>New Password</label>
-               <input type="password" className="form-control" placeholder="Enter Password" onChange = {e => this.setInputValue("username", e.target.value)}/>
-           </div>
-           <div className="form-group">
-               <label>Confirm Password</label>
+               <label>Password</label>
                <input type="password" className="form-control" placeholder="Enter Password" onChange = {e => this.setInputValue("password", e.target.value)}/>
            </div>
            <button type="button" className="loginBtn btn-primary btn-block" onClick = {() => this.newPassword()}>Set New Password</button>
@@ -41,4 +61,4 @@ class PasswordRecovery extends Component {
   }
 }
 
-export default PasswordRecovery;
+export default withRouter(PasswordRecovery);

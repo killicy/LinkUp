@@ -130,9 +130,23 @@ router.get('/confirmationEmail', auth,  (req, res) => {
     res.json({success: true})
 });
 
-router.post('/passwordEmail', (req, res) => {
-    sendEmail(req.body.email, templates.password(req.body.username));
+router.post('/passwordEmail', async (req, res) => {
+    
+    const { Username, Email } = req.body;
+    if (!Username || !Email) {
+        return res.status(400).json({ msg: 'Please enter all fields' });
+    }
+    
+    const user = await User.findOne({ Username: Username, Email: Email });
+
+    if(user == null){
+        return res.status(400).json({ msg: 'User does not exist' });
+    }
+    const token = createToken.createToken(user);
+
+    sendEmail(Email, templates.password(Username, token));
     res.json({success: true})
+    
 });
 
 
@@ -505,10 +519,37 @@ router.post('/updateUsername', auth, async(req, res) => {
 // route: get api/user/forgotPassword
 // takes Password, updates user Password
 // private, requires token
-router.post('/forgotPassword', auth, async(req, res) => {
+router.post('/forgotPassword', async(req, res) => {
+    
+    const { Token, Password } = req.body;
+    if (!Password || !Token) {
+        return res.status(400).json({ msg: 'Please enter all fields' });
+    }
+    
+    let user;
+    
+    try {
+        const userData = createToken.verifyToken(Token);
+        
+        user = await User.findOne({ Username: userData.Username, Email: userData.Email });
 
-    const user = await User.findOne({ Username: req.user.Username});
-    user.Password = req.body.Password;
+        if (user == null) {
+            return res.status(400).json({ msg: 'We have way bigger problems...' });
+        }
+    }
+    catch (e) {
+        return res.status(400).json({ msg: 'Invalid token' });
+    }
+    
+    
+    if (user == null) {
+         return res.status(400).json({ msg: 'Invalid User' });
+    }
+    
+    user.Password = Password;
+    
+    const token = createToken.createToken(user);
+    
     bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(user.Password, salt, (err, hash) => {
             if (err) throw err;
