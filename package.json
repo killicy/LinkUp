@@ -7,20 +7,29 @@
     "start": "node server.js",
     "server": "nodemon -L server.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test-init": "./node_modules/jasmine/bin/jasmine.js init",
+    "test": "./node_modules/jasmine/bin/jasmine.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "bootstrap": "^4.5.3",
     "concurrently": "^4.1.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "express": "^4.16.4",
+    "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.5.1",
     "nodemailer": "^6.4.16",
-    "nodemon": "^1.19.0"
+    "nodemon": "^1.19.0",
+    "nvm": "0.0.4",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "jasmine": "^3.6.3",
+    "supertest": "^6.0.1"
   }
 }
