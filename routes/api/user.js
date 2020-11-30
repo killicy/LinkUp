@@ -19,7 +19,11 @@ const Event = require('../../models/Event.js');
 router.post('/register', (req, res) => {
     const { Email, Password, Username } = req.body;
 
-    if(!Email || !Password || !Username) {
+    if (/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(Email) == false) {
+        return res.status(400).json({ msg: 'Please enter a valid email address' });
+    }
+
+    if (!Email || !Password || !Username) {
       console.log("help");
       return res.status(400).json({ msg: 'Please enter all fields' });
     }
@@ -27,10 +31,10 @@ router.post('/register', (req, res) => {
     // check to see if user exists
     User.findOne({ Email })
         .then(user => {
-            if (user) return res.status(400).json({msg: 'Email already exists!' });
+            if (user) return res.status(400).json({msg: 'Email already exists!', success: false });
     User.findOne({ Username })
         .then(user => {
-            if (user) return res.status(400).json({msg: 'Username already exists!' });
+            if (user) return res.status(400).json({msg: 'Username already exists!', success: false });
 
             // create user
             const newUser = new User({

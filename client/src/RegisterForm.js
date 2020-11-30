@@ -66,7 +66,7 @@ class RegisterForm extends React.Component {
       Username: this.state.username,
       Email: this.state.email,
       Password: this.state.password
-    })}).then(response => response.json()).then(data => this.setState({ username: data.username, message: data.msg, success: data.success}));
+    })}).then(response => response.json()).then(data => this.setState({ message: data.msg, success: data.success}));
 
     if(this.state.success){
       this.props.history.push('/');
@@ -77,6 +77,7 @@ class RegisterForm extends React.Component {
   render() {
     return(
       <div className="loginForm">
+      <h3 className="header">Register</h3>
         <form className="login">
            <div className="form-group">
                <h6>Username</h6>
@@ -91,11 +92,13 @@ class RegisterForm extends React.Component {
                <input type="password" className="form-control" placeholder="Enter a password" onChange = {e => this.setInputValue("password", e.target.value)}/>
            </div>
            {/* <button type="button" className="loginBtn btn-primary btn-block" onClick = {() => this.doRegister()}>Sign Up</button> */}
-           <Button variant="primary" size= "lg" block onClick = {() => this.doRegister()}>Register</Button>{' '}
+           <Button variant="primary" size="lg" block onClick = {() => this.doRegister()}>Register</Button>
            <p className="need-an-account text-right">
                Took a wrong turn? <a href={process.env.REACT_APP_CLIENT_URL}>Go Back</a>
            </p>
-           {this.state.message}
+           {
+             this.state.message ? <div className="alert alert-danger text-center">{this.state.message}</div> : ''
+           }
        </form>
       </div>
     );

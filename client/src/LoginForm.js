@@ -1,6 +1,7 @@
 import React from 'react';
 import InputField from './InputField';
 import SubmitButton from './SubmitButton';
+import Button from 'react-bootstrap/Button';
 import UserStore from './stores/UserStore';
 import logo from './stores/drawing.svg';
 
@@ -31,7 +32,7 @@ class LoginForm extends React.Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
-        }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success, message: data.msg}));
+        }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success}));
          if (this.state.isLoggedin) {
           this.props.history.push('/Profile/' + this.state.message);
          }
@@ -50,22 +51,13 @@ class LoginForm extends React.Component {
       [property]: val
     })
   }
-  resetForm() {
-    this.setState({
-      username: '',
-      password: '',
-      buttonDisabled: false,
-      isLoggedin: false,
-      email: ''
-    })
-  }
 
 
   doSignUp(){
     this.props.history.push('/Register');
   }
   async doLogin(){
-    console.log(this.state.password)
+    //console.log(this.state.password)
     await fetch(process.env.REACT_APP_API_URL + '/api/user/login', {
         method: 'POST',
         credentials: 'include',
@@ -77,14 +69,12 @@ class LoginForm extends React.Component {
         body: JSON.stringify({
           Username: this.state.username,
           Password: this.state.password
-        })}).then(response => response.json()).then(data => this.setState({username: data.Username, message: data.msg, success: data.success, email: data.Email}));
-
-      if(this.state.success){
-        this.props.history.push('/Profile/' + this.state.username);
-      }
-      else {
-        this.resetForm();
-      }
+        })}).then(response => response.json()).then((data) => {
+          if(data.success){
+            this.props.history.push('/Profile/' + this.state.username);
+          }
+          this.setState({message: data.msg});
+        });
   }
 
   render() {
@@ -94,25 +84,23 @@ class LoginForm extends React.Component {
           <form className="login">
              <h3 className="header">Sign In</h3>
              <div className="form-group">
-                 <label>Username</label>
+                 <h6>Username</h6>
                  <input type="text" className="form-control" placeholder="Enter username" onChange = {e => this.setInputValue("username", e.target.value)}/>
              </div>
              <div className="form-group">
-                 <label>Password</label>
+                 <h6>Password</h6>
                  <input type="password" className="form-control" placeholder="Enter password" onChange = {e => this.setInputValue("password", e.target.value)}/>
              </div>
-             <div className="form-group">
-                 <div className="custom-control custom-checkbox">
-                     <input type="checkbox" className="custom-control-input" id="customCheck1" />
-                 </div>
-             </div>
-             <button type="button" className="loginBtn btn-primary btn-block" onClick = {() => this.doLogin()}>Sign In</button>
+             <Button variant="primary" size="lg" block onClick = {() => this.doLogin()}>Sign In</Button>
              <p className="need-an-account text-right">
                  Need an account? <a href={process.env.REACT_APP_CLIENT_URL + "/Register"}>Register</a>
              </p>
              <p className="forgot-password text-right">
                  Forgot <a href={process.env.REACT_APP_CLIENT_URL + "/PasswordRecovery"}>Password?</a>
              </p>
+             {
+               this.state.message ? <div className="alert alert-danger text-center">{this.state.message}</div> : ''
+             }
          </form>
         </div>
       </div>
