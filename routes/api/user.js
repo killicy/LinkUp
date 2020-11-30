@@ -336,11 +336,11 @@ router.post('/update/:Email', auth, (req, res) => {
         req.body, { new: true }, (err, user) => {
             if (err) {
                 console.log(err)
-                res.status(404).json({ msg: 'User does not exist or email is already taken' })
+                res.status(404).json({ msg: 'User does not exist or email is already taken', success: false })
             }
             else {
                 console.log(user)
-                res.json({ msg: 'User successfully updated' })
+                res.json({ msg: 'User successfully updated', success: true })
             }
         });
 });
@@ -489,6 +489,9 @@ router.post('/changeProfilePic', auth, async (req, res) => {
 
     user.Profile_pic = req.body.Url;
     user.save();
+    
+    console.log('saved profilepic');
+    console.log(user);
     const token = createToken.createToken(user);
     res.cookie('access_token', token, {
         maxAge: 3600000,

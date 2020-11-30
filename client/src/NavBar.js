@@ -45,7 +45,10 @@ class NavBar extends React.Component {
           username: '',
           show: false,
           id: '',
-          user: {Profile_pic: 'lady.jpg'}
+          user: {Profile_pic: 'lady.jpg', fName: '', lName: '', Description: ''},
+          fName: '',
+          lName: '',
+          desc: '',
       }
   }
 
@@ -78,32 +81,11 @@ class NavBar extends React.Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
-        }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success, message: data.msg}));
+        }
+      }).then(response => response.json()).then(data => this.setState({isLoggedin: data.success, message: data.msg}));
     }
     catch(e) {
     }
-    try {
-      await fetch(process.env.REACT_APP_API_URL + '/api/user/getUser', {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin':process.env.REACT_APP_CLIENT_URL,
-        }}).then(response => response.json()).then(data => this.setState({user: data.user, success: data.success}));
-        if (this.state.success) {
-          console.log(this.state.user.Profile_pic);
-          this.setState({
-            user: this.state.user});
-        }
-        else {
-        }
-    }
-    catch(e) {
-    }
-  }
-  async profile(){
-    console.log(this.props);
     try {
       await fetch(process.env.REACT_APP_API_URL + '/api/user/getUser', {
         method: 'GET',
@@ -112,14 +94,27 @@ class NavBar extends React.Component {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
-        }}).then(response => response.json()).then(data => this.setState({success: data.success, message: data.msg, username: data.username}));
-         if (this.state.success) {
-           this.props.history.replace('/Profile');
-           this.props.history.push("/Profile/" + this.state.user.Username);
-         }
-         else {
-           this.props.history.replace('/');
-         }
+        }
+      }).then(response => response.json()).then(data => this.setState({user: data.user, fName: data.user.fName, lName: data.user.lName, desc: data.user.Description, success: data.success}));
+      if (this.state.success) {
+        console.log(this.state.user.Profile_pic);
+      }
+      else {
+      }
+    }
+    catch(e) {
+    }
+  }
+  async profile(){
+    console.log(this.props);
+    try {
+      if (this.state.success) {
+        this.props.history.replace('/Profile');
+        this.props.history.push("/Profile/" + this.state.user.Username);
+      }
+      else {
+        this.props.history.replace('/');
+      }
     }
     catch(e) {
       this.props.history.replace('/');
@@ -158,10 +153,43 @@ class NavBar extends React.Component {
       });
     }
   }
+  
+  setInputValue(property, val) {
+    console.log(val);
+    if (val.length > 50) {
+      return;
+    }
+    this.setState({
+      [property]: val
+    })
+  }
 
-  async setChanges(){
+  async setChanges() {
     try {
-      await fetch(process.env.REACT_APP_API_URL + '/api/user/changeProfilePic', {
+      // await fetch(process.env.REACT_APP_API_URL + '/api/user/changeProfilePic', {
+      //   method: 'POST',
+      //   credentials: 'include',
+      //   headers: {
+      //     'Accept': 'application/json',
+      //     'Content-Type': 'application/json',
+      //     'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
+      //   },
+      //   body: JSON.stringify({
+      //     Url: this.state.id
+      //   })
+        
+      // }).then(response => response.json()).then(data => this.setState({success: data.success}));
+        
+        
+      let payload = this.state.user;
+      payload.Profile_pic = this.state.id;
+      payload.fName = this.state.fName;
+      payload.lName = this.state.lName;
+      payload.Description = this.state.desc;
+      
+      console.log(payload);
+      
+      await fetch(process.env.REACT_APP_API_URL + '/api/user/update/' + this.state.user.Email, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -169,16 +197,19 @@ class NavBar extends React.Component {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
         },
-        body: JSON.stringify({
-          Url: this.state.id
-        })}).then(response => response.json()).then(data => this.setState({success: data.success}));
-        if(this.state.success === true){
-          this.state.success = false;
-          this.setShow();
-          window.location.reload();
-        }
-        else{
-        }
+        body: JSON.stringify(payload)
+      }).then(response => response.json()).then(data => this.setState({success: data.success}));
+      
+      if(this.state.success === true) {
+        this.state.success = false;
+        this.setState({
+          user: payload,
+        });
+        this.setShow();
+        window.location.reload();
+      }
+      else{
+      }
     }
     catch(e) {
     }
@@ -206,15 +237,15 @@ class NavBar extends React.Component {
                         </div>
                        <div className="form-group">
                            <label>First Name:</label>
-                           <input type="text" className="form-control" placeholder="First Name" onChange = {e => this.setInputValue("title", e.target.value)}/>
+                           <input type="text" className="form-control" placeholder="First Name" value={this.state.fName} onChange = {e => this.setInputValue("fName", e.target.value)}/>
                        </div>
                        <div className="form-group">
                            <label>Last Name:</label>
-                           <input type="text" className="form-control" placeholder="Last Name" onChange = {e => this.setInputValue("title", e.target.value)}/>
+                           <input type="text" className="form-control" placeholder="Last Name" value={this.state.lName} onChange = {e => this.setInputValue("lName", e.target.value)}/>
                        </div>
                        <div className="form-group">
                            <label>Description:</label>
-                           <textarea className="form-control" placeholder="Tell us about yourself" onChange = {e => this.setInputValue("description", e.target.value)}/>
+                           <textarea className="form-control" placeholder="Tell us about yourself" value={this.state.desc} onChange = {e => this.setInputValue("desc", e.target.value)}/>
                        </div>
                    </form>
               </Modal.Body>

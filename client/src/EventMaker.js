@@ -47,9 +47,9 @@ class EventMaker extends React.Component {
     }
     async doEvent() {
 
-        this.setState({
-            buttonDisabled: true
-        })
+      this.setState({
+          buttonDisabled: true
+      })
 
       await fetch(process.env.REACT_APP_API_URL + '/api/event/create', {
         method: 'POST',
@@ -68,8 +68,8 @@ class EventMaker extends React.Component {
       }).then(response => response.json()).then(data => this.setState({msg: data.msg}));
 
       if(this.state.msg == 'Event already exists'){
-          console.log("error");
-          this.resetForm();
+        console.log("error");
+        this.resetForm();
       }
       else {
 
@@ -77,6 +77,13 @@ class EventMaker extends React.Component {
     }
       
     async removeEvent(Title) {
+      
+      var retVal = window.confirm("Are you sure you want to remove this event?");
+      
+      if (!retVal) {
+        return;
+      }
+      
       try {
         await fetch(process.env.REACT_APP_API_URL + '/api/event/delete', {
           method: 'DELETE',

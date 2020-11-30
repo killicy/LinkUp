@@ -114,6 +114,13 @@ class MainContent extends React.Component {
   }
   
   async removeEvent(Title){
+    
+    var retVal = window.confirm("Are you sure you want to Unsubscribe from this event?");
+      
+    if (!retVal) {
+      return;
+    }
+    
     try {
       await fetch(process.env.REACT_APP_API_URL + '/api/event/removeParticipant', {
         method: 'POST',

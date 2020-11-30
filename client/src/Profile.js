@@ -26,7 +26,7 @@ class Profile extends React.Component {
           </Image>
           <Card.Body>
             <Card.Title><div className="name">{this.props.data.user.Username}</div></Card.Title>
-            <Card.Text className="profileBody"><p className="profiler">About Me: I spend my free time posing for stock images. I enjoy events where I can eat food such as salads and yogurt while laughing with my head thrown back. I am spiritually a robot.</p></Card.Text>
+            {this.props.data.user.Description ? <Card.Text className="profileBody"><p className="profiler">{this.props.data.user.Description}</p></Card.Text> : '' }
           </Card.Body>
         </Card>
       </div>

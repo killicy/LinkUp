@@ -364,7 +364,7 @@ p.headerText{
 }
 
 .eventPic{
-    max-width: 90%;
+    max-width: 100%;
     max-height: 90%;
 }
 
@@ -391,7 +391,7 @@ p.headerText{
   border-bottom: solid 5px #283e4a;
   padding: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
-
+  width: 100%;
 }
 
 .profileBody:hover{
