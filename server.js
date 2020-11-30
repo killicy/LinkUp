@@ -14,15 +14,20 @@ const keys = require('./config/keys');
 const cors = require('cors');
 
 const app = express();
-var corsOptions = {
-  origin: process.env.REACT_APP_CLIENT_URL,
-  credentials: true
-}
+
+var whitelist = [process.env.REACT_APP_CLIENT_URL, 'https://app.swaggerhub.com']
+
 // Bodyparser Middleware
 app.use(express.json());
 
 var corsOptions = {
-  origin: process.env.REACT_APP_CLIENT_URL,
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
   credentials: true
 }
 
@@ -58,8 +63,12 @@ const port = process.env.PORT || 5000;
 // app.listen(port, () => console.log(`Server started on port ${port}`));
 const httpsOptions = {
   key: fs.readFileSync(process.env.SSL_KEY_FILE ? process.env.SSL_KEY_FILE : './security/cert.key'),
-  cert: fs.readFileSync(process.env.SSL_CRT_FILE ? process.env.SSL_CRT_FILE : './security/cert.pem')
+  cert: fs.readFileSync(process.env.SSL_CRT_FILE ? process.env.SSL_CRT_FILE : './security/cert.pem'),
 };
+
+if (process.env.SSL_FULLCHAIN_FILE) {
+   httpsOptions.ca = fs.readFileSync(process.env.SSL_FULLCHAIN_FILE);
+}
 
 const server = https.createServer(httpsOptions, app)
   .listen(port, () => {

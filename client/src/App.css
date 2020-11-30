@@ -76,10 +76,9 @@ to compensate for the scrollbar*/
   height: 35vh;
   min-width: 239.3px;
   max-width: 239.9px;
-  background-color: #525252;
   margin-bottom: 10px;
   max-height: 100%;
-  min-height: 300px;
+  min-height: 350px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
 }
@@ -139,7 +138,6 @@ to compensate for the scrollbar*/
 
 .eventGrid {
   direction: rtl;
-  background-color: lightgrey;
   overflow-y: hidden;
 }
 
@@ -171,12 +169,10 @@ to compensate for the scrollbar*/
 .mainContent {
   min-width: 750px;
   max-width: 40vw;
-  margin-top: 50px;
+  margin-top: 10px;
   font-size: calc(10px + 2vmin);
   color: black;
   overflow-y: hidden;
-  background-color: lightgrey;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
 }
 
 
@@ -192,7 +188,7 @@ to compensate for the scrollbar*/
 .EventCards{
   margin: 0px 0px 50px 0px!important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
-  border: 1px solid #007bff!important;
+  border: 1px solid #cfcfcf!important;
 
 }
 
@@ -235,7 +231,8 @@ to compensate for the scrollbar*/
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  background-color: #007bff;
+  background-color: #283e4a;
+  min-width: 253px;
 
 }
 .eventhead{
@@ -243,11 +240,12 @@ to compensate for the scrollbar*/
 }
 
 .eventDate{
-  margin-bottom: 8px;
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-top: 20px;
+  font-size: 16px;
 }
 
 .eventHeight{
@@ -257,25 +255,30 @@ to compensate for the scrollbar*/
   width: inherit;
 }
 
-.card-header{
+.app .card-header{
   text-align: center;
-  background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: bottom;
-}
-
-.cardHeader{
-  font-size: 25px;
-  width: 100%;
-  text-align: right;
+  background-color: white;
 }
 
 .cardHead{
   font-size: 25px;
+  display: block;
   width: 100%;
-  text-align: center;
+  margin: 0;
+}
+
+.cardAuthor {
+  position: absolute;
+  left: 20px;
+}
+
+.cardAuthor img {
+  width: auto;
+  height: 50px;
 }
 
 .btnEvent{
@@ -301,9 +304,8 @@ p.headerText{
   flex-direction: column;
   justify-content: top;
   height: 70vh;
-  min-width: 239.3px;
   margin-top: 10px;
-  background-color: lightgrey;
+  background-color: white;
   margin-left: 5vw;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
 }
@@ -347,7 +349,6 @@ p.headerText{
     border-radius: 100px;
     max-width: 100px;
     max-height: 100px;
-    border: 2px solid black;
 }
 
 .eventPic{
@@ -373,9 +374,9 @@ p.headerText{
 .profileBody{
   overflow-y: hidden!important;
   max-height: 150px!important;
-
-  border-top: solid 5px #007bff;
-  border-bottom: solid 5px #007bff;
+  border: solid 1px #cfcfcf;
+  border-top: solid 5px #283e4a;
+  border-bottom: solid 5px #283e4a;
   padding: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
 
@@ -405,7 +406,7 @@ p.headerText{
 
 .card-text{
   overflow-y: auto;
-  max-height: 300px;
+  max-height: 120px;
 
 }
 
@@ -444,8 +445,9 @@ p.headerText{
 
 
 .space{
-  background-color: #007bff;
+  background-color: #283e4a;
   min-height: 10%;
+  margin-bottom: 5px;
 }
 
 
@@ -460,7 +462,10 @@ p{
   margin-left: 10vw;
 }
 
-
+.addFriend {
+  position:absolute;
+  right: 10px;
+}
 
 .Expand{
     display:block;
@@ -486,6 +491,12 @@ p{
   min-height: 50px;
   min-width: 100vw;
   font-size: calc(10px + 2vmin);
+}
+
+.NavBar img {
+  max-height: 50px;
+  width: auto;
+  border: none;
 }
 
 .Confirmation {
@@ -583,4 +594,8 @@ p{
   to {
     transform: rotate(360deg);
   }
+}
+
+.spacer {
+  margin: 20px;
 }

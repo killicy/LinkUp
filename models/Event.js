@@ -20,7 +20,8 @@ const eventSchema = new Schema({
   Author: {
       userID: String,
       Username: String,
-      Email: String
+      Email: String,
+      Profile_pic: String,
   },
 
   // store username and userID for less queries

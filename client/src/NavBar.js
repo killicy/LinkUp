@@ -6,7 +6,7 @@ import './App.css';
 import UserStore from './stores/UserStore';
 import SubmitButton from './SubmitButton';
 import profile from './stores/user.svg';
-import logo from './stores/Logo2.svg';
+import logo from './stores/LinkUp.png';
 import Dropdown from 'react-bootstrap/Dropdown'
 import Button from 'react-bootstrap/Button'
 import MenuItem from 'react-bootstrap/Dropdown'
@@ -71,8 +71,8 @@ class NavBar extends React.Component {
 
   async componentDidMount() {
     try {
-      await fetch(process.env.REACT_APP_API_URL + '/api/user/isLoggedin', {
-        method: 'GET',
+      await fetch(process.env.REACT_APP_API_URL + '/api/user/isLoggedIn', {
+        method: 'POST',
         credentials: 'include',
         headers: {
           'Accept': 'application/json',
@@ -226,7 +226,7 @@ class NavBar extends React.Component {
           </Modal>
         </div>
         <div>
-          <img src={logo} alt="Logo" />
+          <a href={process.env.REACT_APP_CLIENT_URL}><img src={logo} alt="Logo" /></a>
         </div>
         <Dropdown className = "profileDropdown">
           <Dropdown.Toggle as={CustomToggle}>

@@ -62,7 +62,6 @@ class PasswordRecovery extends Component {
            }
        </form>
       </div>
-      
     );
   }
 }

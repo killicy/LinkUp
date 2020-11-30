@@ -170,7 +170,7 @@ router.post('/confirmation', (req, res) => {
   }
 });
 
-router.get('/isLoggedIn', auth, (req, res) => {
+router.post('/isLoggedIn', auth, (req, res) => {
     // Create new token and cookie if the user is still logged in
     const token = createToken.createToken(req.user);
     res.cookie('access_token', token, {
@@ -207,19 +207,64 @@ router.post('/addFriend', auth, async (req, res) => {
 
     try {
         const user = await User.findOne({ _id: req.user.id });
+        
+        user.Friends.forEach(el => {
+            if (el.Username === req.body.Username) {
+                return res.status(400).json({success: false, msg: "You can't add the same friend twice."});
+            }
+        });
 
         // get friend info from body
-        const newFriend = await User.findOne({ Username: req.body.Username })
+        const newFriend = await User.findOne({ Username: req.body.Username });
 
-        if(newFriend == null){
+        if(newFriend == null) {
             res.json({msg: "User not found"});
             return;
         }
-
+        
         user.Friends.push(newFriend);
         user.save();
 
-        return res.status(201).json({success: true});
+        return res.status(201).json({success: true, friend: newFriend});
+
+    } catch (error) {
+        console.error(error);
+    }
+
+});
+
+// delete api/user/removeFriend
+// adding a friend to the list
+// private, requires token
+router.delete('/removeFriend', auth, async (req, res) => {
+
+    try {
+        const user = await User.findOne({ _id: req.user.id });
+        const newFriend = await User.findOne({ Username: req.body.Username });
+
+        if (newFriend == null) {
+            return res.status(400).json({success: false, msg: "User not found" });
+        }
+        
+        let temp = [];
+        let c = 0;
+        user.Friends.forEach(el => {
+            if (el.Username !== req.body.Username) {
+                temp.push(el);
+            }
+            else {
+                c++;
+            }
+        });
+        
+        if (c === 0) {
+            return res.status(400).json({success: false, msg: "User is not in your friend list" });
+        }
+        
+        user.Friends = temp;
+        user.save();
+
+        return res.status(201).json({success: true, friend: newFriend});
 
     } catch (error) {
         console.error(error);
@@ -315,7 +360,7 @@ router.get('/userInfo', auth, async(req, res) => {
         // Hold all my promises.
         let promises = [];
         let friendEvents = [];
-        friends.forEach( (friend) => {
+        friends.concat(user).forEach( (friend) => {
 
             let generatePromise = async () => {
                 const Username = friend.Username;
@@ -367,17 +412,19 @@ router.post('/usernameInfo', auth, async (req, res) => {
     if (findUser.Username == loggedUser.Username) {
         const friends = loggedUser.Friends;
         let promises = [];
-        friends.forEach( (friend) => {
+        let friendEvents = [];
+        (friends.concat(req.user)).forEach( (friend) => {
 
             let generatePromise = async () => {
                 const Username = friend.Username;
                 const events = await Event.find({ 'Participants.Username' : friend.Username })
 
-                let retVal = {}
-                retVal[Username] = events;
+                events.forEach( (event) => {
+                    friendEvents.push(event);
+                });
 
                 // Promise is resolved and returns the Events object for this friend.
-                return retVal;
+                return events;
             };
 
             // Create the promise by calling the asynchronous function, and push it into our promises array.
@@ -386,7 +433,7 @@ router.post('/usernameInfo', auth, async (req, res) => {
 
         // Wait for all promises to complete, and aggregate them into `all`.
         await Promise.all(promises).then( (all) => {
-           res.json({ UserEvents: events, Friends: friends, FriendEvents: all, success: true, addFriend: false, friend: false, Username: findUser.Username, Email: findUser.Email, Profile_pic: findUser.Profile_pic, user: findUser})
+           res.json({ UserEvents: events, Friends: friends, FriendEvents: friendEvents, success: true, addFriend: false, friend: false, Username: findUser.Username, Email: findUser.Email, Profile_pic: findUser.Profile_pic, user: findUser})
         })
         return;
     }
@@ -400,17 +447,20 @@ router.post('/usernameInfo', auth, async (req, res) => {
     if (friends.includes(req.body.Username)) {
         const friends = findUser.Friends;
         let promises = [];
+        let friendEvents = [];
         friends.forEach( (friend) => {
 
             let generatePromise = async () => {
                 const Username = friend.Username;
                 const events = await Event.find({ 'Participants.Username' : friend.Username }).sort('Date_Added');
 
-                let retVal = {}
-                retVal[Username] = events;
+
+                events.forEach( (event) => {
+                    friendEvents.push(event);
+                });
 
                 // Promise is resolved and returns the Events object for this friend.
-                return retVal;
+                return events;
             };
 
             // Create the promise by calling the asynchronous function, and push it into our promises array.
@@ -418,7 +468,7 @@ router.post('/usernameInfo', auth, async (req, res) => {
         });
 
         // Wait for all promises to complete, and aggregate them into `all`.
-        await Promise.all(promises).then( (all) => res.json({UserEvents: events, Friends: friends, FriendEvents: all, success: true, addFriend: false, friend: true, Username: findUser.Username, Email: findUser.Email, Profile_pic: findUser.Profile_pic, user: findUser}))
+        await Promise.all(promises).then( (all) => res.json({UserEvents: events, Friends: friends, FriendEvents: friendEvents, success: true, addFriend: false, friend: true, Username: findUser.Username, Email: findUser.Email, Profile_pic: findUser.Profile_pic, user: findUser}))
         return;
     }
     else{
@@ -478,7 +528,7 @@ router.get('/getUser', auth, async(req, res) => {
 
     try {
         const user = await User.findOne({ Username: req.user.Username }).select('-Password');
-        res.json({ user });
+        res.json({ user: user });
 
     } catch (error) {
         res.json({ error });

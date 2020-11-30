@@ -64,16 +64,48 @@ class EventMaker extends React.Component {
           Description: this.state.description,
           Date_Start: this.state.startDate,
           Date_End: this.state.endDate
-        })}).then(response => response.json()).then(data => this.setState({msg: data.msg}));
+        })
+      }).then(response => response.json()).then(data => this.setState({msg: data.msg}));
 
-        if(this.state.msg == 'Event already exists'){
-            console.log("error");
-            this.resetForm();
-        }
-        else {
-
-        }
+      if(this.state.msg == 'Event already exists'){
+          console.log("error");
+          this.resetForm();
       }
+      else {
+
+      }
+    }
+      
+    async removeEvent(Title) {
+      try {
+        await fetch(process.env.REACT_APP_API_URL + '/api/event/delete', {
+          method: 'DELETE',
+          credentials: 'include',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
+          },
+          body: JSON.stringify({
+            Title: Title
+          })}).then(response => response.json()).then(data => {
+            
+            let temp = [];
+        
+            this.props.data.events.forEach((el, i) => {
+              if (el.Title !== Title) {
+                temp.push(el);
+              }
+            });
+            
+            this.props.data.events = temp;
+            
+            this.setState({});
+          });
+      }
+      catch(e) {
+      }
+    }
 
     setInputValue(property, val) {
         val = val.trim();
@@ -110,21 +142,21 @@ class EventMaker extends React.Component {
     return(
       <div className= "userEvents flex-nowrap border">
         <div className="myeventHeader">
-          <p className="headerText">Events</p>
+          <p className="headerText">My Events</p>
         </div>
         <div className="eventGrid">{this.props.data.events.map((event, index) => {
           return (
             <div>
               <Card key={index} className="boxer border mb-1">
               <Card.Header className="eventhead"onClick={ () => this.setShow(index) }>
-                <Card.Title><p className="eventHeight">{event.Title}</p></Card.Title>
+                <Card.Title><h8 className="card-title">{event.Title}</h8></Card.Title>
                 <DatePicker selected={new Date(event.Date_Start)} zIndexOffset={-50} showTimeSelect dateFormat="Pp" />
               </Card.Header>
               <Card.Body>
-                <Card.Text><p className="ptag">-{event.Description}</p></Card.Text>
+                <Card.Text><p className="ptag">{event.Description}</p></Card.Text>
               </Card.Body>
               <Card.Footer>
-                <button type="button" className="searchBtn btn-dark btn-block" onClick={ () => this.setShow(index) }>Remove Event</button>
+                <button type="button" className="searchBtn btn-dark btn-block" onClick={ () => this.removeEvent(event.Title) }>Remove Event</button>
               </Card.Footer>
               </Card>
               <Modal show={this.state.show[index]} onHide={ () => this.setShow(index) }>

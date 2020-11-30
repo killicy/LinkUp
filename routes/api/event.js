@@ -26,7 +26,7 @@ router.post('/create', auth, (req, res) => {
             const newEvent = new Event({
                 Title,
                 Description,
-                Author: { Username: req.user.Username, Email: req.user.Email},
+                Author: { Username: req.user.Username, Email: req.user.Email, Profile_pic: req.user.Profile_pic},
                 Participants: [{ Username: req.user.Username, Email: req.user.Email, Profile_pic: req.user.Profile_pic}],
                 Date_Start,
                 Date_End,
@@ -129,6 +129,13 @@ router.post('/update/:Title', auth, (req, res) => {
 router.post('/addParticipant', auth, async(req, res) => {
 
     const event = await Event.findOne({ Title: req.body.Title });
+    
+    event.Participants.forEach(el => {
+        if (el.Username === req.user.Username) {
+            return res.status(400).json({msg: 'Participant exists'});
+        }
+    });
+    
     const newParticipant = ({ Username: req.user.Username, Email: req.user.Email, Profile_pic: req.user.Profile_pic});
 
     event.Participants.push(newParticipant);

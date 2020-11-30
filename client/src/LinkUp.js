@@ -163,20 +163,19 @@ class LinkUp extends React.Component {
   }
   async componentDidMount() {
     try {
-      await fetch(process.env.REACT_APP_API_URL + '/api/user/isLoggedin', {
-        method: 'GET',
+      await fetch(process.env.REACT_APP_API_URL + '/api/user/isLoggedIn', {
+        method: 'POST',
         credentials: 'include',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
-        }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success}));
-         if (this.state.isLoggedin) {
-
-         }
-         else {
-           this.props.history.push('/');
-         }
+        }}).then(response => response.json()).then(data => {
+          
+          let tmp = {isLoggedin: data.success}
+          
+          this.setState({isLoggedin: data.success});
+        });
     }
     catch(e) {
     }
@@ -199,16 +198,9 @@ class LinkUp extends React.Component {
           this.setState({events: data.UserEvents, friends: data.Friends, friendEvents: data.FriendEvents, success: data.success, addFriend: data.addFriend, friend: data.friend, Profile_pic: data.Profile_pic, user: data.user});
         });
         if(this.state.success === true){
-          this.state.friendEvents.map((events, index) => {
-              var User = this.state.friends[index].Username;
-              events[User].map((event, index) =>{
-                console.log(event);
-                this.state.friendEvents1.push(event);
-              });
-          });
 
           var seenNames = {};
-          this.state.friendEvents1 = this.state.friendEvents1.filter(function(currentObject) {
+          this.state.friendEvents1 = this.state.friendEvents.filter(function(currentObject) {
               if (currentObject.Title in seenNames) {
                   return false;
               } else {
@@ -311,22 +303,26 @@ class LinkUp extends React.Component {
   }
 
   beginUpload(tag) {
-  // <button onClick={(e) => this.beginUpload()}>Upload Image</button>
-  const uploadOptions = {
-    cloudName: "dsnnlkpj9",
-    tags: [tag, 'anImage'],
-    uploadPreset: "cqswrbcf"
-  };
-  openUploadWidget(uploadOptions, (error, photos) => {
-    if (!error) {
-      if(photos.event === 'success'){
-        this.state.event_id = photos.info.public_id;
+    // <button onClick={(e) => this.beginUpload()}>Upload Image</button>
+    const uploadOptions = {
+      cloudName: "dsnnlkpj9",
+      tags: [tag, 'anImage'],
+      uploadPreset: "cqswrbcf"
+    };
+    openUploadWidget(uploadOptions, (error, photos) => {
+      if (!error) {
+        if(photos.event === 'success'){
+          this.state.event_id = photos.info.public_id;
+        }
+      } else {
+        console.log(error);
       }
-    } else {
-      console.log(error);
-    }
-  })
-}
+    })
+  }
+  
+  removeParticipant() {
+    
+  }
 
   render() {
 
@@ -334,12 +330,12 @@ class LinkUp extends React.Component {
     <Router>
       <NavBar history={this.props.history}/>
       <div className="MainPage">
-        <EventMaker data={this.state} />
+        <EventMaker data={this.state} removeParticipant={this.removeParticipant} />
         <div className="middleContainer">
           {this.state.addFriend ? <button type="button" className="btnEvent btn-secondary" onClick={ () => this.addFriend() }>Add Friend</button> : this.state.friend ? null :  <button type="button" className="btnEvent btn-secondary" onClick={ () => this.setShow() }>Create Event</button>}
           <Switch>
-            <Route exact path={"/Profile/"+this.state.url} render={() => <MainContent data = {this.state}/>}/>
-            <Route exact path={"/Profile/"+this.state.url+"/:token"} render={() => <MainContent data = {this.state}/>}/>
+            <Route exact path={"/Profile/"+this.state.url} render={() => <MainContent data={this.state} removeParticipant={this.removeParticipant} />}/>
+            <Route exact path={"/Profile/"+this.state.url+"/:token"} render={() => <MainContent data={this.state} removeParticipant={this.removeParticipant}/>}/>
           </Switch>
         </div>
         <div className="leftContainer">

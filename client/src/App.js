@@ -32,8 +32,8 @@ class App extends Component {
 
   async componentDidMount() {
     try {
-      await fetch(process.env.REACT_APP_API_URL + '/api/user/isLoggedin', {
-        method: 'GET',
+      await fetch(process.env.REACT_APP_API_URL + '/api/user/isLoggedIn', {
+        method: 'POST',
         credentials: 'include',
         headers: {
           'Accept': 'application/json',

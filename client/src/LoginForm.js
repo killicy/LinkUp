@@ -25,19 +25,19 @@ class LoginForm extends React.Component {
   }
   async componentDidMount() {
     try {
-      await fetch(process.env.REACT_APP_API_URL + '/api/user/isLoggedin', {
-        method: 'GET',
+      await fetch(process.env.REACT_APP_API_URL + '/api/user/isLoggedIn', {
+        method: 'POST',
         credentials: 'include',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': process.env.REACT_APP_CLIENT_URL,
-        }}).then(response => response.json()).then(data => this.setState({isLoggedin: data.success}));
-         if (this.state.isLoggedin) {
-          this.props.history.push('/Profile/' + this.state.message);
-         }
-         else {
-         }
+        }}).then(response => response.json()).then(data => {
+          if (data.success == true && data.msg) {
+            this.props.history.push('/Profile/' + data.msg);
+          }
+          this.setState({isLoggedin: data.success});
+        });
     }
     catch(e) {
     }
