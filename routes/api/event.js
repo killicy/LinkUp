@@ -90,8 +90,19 @@ router.post('/participants', auth, async(req, res) => {
 // deletes event
 // private, requires token
 
-router.delete('/delete', auth, (req, res) => {
+router.delete('/delete', auth, async (req, res) => {
     const {Title} = req.body;
+    
+    const event = await Event.findOne({Title});
+    
+    if (event.Author.Username !== req.user.Username) {
+        const deleteParticipant = ({  Username: req.user.Username, Email: req.user.Email, Profile_pic: req.user.Profile_pic});
+
+        event.Participants.pull(deleteParticipant);
+        event.save();
+        
+        return res.json( {msg: 'Event successfully unsubscribed'})
+    }
     Event.findOneAndDelete({Title})
     //Event.findOneAndDelete({Title}, (err, Event) => {
 
