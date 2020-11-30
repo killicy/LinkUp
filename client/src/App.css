@@ -36,7 +36,6 @@ to compensate for the scrollbar*/
   flex-direction: column;
   align-items: top;
   justify-content: left;
-  font-size: calc(10px + 2vmin);
   color: black;
   background-color: #f5f5f5;
 }
@@ -49,6 +48,7 @@ to compensate for the scrollbar*/
   min-height: 872px;
   max-height: 872px;
   margin-bottom: 3vh;
+  margin-top: 10px;
 }
 
 
@@ -65,7 +65,7 @@ to compensate for the scrollbar*/
   align-items: center;
   justify-content: space-between;
   max-height: 100%;
-  margin-top: 20px;
+  margin-top: 10px;
   margin-right: 5vw;
 }
 
@@ -148,7 +148,6 @@ to compensate for the scrollbar*/
   overflow-y: overlay;
   padding-right: 0px;
 }
-
 
 
 .box {
@@ -303,6 +302,7 @@ p.headerText{
   justify-content: top;
   height: 70vh;
   min-width: 239.3px;
+  margin-top: 10px;
   background-color: lightgrey;
   margin-left: 5vw;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
@@ -328,7 +328,6 @@ p.headerText{
 .MainPage {
   display: flex;
   flex-direction: row;
-  align-items: center;
   justify-content: space-between;
   font-size: calc(.5px + 2vmin);
   color: black;
@@ -508,14 +507,19 @@ p{
   border-radius: 8px;
   padding: 40px 50px 20px 50px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
-  font-size: calc(10px + 2vmin);
   width: 600px;
-  height: 500px;
   background-color: white;
   padding: 40px;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
   border-radius: 15px;
 }
+
+@media only screen and (max-width: 600px) {
+  .loginForm {
+    width: 100%;
+  }
+}
+
 .signInTitle
 {
   padding-bottom: 15px;

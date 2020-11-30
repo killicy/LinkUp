@@ -38,7 +38,9 @@ class PasswordRecovery extends Component {
           Password: this.state.password
         })}).then(response => response.json()).then(data => {
           this.setState({});
-          window.location.href = process.env.REACT_APP_CLIENT_URL;
+          
+          this.props.history.push('/');
+          //window.location.href = process.env.REACT_APP_CLIENT_URL;
         });
     }
     catch(e) {
@@ -55,8 +57,12 @@ class PasswordRecovery extends Component {
                <input type="password" className="form-control" placeholder="Enter Password" onChange = {e => this.setInputValue("password", e.target.value)}/>
            </div>
            <button type="button" className="loginBtn btn-primary btn-block" onClick = {() => this.newPassword()}>Set New Password</button>
+           {
+             this.state.message ? <div className="alert alert-danger text-center">{this.state.message}</div> : ''
+           }
        </form>
       </div>
+      
     );
   }
 }

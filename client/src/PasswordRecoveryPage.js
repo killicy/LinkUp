@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Button from 'react-bootstrap/Button';
 class PasswordRecoveryPage extends Component {
   
   constructor(props){
@@ -36,7 +37,13 @@ class PasswordRecoveryPage extends Component {
         body: JSON.stringify({
           Username: this.state.username,
           Email: this.state.email
-        })}).then(response => response.json()).then(data => this.setState({}));
+        })}).then(response => response.json()).then(data => {
+          this.setState({
+            message: data.msg,
+            success: data.success
+          });
+          console.log(data);
+        });
     }
     catch(e) {
     }
@@ -48,14 +55,17 @@ class PasswordRecoveryPage extends Component {
         <form className="login">
            <h3 className="header">Reset Password</h3>
            <div className="form-group">
-               <label>Email</label>
+               <h6>Email</h6>
                <input type="email" className="form-control" placeholder="Enter Email" onChange = {e => this.setInputValue("email", e.target.value)}/>
            </div>
            <div className="form-group">
-               <label>Username</label>
+               <h6>Username</h6>
                <input type="textfield" className="form-control" placeholder="Enter Username" value={ this.state.username } onChange = {e => this.setInputValue("username", e.target.value)}/>
            </div>
-           <button type="button" className="loginBtn btn-primary btn-block" onClick = {() => this.newPassword()}>Confirm Email</button>
+           <Button variant="primary" size="lg" block onClick = {() => this.newPassword()}>Confirm Email</Button>
+            {
+             this.state.message ? <div className="alert alert-danger text-center mt-3">{this.state.message}</div> : ''
+           }
        </form>
       </div>
     );
