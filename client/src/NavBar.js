@@ -54,22 +54,24 @@ class NavBar extends React.Component {
 
 
   beginUpload(tag) {
-  // <button onClick={(e) => this.beginUpload()}>Upload Image</button>
-  const uploadOptions = {
-    cloudName: "dsnnlkpj9",
-    tags: [tag, 'anImage'],
-    uploadPreset: "cqswrbcf"
-  };
-  openUploadWidget(uploadOptions, (error, photos) => {
-    if (!error) {
-      if(photos.event === 'success'){
-        this.state.id = photos.info.public_id;
+    // <button onClick={(e) => this.beginUpload()}>Upload Image</button>
+    const uploadOptions = {
+      cloudName: "dsnnlkpj9",
+      tags: [tag, 'anImage'],
+      uploadPreset: "cqswrbcf"
+    };
+    openUploadWidget(uploadOptions, (error, photos) => {
+      if (!error) {
+        if(photos.event === 'success') {
+          this.setState({
+            id: photos.info.public_id
+          });
+        }
+      } else {
+        console.log(error);
       }
-    } else {
-      console.log(error);
-    }
-  })
-}
+    })
+  }
 
 
   async componentDidMount() {
@@ -182,7 +184,7 @@ class NavBar extends React.Component {
         
         
       let payload = this.state.user;
-      payload.Profile_pic = this.state.id;
+      payload.Profile_pic = this.state.id ? this.state.id : this.state.user.Profile_pic;
       payload.fName = this.state.fName;
       payload.lName = this.state.lName;
       payload.Description = this.state.desc;
@@ -230,7 +232,7 @@ class NavBar extends React.Component {
                   <div className="space"></div>
                     <form>
                       <div className="formEdit">
-                         <Image cloudName= "dsnnlkpj9" publicId={this.state.user.Profile_pic} className = "profilePic" onClick={(e) => this.beginUpload()}>
+                         <Image cloudName= "dsnnlkpj9" publicId={this.state.id ? this.state.id : this.state.user.Profile_pic} className = "profilePic" onClick={(e) => this.beginUpload()}>
                            <Transformation width="400" height="400" gravity="face" radius="max" crop="crop" />
                            <Transformation width="200" crop="scale" />
                          </Image>
@@ -250,7 +252,7 @@ class NavBar extends React.Component {
                    </form>
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={ () => this.setShow() } >Close</Button>
+                <Button variant="secondary" onClick={ () => { this.setShow(); this.setState({fName: this.state.user.fName, lName: this.state.user.lName, desc: this.state.user.Description, id: this.state.user.Profile_pic}); } } >Close</Button>
                 <Button variant="primary" onClick={ () => this.setChanges() }>Save changes</Button>
               </Modal.Footer>
             </Modal.Dialog>
