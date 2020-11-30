@@ -93,10 +93,13 @@ to compensate for the scrollbar*/
   max-height: 533px;
   min-height: 533px;
 
-  background-color: #ffffff;
   border-style: outset;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
 
+}
+
+.friendTabs {
+  background: #ffffff;
 }
 
 .friendImages {
@@ -124,13 +127,22 @@ to compensate for the scrollbar*/
 
 .userGrid {
   min-width: 239.3px;
-  max-height: calc(533px - 89px - 47px);
-  min-height: calc(533px - 89px - 47px);
 
   background-color: lightgrey;
   overflow-y: hidden;
 
 }
+
+.userGrid.friends {
+  max-height: calc(533px - 47px);
+  min-height: calc(533px - 47px);
+}
+
+.userGrid.find {
+  max-height: calc(533px - 89px - 47px);
+  min-height: calc(533px - 89px - 47px);
+}
+
 .userGrid:hover {
   background-color: lightgrey;
   overflow-y: overlay;

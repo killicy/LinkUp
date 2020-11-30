@@ -146,7 +146,7 @@ class Friends extends React.Component {
       <div className="Friends border">
         <Tabs defaultActiveKey="home" className="friendTabs flex-nowrap" transition={false}>
           <Tab eventKey="home" className="Myfriends" title="Friends">
-            <div className="userGrid">{this.props.data.friends.map((friend, index) => {
+            <div className="userGrid friends">{this.props.data.friends.map((friend, index) => {
               return (
                   <Card key={index} className="box border mb-1">
                     <Card.Body className="friendDisplay">
@@ -163,16 +163,10 @@ class Friends extends React.Component {
               );
               })}
             </div>
-            <form className="friendSearch">
-               <div className="form-group">
-                   <input type="text" className="form-control" placeholder="Enter a Username or Email" onChange = {e => this.setInputValue("search", e.target.value)}/>
-               </div>
-               <button type="button" className="searchBtn btn-primary btn-block" onClick = {() => this.findFriend()}>Find a friend</button>
-           </form>
           </Tab>
           <Tab eventKey="profile" className="Findfriends" title="Find Friends">
             {this.state.success1 ?
-              <div className="userGrid">{this.state.userList.map((friend, index) => {
+              <div className="userGrid find">{this.state.userList.map((friend, index) => {
                 return (
                     <Card key={index} className="box border mb-1">
                       <Card.Body>
