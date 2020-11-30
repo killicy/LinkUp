@@ -104,6 +104,7 @@ router.post('/login', (req, res) => {
                     })
                     return res.json({
                         msg: "Logged in",
+                        access_token: token,
                         Username: user.Username,
                         Email: user.Email,
                         Friends: user.Friends,

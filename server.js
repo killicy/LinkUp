@@ -15,7 +15,7 @@ const cors = require('cors');
 
 const app = express();
 
-var whitelist = [process.env.REACT_APP_CLIENT_URL, 'https://app.swaggerhub.com']
+var whitelist = [process.env.REACT_APP_CLIENT_URL, 'https://app.swaggerhub.com', 'https://localhost:3000']
 
 // Bodyparser Middleware
 app.use(express.json());
