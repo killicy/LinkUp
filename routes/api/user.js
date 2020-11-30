@@ -352,7 +352,8 @@ router.post('/usernameInfo', auth, async (req, res) => {
     const events = await Event.find({ 'Participants.Username': req.body.Username }).sort('Date_Added');
     const friends = [];
 
-
+    events.sort((a,b) => {
+        return new Date(a.Date_Start) - new Date(b.Date_Start) ;})
 
     if (findUser == null) {
         res.json({ msg: "Username not found", UserEvents: [], Friends: [], FriendEvents: [], success: false, user: {Username: 'placeholder'}});
@@ -366,7 +367,7 @@ router.post('/usernameInfo', auth, async (req, res) => {
 
             let generatePromise = async () => {
                 const Username = friend.Username;
-                const events = await Event.find({ 'Participants.Username' : friend.Username }).sort()
+                const events = await Event.find({ 'Participants.Username' : friend.Username })
 
                 let retVal = {}
                 retVal[Username] = events;

@@ -86,6 +86,25 @@ class EventMaker extends React.Component {
             [property]: val
         })
     }
+    list(data){
+      if(data === undefined){
+        return(
+          null
+        )
+      }
+      return (
+        <div className="participants">
+          Participants:
+          <div className="participantsList">
+            {data.map((user, index) =>{
+              return (
+                <div className="parti">{user.Username},</div>
+              )
+            })}
+          </div>
+        </div>
+      );
+    }
 
   render() {
     return(
@@ -113,7 +132,7 @@ class EventMaker extends React.Component {
                   <Modal.Body>
                     <Card key={index} className="EventCards border">
                     <Card.Header>
-                      <Card.Title><p className="cardHead">{event.Title}</p></Card.Title>
+                      <Card.Title><p className="cardHead">{event.Title}<br/><br/>Made by:<div>{" "}</div>{event.Author.Username}</p></Card.Title>
                       <div className="eventDate"><DatePicker selected={new Date(event.Date_Start)} showTimeSelect dateFormat="Pp" /> <DatePicker selected={new Date(event.Date_End)} showTimeSelect dateFormat="Pp" /></div>
                       <Image cloudName= "dsnnlkpj9" publicId={event.Event_Image} className = "eventPic">
                         <Transformation border="8px_solid_black" />
@@ -121,11 +140,10 @@ class EventMaker extends React.Component {
                     </Card.Header>
                     <Card.Body>
                       <Card.Text>{event.Description}</Card.Text>
+                      {this.list(this.props.data.participants1[index])}
                     </Card.Body>
                     <Card.Footer>
                     </Card.Footer>
-                      {this.props.data.showy[index] === false ? <button type="button" className="searchBtn btn-dark btn-block" onClick = {() => this.addEvent(event.Title)}>Join Event</button>
-                      : <button type="button" className="searchBtn btn-dark btn-block" onClick = {() => this.addEvent(event.Title)}>Remove Event</button>}
                     </Card>
                     </Modal.Body>
                   <Modal.Footer>

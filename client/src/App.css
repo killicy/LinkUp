@@ -267,9 +267,16 @@ to compensate for the scrollbar*/
   justify-content: bottom;
 }
 
+.cardHeader{
+  font-size: 25px;
+  width: 100%;
+  text-align: right;
+}
+
 .cardHead{
   font-size: 25px;
   width: 100%;
+  text-align: center;
 }
 
 .btnEvent{

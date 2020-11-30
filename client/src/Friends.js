@@ -111,7 +111,7 @@ class Friends extends React.Component {
                 return (
                     <Card key={index} className="box border mb-1">
                       <Card.Body>
-                        <p className="cardHead">{friend.Username}</p>
+                        <p className="cardHeader">{friend.Username}</p>
                       </Card.Body>
                     </Card>
                 );
@@ -128,7 +128,7 @@ class Friends extends React.Component {
                             <Transformation width="50" crop="scale" />
                           </Image>
                         </div>
-                        <p className="cardHead">{friend.Username}</p>
+                        <p className="cardHeader">{friend.Username}</p>
                       </Card.Body>
                     </Card>
                 );
@@ -153,7 +153,7 @@ class Friends extends React.Component {
                             <Transformation width="400" height="400" gravity="face" radius="max" crop="crop" />
                             <Transformation width="50" crop="scale" />
                           </Image>
-                          <p className="cardHead">{friend.Username}</p>
+                          <p className="cardHeader">{friend.Username}</p>
                         </div>
                       </Card.Body>
                     </Card>

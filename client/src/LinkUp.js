@@ -87,6 +87,7 @@ class LinkUp extends React.Component {
         if(this.state.success){
           this.setShow();
           this.state.success = false;
+          window.location.reload();
         }
         else{
           this.setState({message: this.state.message});

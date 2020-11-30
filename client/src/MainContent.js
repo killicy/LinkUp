@@ -98,9 +98,10 @@ async addEvent(Title){
                   {this.list(this.props.data.participants[index])}
                 </Card.Body>
                 <Card.Footer>
-                </Card.Footer>
                   {this.props.data.showy[index] === false ? <button type="button" className="searchBtn btn-dark btn-block" onClick = {() => this.addEvent(event.Title)}>Join Event</button>
                   : <button type="button" className="searchBtn btn-dark btn-block" onClick = {() => this.addEvent(event.Title)}>Remove Event</button>}
+                </Card.Footer>
+
                 </Card>
             );
           })}
